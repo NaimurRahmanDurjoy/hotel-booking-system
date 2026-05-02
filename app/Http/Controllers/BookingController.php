@@ -24,6 +24,16 @@ class BookingController extends Controller
         return response()->json($bookings);
     }
 
+    public function myBookings()
+    {
+        $user = Auth::user();
+        $bookings = Booking::with(['room', 'services'])
+            ->where('user_id', $user->id)
+            ->get();
+
+        return response()->json($bookings);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

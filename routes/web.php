@@ -9,20 +9,20 @@ Route::get('/', function () {
 // Customer Routes
 Route::get('/dashboard', function () {
     return view('customer.dashboard');
-})->middleware('auth');
+});
 
 Route::get('/bookings', function () {
     return view('customer.bookings');
-})->middleware('auth');
+});
 
 Route::get('/chat', function () {
     return view('customer.chat');
-})->middleware('auth');
+});
 
 Route::get('/rooms', function () {
-    return view('welcome');
+    return view('customer.rooms');
 });
 
 Route::get('/premium', function () {
-    return view('welcome');
+    return view('customer.premium');
 });

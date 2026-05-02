@@ -23,6 +23,20 @@ class PremiumController extends Controller
         ]);
     }
 
+    public function checkStatus()
+    {
+        $user = Auth::user();
+        $subscription = PremiumSubscription::where('user_id', $user->id)
+            ->where('is_active', true)
+            ->first();
+
+        return response()->json([
+            'premium' => (bool) $subscription,
+            'discount' => $subscription?->tier === 'gold' ? 10 : ($subscription?->tier === 'silver' ? 5 : 0),
+            'subscription' => $subscription,
+        ]);
+    }
+
     public function subscribe(Request $request)
     {
         $request->validate([

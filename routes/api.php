@@ -43,12 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Chat
     Route::get('/chat', [ChatController::class, 'index']);
+    Route::get('/chat/conversations', [ChatController::class, 'conversations']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessageDirect']);
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'messagesByUserId']);
     Route::get('/chat/{user}/messages', [ChatController::class, 'messages']);
     Route::post('/chat/{user}/send', [ChatController::class, 'sendMessage']);
     Route::get('/chat/unread', [ChatController::class, 'unreadCount']);
-    Route::get('/chat/conversations', [ChatController::class, 'conversations']);
-    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
-    Route::get('/chat/messages/{userId}', [ChatController::class, 'messages']);
     
     // Premium
     Route::get('/premium', [PremiumController::class, 'index']);

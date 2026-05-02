@@ -65,10 +65,14 @@
     <script>
         const authToken = localStorage.getItem('auth_token');
         let currentConversation = null;
+        let currentUserId = null;
         
-        if (!authToken) window.location.href = '/';
+        if (!authToken) {
+            window.location.href = '/';
+        }
         
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            await fetchUser();
             loadConversations();
             setInterval(loadMessages, 5000);
         });
@@ -76,6 +80,23 @@
         document.getElementById('messageInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
+
+        async function fetchUser() {
+            try {
+                const response = await fetch('/api/user', {
+                    headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
+                });
+                if (!response.ok) {
+                    logout();
+                    return;
+                }
+                const user = await response.json();
+                currentUserId = user.id;
+            } catch (error) {
+                console.error('Unable to fetch user:', error);
+                logout();
+            }
+        }
         
         async function loadConversations() {
             try {
@@ -120,9 +141,9 @@
                 const container = document.getElementById('chatMessages');
                 
                 container.innerHTML = messages.map(msg => `
-                    <div class="message ${msg.sender_id === ${authToken} ? 'sent' : 'received'}">
+                    <div class="message ${msg.sender_id === currentUserId ? 'sent' : 'received'}">
                         <p class="mb-0">${msg.message}</p>
-                        <small class="${msg.sender_id === ${authToken} ? 'text-white-50' : 'text-muted'}">${msg.created_at}</small>
+                        <small class="${msg.sender_id === currentUserId ? 'text-white-50' : 'text-muted'}">${msg.created_at}</small>
                     </div>
                 `).join('');
                 
