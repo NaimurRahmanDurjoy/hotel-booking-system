@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\PremiumSubscription;
 use App\Models\User;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\PremiumPlan;
 
 class PremiumController extends Controller
 {
@@ -26,25 +28,55 @@ class PremiumController extends Controller
     public function checkStatus()
     {
         $user = Auth::user();
+        if (!$user) return response()->json(['premium' => false]);
+
         $subscription = PremiumSubscription::where('user_id', $user->id)
             ->where('is_active', true)
             ->first();
 
+        $discount = 0;
+        if ($subscription) {
+            $plan = PremiumPlan::where('tier_key', $subscription->tier)->first();
+            $discount = $plan ? $plan->discount_percentage : 0;
+        }
+
         return response()->json([
             'premium' => (bool) $subscription,
-            'discount' => $subscription?->tier === 'gold' ? 10 : ($subscription?->tier === 'silver' ? 5 : 0),
+            'discount' => $discount,
             'subscription' => $subscription,
+            'completed_bookings' => $user->completed_bookings_count
         ]);
+    }
+
+    public function plans()
+    {
+        $plans = PremiumPlan::where('is_active', true)->get();
+        return response()->json($plans);
     }
 
     public function subscribe(Request $request)
     {
+        $validTiers = PremiumPlan::where('is_active', true)->pluck('tier_key')->toArray();
         $request->validate([
-            'tier' => 'required|in:silver,gold',
+            'tier' => 'required|in:' . implode(',', $validTiers),
             'duration_months' => 'required|integer|min:1|max:12',
         ]);
 
         $user = Auth::user();
+        
+        // Find the plan
+        $plan = PremiumPlan::where('tier_key', $request->tier)->first();
+        if (!$plan) {
+            return response()->json(['message' => 'Invalid plan selected'], 422);
+        }
+
+        // Check requirements (completed bookings)
+        $completedBookings = $user->completed_bookings_count;
+        if ($completedBookings < $plan->min_bookings) {
+            return response()->json([
+                'message' => "You need at least {$plan->min_bookings} completed bookings to join this tier. You currently have {$completedBookings}."
+            ], 422);
+        }
 
         // Check if already subscribed
         $existingSubscription = PremiumSubscription::where('user_id', $user->id)
@@ -125,5 +157,45 @@ class PremiumController extends Controller
             'message' => 'Subscription extended successfully',
             'subscription' => $subscription,
         ]);
+    }
+
+    public function storePlan(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'tier_key' => 'required|string|max:255|unique:premium_plans',
+            'min_bookings' => 'required|integer|min:0',
+            'discount_percentage' => 'required|integer|min:0|max:100',
+            'price' => 'required|numeric|min:0',
+            'benefits' => 'nullable|array',
+            'is_active' => 'boolean',
+        ]);
+
+        $plan = PremiumPlan::create($validated);
+
+        return response()->json(['message' => 'Plan created successfully', 'plan' => $plan], 201);
+    }
+
+    public function updatePlan(Request $request, PremiumPlan $plan)
+    {
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'tier_key' => 'sometimes|string|max:255|unique:premium_plans,tier_key,' . $plan->id,
+            'min_bookings' => 'sometimes|integer|min:0',
+            'discount_percentage' => 'sometimes|integer|min:0|max:100',
+            'price' => 'sometimes|numeric|min:0',
+            'benefits' => 'nullable|array',
+            'is_active' => 'boolean',
+        ]);
+
+        $plan->update($validated);
+
+        return response()->json(['message' => 'Plan updated successfully', 'plan' => $plan]);
+    }
+
+    public function deletePlan(PremiumPlan $plan)
+    {
+        $plan->delete();
+        return response()->json(['message' => 'Plan deleted successfully']);
     }
 }

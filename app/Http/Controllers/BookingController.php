@@ -131,12 +131,21 @@ class BookingController extends Controller
             'status' => 'sometimes|in:pending,confirmed,rejected,completed,cancelled',
         ]);
 
+        $oldStatus = $booking->status;
         $booking->update($request->only(['status']));
+        $newStatus = $booking->status;
+
+        // Sync user's completed booking count
+        if ($oldStatus !== 'completed' && $newStatus === 'completed') {
+            $booking->user->increment('completed_bookings_count');
+        } elseif ($oldStatus === 'completed' && $newStatus !== 'completed') {
+            $booking->user->decrement('completed_bookings_count');
+        }
 
         // Update room status based on booking
-        if (in_array($request->status, ['confirmed'])) {
+        if (in_array($newStatus, ['confirmed'])) {
             $booking->room->update(['status' => 'occupied']);
-        } elseif (in_array($request->status, ['rejected', 'cancelled', 'completed'])) {
+        } elseif (in_array($newStatus, ['rejected', 'cancelled', 'completed'])) {
             $booking->room->update(['status' => 'available']);
         }
 

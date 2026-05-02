@@ -1,221 +1,386 @@
 @extends('layouts.admin')
 
+@section('title', 'Concierge Center')
+@section('header_title', 'Guest Concierge Center')
+
 @section('styles')
 <style>
-    .chat-card-integrated { 
-        height: calc(100vh - 160px); 
-        background: var(--white); 
-        border-radius: 12px; 
-        overflow: hidden; 
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        display: flex;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .chat-sidebar-admin { 
-        width: 320px; 
-        background: var(--white); 
-        border-right: 1px solid var(--bg-light); 
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .chat-sidebar-header {
-        padding: 20px;
-        border-bottom: 1px solid var(--bg-light);
-        font-weight: 700;
-        color: var(--primary);
+    :root {
+        --chat-bg: #f8fafc;
+        --sidebar-bg: #ffffff;
+        --accent-gold: #f5a623;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
     }
 
-    .guest-list {
+    .concierge-wrapper {
+        height: calc(100vh - 140px);
+        display: flex;
+        background: var(--sidebar-bg);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.05);
+        margin: 10px;
+    }
+
+    /* Column 1: Sidebar */
+    .sidebar-pane {
+        width: 350px;
+        border-right: 1px solid #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+    }
+    .sidebar-top {
+        padding: 24px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .sidebar-top h5 { font-weight: 800; color: var(--text-main); margin-bottom: 15px; letter-spacing: -0.5px; }
+    
+    .search-box {
+        position: relative;
+    }
+    .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+    .search-box input {
+        width: 100%;
+        background: #f1f5f9;
+        border: none;
+        padding: 12px 15px 12px 40px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        transition: all 0.3s;
+    }
+    .search-box input:focus { background: #fff; box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1); outline: none; }
+
+    .guest-scroll {
         flex: 1;
         overflow-y: auto;
         padding: 10px;
     }
-
-    .guest-item { 
-        padding: 15px; 
-        border-radius: 10px; 
-        margin-bottom: 5px; 
-        transition: all 0.2s ease; 
-        cursor: pointer;
+    .guest-card {
+        padding: 16px;
+        border-radius: 18px;
         display: flex;
-        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 4px;
+        position: relative;
     }
-    
-    .guest-item:hover { background: var(--bg-light); }
-    .guest-item.active { 
-        background: rgba(30, 58, 95, 0.05); 
-        border-left: 4px solid var(--primary);
-    }
-    
-    .guest-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
+    .guest-card:hover { background: #f8fafc; transform: translateX(5px); }
+    .guest-card.active { background: #f1f5f9; }
+    .guest-card.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 4px;
         background: var(--primary);
-        color: white;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .avatar-wrapper { position: relative; }
+    .avatar-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, var(--primary) 0%, #1e3a5f 100%);
+        color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 600;
-        margin-right: 12px;
-        flex-shrink: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 8px 16px rgba(30, 58, 95, 0.15);
+    }
+    .online-indicator {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 14px;
+        height: 14px;
+        background: #10b981;
+        border: 3px solid #fff;
+        border-radius: 50%;
     }
 
-    .chat-main-admin {
+    .guest-meta h6 { margin: 0 0 2px 0; font-weight: 700; color: var(--text-main); font-size: 0.95rem; }
+    .guest-meta p { margin: 0; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+    .time-stamp { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+    /* Column 2: Chat */
+    .chat-pane {
         flex: 1;
         display: flex;
         flex-direction: column;
-        background: var(--white);
+        background: #f8fafc;
+        position: relative;
     }
-
-    .chat-main-header {
-        padding: 15px 25px;
-        border-bottom: 1px solid var(--bg-light);
+    .chat-nav {
+        padding: 16px 30px;
+        background: #fff;
+        border-bottom: 1px solid #f1f5f9;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        z-index: 10;
     }
-
-    .chat-messages-container {
+    
+    .msg-container {
         flex: 1;
+        padding: 30px;
         overflow-y: auto;
-        padding: 25px;
-        background: #fdfdfd;
         display: flex;
         flex-direction: column;
+        gap: 20px;
+    }
+    
+    /* Empty State Fix */
+    .empty-chat {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+    }
+    .empty-chat-icon {
+        width: 120px;
+        height: 120px;
+        background: #fff;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        margin-bottom: 24px;
+        color: var(--primary);
+        font-size: 3rem;
     }
 
-    .msg-wrapper {
-        margin-bottom: 15px;
-        max-width: 75%;
-    }
-
-    .msg-wrapper.sent { align-self: flex-end; }
-    .msg-wrapper.received { align-self: flex-start; }
-
-    .msg-bubble {
-        padding: 12px 18px;
-        border-radius: 15px;
+    .bubble-wrap { display: flex; flex-direction: column; max-width: 65%; }
+    .bubble-wrap.sent { align-self: flex-end; align-items: flex-end; }
+    .bubble-wrap.received { align-self: flex-start; align-items: flex-start; }
+    
+    .bubble {
+        padding: 14px 20px;
+        border-radius: 20px;
         font-size: 0.95rem;
-        line-height: 1.4;
+        line-height: 1.5;
         position: relative;
     }
-
-    .sent .msg-bubble {
+    .sent .bubble {
         background: var(--primary);
-        color: white;
-        border-bottom-right-radius: 2px;
+        color: #fff;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 10px 20px rgba(30, 58, 95, 0.1);
     }
-
-    .received .msg-bubble {
-        background: var(--bg-light);
-        color: var(--text-dark);
-        border-bottom-left-radius: 2px;
+    .received .bubble {
+        background: #fff;
+        color: var(--text-main);
+        border-bottom-left-radius: 4px;
+        border: 1px solid #edf2f7;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
+    .bubble-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
 
-    .msg-time {
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        margin-top: 5px;
-        display: block;
-    }
-    .sent .msg-time { text-align: right; }
-
-    .chat-input-admin {
-        padding: 20px 25px;
-        border-top: 1px solid var(--bg-light);
-    }
-
-    .input-box-wrapper {
-        display: flex;
-        background: var(--bg-light);
-        border-radius: 30px;
-        padding: 5px 5px 5px 15px;
-        align-items: center;
-    }
-
-    .input-box-wrapper input {
-        flex: 1;
+    .bottom-bar {
+        padding: 20px 30px;
         background: transparent;
-        border: none;
-        padding: 10px;
-        outline: none;
     }
-
-    .send-btn-admin {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+    .input-pill {
+        background: #fff;
+        border-radius: 20px;
+        padding: 8px 10px 8px 24px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .input-pill input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 0.95rem;
+        color: var(--text-main);
+    }
+    .send-pill-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 15px;
         background: var(--primary);
-        color: white;
+        color: #fff;
         border: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        transition: transform 0.2s;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
     }
+    .send-pill-btn:hover { transform: scale(1.05) rotate(-5deg); background: #1e3a5f; }
 
-    .send-btn-admin:hover { transform: scale(1.1); }
-
-    .unread-dot {
-        width: 10px;
-        height: 10px;
-        background: var(--secondary);
-        border-radius: 50%;
-        margin-left: auto;
+    /* Column 3: Profile */
+    .info-pane {
+        width: 320px;
+        background: #fff;
+        border-left: 1px solid #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 24px;
     }
+    .big-avatar {
+        width: 110px;
+        height: 110px;
+        border-radius: 35px;
+        background: #f8fafc;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    }
+    .premium-star {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 36px;
+        height: 36px;
+        background: var(--accent-gold);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 0.9rem;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 10px rgba(245, 166, 35, 0.3);
+    }
+    .user-title { font-weight: 800; font-size: 1.3rem; color: var(--text-main); margin-bottom: 4px; text-align: center; }
+    .user-status-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 5px 14px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 30px;
+    }
+    .label-gold { background: #fff8e6; color: #d97706; }
+    .label-silver { background: #f1f5f9; color: #475569; }
+
+    .detail-grid { width: 100%; border-top: 1px solid #f1f5f9; padding-top: 30px; }
+    .detail-row { margin-bottom: 20px; }
+    .detail-row label { display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .detail-row p { margin: 0; font-size: 0.95rem; color: var(--text-main); font-weight: 600; }
 </style>
 @endsection
 
-@section('header_title', 'Concierge Message Center')
-
 @section('content')
-<div class="chat-card-integrated">
-    <!-- Guests Sidebar -->
-    <div class="chat-sidebar-admin">
-        <div class="chat-sidebar-header">
-            <i class="fas fa-users me-2"></i> Active Guests
+<div class="concierge-wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar-pane">
+        <div class="sidebar-top">
+            <h5>Concierge</h5>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="guestSearch" placeholder="Find a guest...">
+            </div>
         </div>
-        <div class="guest-list" id="conversationsList">
-            <!-- Loaded via JS -->
+        <div class="guest-scroll" id="conversationsList">
+            <!-- Loading -->
+            <div class="p-5 text-center opacity-50">
+                <div class="spinner-border text-primary mb-3"></div>
+                <p class="small fw-bold">Connecting to guests...</p>
+            </div>
         </div>
     </div>
 
-    <!-- Main Chat View -->
-    <div class="chat-main-admin">
-        <div class="chat-main-header">
-            <div class="d-flex align-items-center">
-                <div class="guest-avatar" id="chatAvatar">?</div>
+    <!-- Main Chat -->
+    <div class="chat-pane">
+        <div class="chat-nav" id="chatHeader" style="display: none;">
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar-wrapper">
+                    <div class="avatar-circle" style="width: 40px; height: 40px; font-size: 1rem; border-radius: 12px;" id="headerAvatar">?</div>
+                    <div class="online-indicator" style="width: 10px; height: 10px; border-width: 2px;"></div>
+                </div>
                 <div>
-                    <h4 class="mb-0 fw-bold" id="chatTitle" style="font-size: 1.1rem;">Select a Guest</h4>
-                    <span class="text-success small d-none" id="onlineStatus"><i class="fas fa-circle me-1" style="font-size: 0.6rem;"></i> Connected</span>
+                    <h6 class="mb-0 fw-bold" id="headerName" style="font-size: 1rem;">Guest Name</h6>
+                    <small class="text-success fw-bold" style="font-size: 0.65rem;">ONLINE ASSISTANCE</small>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-sm btn-light text-muted"><i class="fas fa-ellipsis-v"></i></button>
+            <div class="nav-actions">
+                <!-- Actions removed -->
             </div>
         </div>
 
-        <div class="chat-messages-container" id="chatMessages">
-            <div class="h-100 d-flex align-items-center justify-content-center text-muted">
-                <div class="text-center opacity-50">
-                    <i class="fas fa-comment-medical fa-4x mb-3"></i>
-                    <h5>Guest Support Center</h5>
-                    <p class="small">Open a conversation to begin luxury assistance</p>
+        <div class="msg-container" id="chatMessages">
+            <div class="empty-chat">
+                <div class="empty-chat-icon">
+                    <i class="fas fa-concierge-bell"></i>
                 </div>
+                <h4 class="fw-bold text-dark">Luxury Support Center</h4>
+                <p class="text-muted mx-auto" style="max-width: 320px;">Open a conversation from the left to start providing world-class assistance to our valued guests.</p>
             </div>
         </div>
 
-        <div class="chat-input-admin">
-            <div class="input-box-wrapper">
-                <input type="text" id="messageInput" placeholder="Type your response here...">
-                <button onclick="sendMessage()" class="send-btn-admin">
+        <div class="bottom-bar" id="inputArea" style="display: none;">
+            <div class="input-pill">
+                <input type="text" id="messageInput" placeholder="Type your elegant response...">
+                <button onclick="sendMessage()" class="send-pill-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="info-pane" id="profileSidebar" style="display: none;">
+        <div class="big-avatar">
+            <span id="profileAvatar">G</span>
+            <div class="premium-star" id="premiumStar" style="display: none;">
+                <i class="fas fa-star"></i>
+            </div>
+        </div>
+        <h3 class="user-title" id="profileName">Guest Name</h3>
+        <span id="profileBadge" class="user-status-label label-silver">Regular Customer</span>
+
+        <div class="detail-grid">
+            <div class="detail-row">
+                <label>Direct Email</label>
+                <p id="profileEmail">guest@example.com</p>
+            </div>
+            <div class="detail-row">
+                <label>Contact Number</label>
+                <p id="profilePhone">Not provided</p>
+            </div>
+            <div class="detail-row">
+                <label>Membership Status</label>
+                <p id="profileTier" class="text-capitalize">Standard</p>
+            </div>
+            <div class="detail-row">
+                <label>Arrival History</label>
+                <p id="profileJoined">--</p>
+            </div>
+        </div>
+        
+        <div class="mt-auto w-100 p-3 bg-light rounded-4 text-center">
+            <p class="small text-muted mb-0 fw-bold">Assisting since May 2026</p>
         </div>
     </div>
 </div>
@@ -224,18 +389,25 @@
 @section('scripts')
 <script>
     const authToken = localStorage.getItem('auth_token');
-    let currentConversation = null;
+    let currentConversationId = null;
     let currentUserId = null;
-    
-    document.addEventListener('DOMContentLoaded', async function() {
+    let conversations = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
         await fetchUser();
         loadConversations();
+        
         setInterval(loadMessages, 3000);
         setInterval(loadConversations, 10000);
     });
-    
-    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+
+    document.getElementById('messageInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
+    });
+
+    document.getElementById('guestSearch').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        renderConversations(conversations.filter(c => c.user_name.toLowerCase().includes(term)));
     });
 
     async function fetchUser() {
@@ -247,97 +419,124 @@
             currentUserId = user.id;
         }
     }
-    
+
     async function loadConversations() {
         try {
             const response = await fetch('/api/chat/conversations', {
                 headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
             });
-            const conversations = await response.json();
-            const list = document.getElementById('conversationsList');
-            
-            if (conversations.length === 0) {
-                list.innerHTML = '<div class="p-4 text-center text-muted small">No active guests</div>';
-                return;
-            }
-            
-            list.innerHTML = conversations.map(conv => {
-                const initial = conv.user_name.charAt(0);
-                return `
-                <div onclick="selectConversation('${conv.user_id}', '${conv.user_name}')" 
-                    class="guest-item ${currentConversation === conv.user_id ? 'active' : ''}">
-                    <div class="guest-avatar">${initial}</div>
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="fw-bold text-truncate" style="font-size: 0.95rem;">${conv.user_name}</span>
-                            <small class="text-muted" style="font-size: 0.7rem;">${conv.last_message_time || ''}</small>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted text-truncate" style="max-width: 85%">${conv.last_message || 'New Inquiry'}</small>
-                            ${conv.unread > 0 ? `<div class="unread-dot"></div>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-
-            if (conversations.length > 0 && !currentConversation) {
-                selectConversation(conversations[0].user_id, conversations[0].user_name);
-            }
+            conversations = await response.json();
+            renderConversations(conversations);
         } catch (error) { console.error('Error:', error); }
     }
-    
-    function selectConversation(userId, userName) {
-        currentConversation = userId;
-        document.getElementById('chatTitle').textContent = userName;
-        document.getElementById('chatAvatar').textContent = userName.charAt(0);
-        document.getElementById('onlineStatus').classList.remove('d-none');
-        loadMessages();
-        loadConversations();
+
+    function renderConversations(list) {
+        const container = document.getElementById('conversationsList');
+        if (list.length === 0) {
+            container.innerHTML = '<div class="p-5 text-center text-muted small fw-bold">No active conversations</div>';
+            return;
+        }
+
+        container.innerHTML = list.map(conv => `
+            <div onclick="selectConversation('${conv.user_id}', '${conv.user_name}')" 
+                 class="guest-card ${currentConversationId === conv.user_id ? 'active' : ''}">
+                <div class="avatar-wrapper">
+                    <div class="avatar-circle">${conv.user_name.charAt(0)}</div>
+                </div>
+                <div class="guest-meta flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h6>${conv.user_name}</h6>
+                        <span class="time-stamp">${conv.last_message_time || ''}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p>${conv.last_message || 'Inquiry pending...'}</p>
+                        ${conv.unread > 0 ? '<div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>' : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
-    
+
+    async function selectConversation(userId, userName) {
+        currentConversationId = userId;
+        
+        document.getElementById('chatHeader').style.display = 'flex';
+        document.getElementById('inputArea').style.display = 'block';
+        document.getElementById('profileSidebar').style.display = 'flex';
+        
+        document.getElementById('headerName').textContent = userName;
+        document.getElementById('headerAvatar').textContent = userName.charAt(0);
+        
+        fetchGuestDetails(userId);
+        loadMessages();
+        renderConversations(conversations);
+    }
+
+    async function fetchGuestDetails(userId) {
+        const response = await fetch(`/api/admin/users/${userId}`, {
+            headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+            const guest = await response.json();
+            document.getElementById('profileName').textContent = guest.name;
+            document.getElementById('profileAvatar').textContent = guest.name.charAt(0);
+            document.getElementById('profileEmail').textContent = guest.email;
+            document.getElementById('profilePhone').textContent = guest.phone || 'Not provided';
+            document.getElementById('profileTier').textContent = guest.premium_tier || 'Standard';
+            document.getElementById('profileJoined').textContent = new Date(guest.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            
+            const badge = document.getElementById('profileBadge');
+            const star = document.getElementById('premiumStar');
+            
+            if (guest.is_premium) {
+                badge.textContent = `${guest.premium_tier} MEMBER`;
+                badge.className = `user-status-label label-gold`;
+                star.style.display = 'flex';
+            } else {
+                badge.textContent = 'REGULAR CUSTOMER';
+                badge.className = `user-status-label label-silver`;
+                star.style.display = 'none';
+            }
+        }
+    }
+
     async function loadMessages() {
-        if (!currentConversation) return;
+        if (!currentConversationId) return;
         try {
-            const response = await fetch(`/api/chat/messages/${currentConversation}`, {
+            const response = await fetch(`/api/chat/messages/${currentConversationId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
             });
             const messages = await response.json();
             const container = document.getElementById('chatMessages');
             
             if (messages.length === 0) {
-                container.innerHTML = `
-                    <div class="h-100 d-flex align-items-center justify-content-center text-muted">
-                        <div class="text-center opacity-50">
-                            <i class="fas fa-comment-dots fa-3x mb-3"></i>
-                            <p>No message history with this guest</p>
-                        </div>
-                    </div>`;
+                container.innerHTML = '<div class="h-100 d-flex align-items-center justify-content-center text-muted small fw-bold">Conversation started</div>';
                 return;
             }
 
             container.innerHTML = messages.map(msg => `
-                <div class="msg-wrapper ${msg.sender_id === currentUserId ? 'sent' : 'received'}">
-                    <div class="msg-bubble">
-                        <p class="mb-0">${msg.message}</p>
+                <div class="bubble-wrap ${msg.sender_id === currentUserId ? 'sent' : 'received'}">
+                    <div class="bubble">
+                        ${msg.message}
                     </div>
-                    <small class="msg-time">${new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+                    <span class="bubble-time">${new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                 </div>
             `).join('');
             
             container.scrollTop = container.scrollHeight;
         } catch (error) { console.error('Error:', error); }
     }
-    
+
     async function sendMessage() {
         const input = document.getElementById('messageInput');
         const message = input.value.trim();
-        if (!message || !currentConversation) return;
+        if (!message || !currentConversationId) return;
         
         try {
             await fetch('/api/chat/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' },
-                body: JSON.stringify({ receiver_id: currentConversation, message })
+                body: JSON.stringify({ receiver_id: currentConversationId, message })
             });
             input.value = '';
             loadMessages();

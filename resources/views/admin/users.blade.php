@@ -70,43 +70,53 @@
 <div id="userModal" class="modal-overlay">
     <div class="modal-content-card">
         <div class="modal-header-flex">
-            <h3 id="modalTitle">Add New User</h3>
+            <h3 id="modalTitle" style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-user-circle"></i> Add New User
+            </h3>
             <button class="close-modal" onclick="closeModal()">&times;</button>
         </div>
         <form id="userForm">
             <input type="hidden" id="userId">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="userName" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="userEmail" class="form-control" required>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label><i class="fas fa-id-card me-1"></i> Full Name</label>
+                    <input type="text" id="userName" class="form-control" required placeholder="John Doe">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label><i class="fas fa-envelope me-1"></i> Email Address</label>
+                    <input type="email" id="userEmail" class="form-control" required placeholder="john@example.com">
+                </div>
             </div>
             <div class="form-group" id="passwordGroup">
-                <label>Password</label>
-                <input type="password" id="userPassword" class="form-control">
-                <small class="text-muted" id="passwordHint">Leave blank to keep current password if editing</small>
+                <label><i class="fas fa-lock me-1"></i> Password</label>
+                <input type="password" id="userPassword" class="form-control" placeholder="••••••••">
+                <small class="text-muted" id="passwordHint" style="display: block; margin-top: 5px; font-style: italic;">
+                    <i class="fas fa-info-circle"></i> Leave blank to keep current password if editing
+                </small>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label><i class="fas fa-user-tag me-1"></i> Role</label>
+                    <select id="userRole" class="form-control" required>
+                        <option value="customer">Customer</option>
+                        <option value="manager">Manager</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label><i class="fas fa-phone me-1"></i> Phone Number</label>
+                    <input type="text" id="userPhone" class="form-control" placeholder="+880 1XXX XXXXXX">
+                </div>
             </div>
             <div class="form-group">
-                <label>Role</label>
-                <select id="userRole" class="form-control" required>
-                    <option value="customer">Customer</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Admin</option>
-                </select>
+                <label><i class="fas fa-map-marker-alt me-1"></i> Address</label>
+                <input type="text" id="userAddress" class="form-control" placeholder="House 123, Road 4, City">
             </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="text" id="userPhone" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Address</label>
-                <input type="text" id="userAddress" class="form-control">
-            </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button type="submit" class="btn-save">Save User</button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-check-circle me-1"></i> Save User Information
+                </button>
             </div>
         </form>
     </div>

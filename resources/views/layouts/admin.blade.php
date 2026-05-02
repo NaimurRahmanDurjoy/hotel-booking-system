@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Hotel Royale Admin</title>
+    <title>@yield('title') - The Grand Azure Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
@@ -14,7 +14,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-brand">
-            <i class="fas fa-hotel"></i> Royale
+            <a href="/" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-hotel"></i> Azure
+            </a>
         </div>
         <ul class="sidebar-menu">
             <li class="sidebar-item">
@@ -29,10 +31,15 @@
                     <i class="fas fa-users"></i> User Management
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a href="{{ route('admin.premium_plans') }}" class="sidebar-link {{ request()->routeIs('admin.premium_plans') ? 'active' : '' }}">
+                    <i class="fas fa-crown"></i> Premium Plans
+                </a>
+            </li>
             @endif
 
             <li class="sidebar-item">
-                <a href="{{ Auth::user()->isAdmin() ? route('admin.bookings') : route('manager.dashboard') }}" class="sidebar-link {{ request()->routeIs('*.bookings') ? 'active' : '' }}">
+                <a href="{{ Auth::user()->isAdmin() ? route('admin.bookings') : route('manager.bookings') }}" class="sidebar-link {{ request()->routeIs('*.bookings') ? 'active' : '' }}">
                     <i class="fas fa-calendar-check"></i> Bookings
                 </a>
             </li>

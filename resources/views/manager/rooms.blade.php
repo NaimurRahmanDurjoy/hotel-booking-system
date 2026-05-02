@@ -57,18 +57,20 @@
 <div id="roomModal" class="modal-overlay">
     <div class="modal-content-card">
         <div class="modal-header-flex">
-            <h3 id="modalTitle">Add New Room</h3>
+            <h3 id="modalTitle" style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-door-open"></i> Add New Room
+            </h3>
             <button class="close-modal" onclick="closeModal()">&times;</button>
         </div>
         <form id="roomForm">
             <input type="hidden" id="roomId">
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label>Room Number</label>
+                    <label><i class="fas fa-hashtag me-1"></i> Room Number</label>
                     <input type="text" id="roomNumber" class="form-control" required placeholder="e.g. 101">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>Room Type</label>
+                    <label><i class="fas fa-bed me-1"></i> Room Type</label>
                     <select id="roomType" class="form-control" required>
                         <option value="standard">Standard</option>
                         <option value="deluxe">Deluxe</option>
@@ -78,42 +80,45 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Description</label>
-                <textarea id="description" class="form-control" rows="3" required></textarea>
+                <label><i class="fas fa-align-left me-1"></i> Description</label>
+                <textarea id="description" class="form-control" rows="2" required placeholder="Describe the room features and view..."></textarea>
             </div>
             <div class="form-group">
-                <label>Room Image</label>
-                <div id="currentImagePreview" class="mb-2 d-none">
-                    <img src="" id="previewImg" class="rounded shadow-sm" style="height: 100px; width: 150px; object-fit: cover;">
-                    <p class="small text-muted mb-0">Current Image</p>
+                <label><i class="fas fa-image me-1"></i> Room Image</label>
+                <div class="d-flex align-items-center gap-3">
+                    <div id="currentImagePreview" class="d-none">
+                        <img src="" id="previewImg" class="rounded shadow-sm" style="height: 50px; width: 80px; object-fit: cover; border: 2px solid #E2E8F0;">
+                    </div>
+                    <input type="file" id="roomImage" class="form-control" accept="image/*">
                 </div>
-                <input type="file" id="roomImage" class="form-control" accept="image/*">
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label>Price Per Night (TK)</label>
-                    <input type="number" id="pricePerNight" class="form-control" step="0.01" required>
+                    <label><i class="fas fa-money-bill-wave me-1"></i> Price Per Night (TK)</label>
+                    <input type="number" id="pricePerNight" class="form-control" step="0.01" required placeholder="0.00">
                 </div>
                 <div class="col-md-6 form-group">
-                    <label>Capacity (Guests)</label>
-                    <input type="number" id="capacity" class="form-control" required>
+                    <label><i class="fas fa-users me-1"></i> Capacity (Guests)</label>
+                    <input type="number" id="capacity" class="form-control" required placeholder="Max guests">
                 </div>
             </div>
             <div class="form-group">
-                <label>Amenities (Comma separated)</label>
+                <label><i class="fas fa-concierge-bell me-1"></i> Amenities (Comma separated)</label>
                 <input type="text" id="amenities" class="form-control" placeholder="WiFi, Breakfast, TV, Air Conditioning">
             </div>
             <div class="form-group">
-                <label>Status</label>
+                <label><i class="fas fa-info-circle me-1"></i> Status</label>
                 <select id="roomStatus" class="form-control" required>
                     <option value="available">Available</option>
                     <option value="occupied">Occupied</option>
                     <option value="maintenance">Maintenance</option>
                 </select>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button type="submit" class="btn-save">Save Room</button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save me-1"></i> Save Room Details
+                </button>
             </div>
         </form>
     </div>

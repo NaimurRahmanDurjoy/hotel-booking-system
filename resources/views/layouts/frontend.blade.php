@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Hotel</title>
+    <title>The Grand Azure</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,9 +14,103 @@
             --accent-gold: #F5A623;
         }
         body { font-family: 'Outfit', sans-serif; }
-        .navbar { background-color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        
+        /* Hide scrollbars but allow scrolling */
+        * {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        *::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .navbar { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px 0;
+            background: transparent !important;
+        }
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(15px);
+            padding: 12px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            transition: color 0.3s ease;
+        }
+        .navbar.scrolled .navbar-brand { color: var(--primary-navy) !important; }
+        .nav-link {
+            font-weight: 500;
+            color: #fff !important;
+            margin: 0 12px;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+        }
+        .navbar.scrolled .nav-link { color: #333 !important; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover { opacity: 1; transform: translateY(-1px); }
+        .nav-link:hover::after { width: 20px; }
+        
+        .user-dropdown-btn {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled .user-dropdown-btn {
+            background: var(--primary-navy);
+            color: #fff;
+            border: none;
+        }
+        .user-dropdown-btn:hover { background: var(--accent-gold); border-color: var(--accent-gold); color: #fff; }
+        
+        /* Glassmorphism Dropdown */
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 10px;
+            margin-top: 15px !important;
+            min-width: 220px;
+            animation: dropdownFade 0.3s ease;
+        }
+        @keyframes dropdownFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .dropdown-item {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #444;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        .dropdown-item i { width: 25px; font-size: 1.1rem; opacity: 0.7; }
+        .dropdown-item:hover { background: var(--primary-navy); color: #fff; transform: translateX(5px); }
+        .dropdown-item:hover i { opacity: 1; }
+        .dropdown-item.text-danger:hover { background: #fee2e2; color: #dc2626 !important; }
+
         .hero-bg {
-            background: linear-gradient(rgba(30, 58, 95, 0.8), rgba(30, 58, 95, 0.8)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920');
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920');
             background-size: cover;
             background-position: center;
         }
@@ -44,9 +138,9 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top py-3">
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="/"><i class="fas fa-hotel me-2"></i>Luxury Hotel</a>
+            <a class="navbar-brand fw-bold text-white" href="/"><i class="fas fa-hotel me-2"></i>The Grand Azure</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -65,7 +159,7 @@
 
                 @auth
                 <div class="dropdown ms-3">
-                    <button class="btn btn-link dropdown-toggle text-decoration-none text-dark d-flex align-items-center" type="button" data-bs-toggle="dropdown">
+                    <button class="user-dropdown-btn dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">
                         @if(Auth::user()->is_premium)
                             <i class="fas fa-crown me-2 {{ Auth::user()->premium_tier === 'gold' ? 'text-warning' : 'text-secondary' }}"></i>
                         @else
@@ -73,20 +167,19 @@
                         @endif
                         <span>{{ Auth::user()->name }}</span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         @if(Auth::user()->isAdmin())
-                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-chart-line me-2"></i>Admin Dashboard</a></li>
                         @elseif(Auth::user()->isManager())
-                            <li><a class="dropdown-item" href="{{ route('manager.dashboard') }}">Manager Panel</a></li>
+                            <li><a class="dropdown-item" href="{{ route('manager.dashboard') }}"><i class="fas fa-tasks me-2"></i>Manager Panel</a></li>
                         @else
-                            <li><a class="dropdown-item" href="{{ route('customer.bookings.index') }}">My Bookings</a></li>
-                            <li><a class="dropdown-item" href="{{ route('customer.premium') }}">Premium Membership</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.bookings.index') }}"><i class="fas fa-calendar-check me-2"></i>My Bookings</a></li>
                         @endif
-                        <li><hr class="dropdown-divider"></li>
+                        <li><hr class="dropdown-divider opacity-50"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
                             </form>
                         </li>
                     </ul>
@@ -96,7 +189,7 @@
         </div>
     </nav>
 
-    <div style="margin-top: 80px;">
+    <div>
         @yield('content')
     </div>
 
@@ -104,7 +197,7 @@
     <footer class="footer py-5 mt-5">
         <div class="container">
             <div class="row g-4">
-                <div class="col-md-3"><h5>Luxury Hotel</h5><p>Experience world-class hospitality</p></div>
+                <div class="col-md-3"><h5>The Grand Azure</h5><p>Experience world-class hospitality</p></div>
                 <div class="col-md-3">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
@@ -117,9 +210,9 @@
                 <div class="col-md-3">
                     <h5>Contact</h5>
                     <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt me-2 text-primary"></i>123 Hotel Street, City</li>
-                        <li><i class="fas fa-phone me-2 text-primary"></i>+1 234 567 890</li>
-                        <li><i class="fas fa-envelope me-2 text-primary"></i>info@luxuryhotel.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2 text-primary"></i>House 12, Road 5, Dhanmondi, Dhaka</li>
+                        <li><i class="fas fa-phone me-2 text-primary"></i>+880 1712 345678</li>
+                        <li><i class="fas fa-envelope me-2 text-primary"></i>info@luxuryhotel.com.bd</li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -132,21 +225,39 @@
                 </div>
             </div>
             <hr class="my-4">
-            <div class="text-center"><p class="small mb-0">&copy; 2024 Luxury Hotel. All rights reserved.</p></div>
+            <div class="text-center"><p class="small mb-0">&copy; 2026 The Grand Azure. All rights reserved.</p></div>
         </div>
     </footer>
 
     @guest
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-header bg-navy-gradient text-white py-4 px-4 border-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-key me-2 text-warning"></i>Guest Login</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
                     <form id="loginForm">
-                        <div class="mb-3"><label class="form-label">Email</label><input type="email" id="loginEmail" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">Password</label><input type="password" id="loginPassword" class="form-control" required></div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        <div class="mb-4 position-relative">
+                            <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 text-primary"><i class="fas fa-envelope"></i></span>
+                                <input type="email" id="loginEmail" class="form-control bg-light border-0 py-3" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 text-primary"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="loginPassword" class="form-control bg-light border-0 py-3" placeholder="••••••••" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-navy w-100 py-3 rounded-pill fw-bold shadow-lg mb-4">SIGN IN TO ACCOUNT</button>
+                        <div class="text-center">
+                            <p class="small text-muted mb-0">New to our resort? <a href="#" onclick="loginModal.hide(); registerModal.show(); return false;" class="text-primary fw-bold text-decoration-none">Create an Account</a></p>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -155,16 +266,44 @@
 
     <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Register</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-header bg-navy-gradient text-white py-4 px-4 border-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-crown me-2 text-warning"></i>Join Elite Club</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5">
                     <form id="registerForm">
-                        <div class="mb-3"><label class="form-label">Name</label><input type="text" id="registerName" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">Email</label><input type="email" id="registerEmail" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">Password</label><input type="password" id="registerPassword" class="form-control" required></div>
-                        <div class="mb-3"><label class="form-label">Confirm Password</label><input type="password" id="registerPasswordConfirmation" class="form-control" required></div>
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 text-primary"><i class="fas fa-user"></i></span>
+                                <input type="text" id="registerName" class="form-control bg-light border-0 py-3" placeholder="Your Name" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 text-primary"><i class="fas fa-envelope"></i></span>
+                                <input type="email" id="registerEmail" class="form-control bg-light border-0 py-3" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Password</label>
+                                    <input type="password" id="registerPassword" class="form-control bg-light border-0 py-3" placeholder="••••••••" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">Confirm</label>
+                                    <input type="password" id="registerPasswordConfirmation" class="form-control bg-light border-0 py-3" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-navy w-100 py-3 rounded-pill fw-bold shadow-lg mb-4">JOIN ELITE CLUB</button>
+                        <div class="text-center">
+                            <p class="small text-muted mb-0">Already a member? <a href="#" onclick="registerModal.hide(); loginModal.show(); return false;" class="text-primary fw-bold text-decoration-none">Sign In Instead</a></p>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -353,6 +492,16 @@
         checkUnread();
         @endif
         @endauth
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
     </script>
     @yield('scripts')
 </body>

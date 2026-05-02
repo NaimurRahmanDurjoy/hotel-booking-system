@@ -16,7 +16,6 @@
                 <tr>
                     <th>Service Name</th>
                     <th>Description</th>
-                    <th>Price</th>
                     <th>Availability</th>
                     <th>Actions</th>
                 </tr>
@@ -26,7 +25,6 @@
                 <tr id="service-row-{{ $service->id }}">
                     <td class="fw-bold text-primary">{{ $service->name }}</td>
                     <td style="max-width: 300px;"><div class="text-truncate" title="{{ $service->description }}">{{ $service->description }}</div></td>
-                    <td>TK {{ number_format($service->price, 2) }}</td>
                     <td>
                         <span class="badge {{ $service->is_available ? 'badge-confirmed' : 'badge-danger' }}">
                             {{ $service->is_available ? 'Available' : 'Unavailable' }}
@@ -55,41 +53,42 @@
 <div id="serviceModal" class="modal-overlay">
     <div class="modal-content-card">
         <div class="modal-header-flex">
-            <h3 id="modalTitle">Add New Service</h3>
+            <h3 id="modalTitle" style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-concierge-bell"></i> Add New Service
+            </h3>
             <button class="close-modal" onclick="closeModal()">&times;</button>
         </div>
         <form id="serviceForm">
             <input type="hidden" id="serviceId">
             <div class="form-group">
-                <label>Service Name</label>
+                <label><i class="fas fa-tag me-1"></i> Service Name</label>
                 <input type="text" id="serviceName" class="form-control" required placeholder="e.g. Airport Transfer">
             </div>
             <div class="form-group">
-                <label>Description</label>
-                <textarea id="serviceDescription" class="form-control" rows="3" required></textarea>
+                <label><i class="fas fa-align-left me-1"></i> Description</label>
+                <textarea id="serviceDescription" class="form-control" rows="2" required placeholder="Describe the service details..."></textarea>
             </div>
             <div class="form-group">
-                <label>Service Image</label>
-                <div id="currentImagePreview" class="mb-2 d-none">
-                    <img src="" id="previewImg" class="rounded shadow-sm" style="height: 100px; width: 150px; object-fit: cover;">
-                    <p class="small text-muted mb-0">Current Image</p>
+                <label><i class="fas fa-image me-1"></i> Service Image</label>
+                <div class="d-flex align-items-center gap-3">
+                    <div id="currentImagePreview" class="d-none">
+                        <img src="" id="previewImg" class="rounded shadow-sm" style="height: 50px; width: 80px; object-fit: cover; border: 2px solid #E2E8F0;">
+                    </div>
+                    <input type="file" id="serviceImage" class="form-control" accept="image/*">
                 </div>
-                <input type="file" id="serviceImage" class="form-control" accept="image/*">
             </div>
             <div class="form-group">
-                <label>Price (TK)</label>
-                <input type="number" id="servicePrice" class="form-control" step="0.01" required>
-            </div>
-            <div class="form-group">
-                <label>Status</label>
+                <label><i class="fas fa-toggle-on me-1"></i> Availability Status</label>
                 <select id="serviceStatus" class="form-control" required>
                     <option value="1">Available</option>
                     <option value="0">Unavailable</option>
                 </select>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button type="submit" class="btn-save">Save Service</button>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save me-1"></i> Save Service Information
+                </button>
             </div>
         </form>
     </div>
@@ -124,7 +123,6 @@
             
             document.getElementById('serviceName').value = service.name;
             document.getElementById('serviceDescription').value = service.description;
-            document.getElementById('servicePrice').value = service.price;
             document.getElementById('serviceStatus').value = service.is_available ? "1" : "0";
 
             if (service.image) {
@@ -166,7 +164,7 @@
         const formData = new FormData();
         formData.append('name', document.getElementById('serviceName').value);
         formData.append('description', document.getElementById('serviceDescription').value);
-        formData.append('price', document.getElementById('servicePrice').value);
+        formData.append('price', 0);
         formData.append('is_available', document.getElementById('serviceStatus').value === "1" ? "1" : "0");
         
         const imageFile = document.getElementById('serviceImage').files[0];

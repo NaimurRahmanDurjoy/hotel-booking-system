@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PremiumController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -17,6 +18,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/rooms', [RoomController::class, 'index']);
 Route::get('/rooms/{room}', [RoomController::class, 'show']);
 Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/premium-plans', [PremiumController::class, 'plans']);
+Route::post('/contact', [ContactController::class, 'store']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -68,4 +71,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/users', [AdminController::class, 'storeUser']);
     Route::get('/admin/bookings', [AdminController::class, 'bookings']);
     Route::get('/admin/services', [AdminController::class, 'services']);
+    
+    // Premium Plan Admin
+    Route::post('/admin/premium-plans', [PremiumController::class, 'storePlan']);
+    Route::put('/admin/premium-plans/{plan}', [PremiumController::class, 'updatePlan']);
+    Route::delete('/admin/premium-plans/{plan}', [PremiumController::class, 'deletePlan']);
 });
