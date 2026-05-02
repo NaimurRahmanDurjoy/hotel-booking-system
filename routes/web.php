@@ -22,6 +22,9 @@ Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('mana
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard'); // Shared for now or specific
     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
     Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+    Route::get('/chat', function () {
+        return view('admin.chat');
+    })->name('chat');
 });
 
 // Customer Routes (Protected)
@@ -33,10 +36,6 @@ Route::middleware(['auth', 'role:customer,manager,admin'])->prefix('customer')->
     Route::get('/bookings', function () {
         return view('customer.bookings');
     })->name('bookings.index');
-
-    Route::get('/chat', function () {
-        return view('customer.chat');
-    })->name('chat');
 
     Route::get('/rooms', function () {
         return view('customer.rooms');

@@ -53,6 +53,11 @@
     
     document.addEventListener('DOMContentLoaded', loadBookings);
     
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }       
+    
     async function loadBookings() {
         try {
             const response = await fetch('/api/bookings/my', {
@@ -80,8 +85,8 @@
                         </div>
                     </td>
                     <td>
-                        <div class="small fw-bold">${booking.check_in_date}</div>
-                        <div class="small text-muted">to ${booking.check_out_date}</div>
+                        <div class="small fw-bold">${formatDate(booking.check_in_date)}</div>
+                        <div class="small text-muted">to ${formatDate(booking.check_out_date)}</div>
                     </td>
                     <td><span class="fw-bold">TK ${booking.total_price}</span></td>
                     <td><span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} px-3 py-2">${booking.status.toUpperCase()}</span></td>
@@ -96,6 +101,13 @@
         }
     }
     
-    function viewBooking(id) { alert('Booking Details: #' + id); }
+    function viewBooking(id) { 
+        Swal.fire({
+            title: 'Booking Details',
+            text: `You are viewing details for booking #${id}. Full detail view coming soon!`,
+            icon: 'info',
+            confirmButtonColor: '#1E3A5F'
+        });
+    }
 </script>
 @endsection

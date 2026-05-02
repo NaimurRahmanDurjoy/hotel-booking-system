@@ -15,6 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Public data
 Route::get('/rooms', [RoomController::class, 'index']);
+Route::get('/rooms/{room}', [RoomController::class, 'show']);
 Route::get('/services', [ServiceController::class, 'index']);
 
 // Protected routes
@@ -25,7 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Rooms
     Route::post('/rooms', [RoomController::class, 'store']);
-    Route::get('/rooms/{room}', [RoomController::class, 'show']);
     Route::put('/rooms/{room}', [RoomController::class, 'update']);
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy']);
     

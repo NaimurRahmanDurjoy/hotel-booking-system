@@ -10,7 +10,28 @@ class RoomController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $rooms = Room::where('status', 'available')->get();
+            $query = Room::query()->where('status', 'available');
+
+            // Filter by capacity if provided
+            if ($request->has('guests')) {
+                $query->where('capacity', '>=', $request->guests);
+            }
+
+            // Filter by date availability if both dates provided
+            if ($request->has('check_in') && $request->has('check_out')) {
+                $checkIn = $request->check_in;
+                $checkOut = $request->check_out;
+
+                $query->whereDoesntHave('bookings', function ($q) use ($checkIn, $checkOut) {
+                    $q->whereIn('status', ['pending', 'confirmed'])
+                      ->where(function ($inner) use ($checkIn, $checkOut) {
+                          $inner->where('check_in_date', '<', $checkOut)
+                                ->where('check_out_date', '>', $checkIn);
+                      });
+                });
+            }
+
+            $rooms = $query->get();
             return response()->json($rooms);
         }
         
@@ -82,5 +103,11 @@ class RoomController extends Controller
         $room->delete();
 
         return response()->json(['message' => 'Room deleted successfully']);
+    }
+
+    public function browse()
+    {
+        $rooms = Room::available()->get();
+        return view('customer.rooms', compact('rooms'));
     }
 }

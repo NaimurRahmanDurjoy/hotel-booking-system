@@ -165,7 +165,7 @@
             
             roomModal.style.display = 'flex';
         } catch (error) {
-            alert('Failed to fetch room data');
+            Swal.fire({ icon: 'error', title: 'Fetch Error', text: 'Failed to retrieve room details.' });
         }
     }
 
@@ -216,7 +216,7 @@
 
         try {
             const response = await fetch(url, {
-                method: 'POST', // Use POST with _method PUT for file uploads
+                method: 'POST',
                 headers: { 
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
@@ -227,18 +227,29 @@
             
             const result = await response.json();
             if (response.ok) {
-                alert(result.message);
-                location.reload();
+                Swal.fire({ icon: 'success', title: 'Success', text: result.message }).then(() => {
+                    location.reload();
+                });
             } else {
-                alert(result.message || 'Action failed');
+                Swal.fire({ icon: 'error', title: 'Action Failed', text: result.message || 'The operation could not be completed.' });
             }
         } catch (error) {
-            alert('An error occurred');
+            Swal.fire({ icon: 'error', title: 'System Error', text: 'An unexpected error occurred.' });
         }
     });
 
     async function deleteRoom(id, roomNumber) {
-        if (!confirm(`Are you sure you want to delete Room ${roomNumber}?`)) return;
+        const confirmDelete = await Swal.fire({
+            title: `Delete Room ${roomNumber}?`,
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (!confirmDelete.isConfirmed) return;
         
         try {
             const response = await fetch(`/api/rooms/${id}`, {
@@ -251,14 +262,14 @@
             });
             
             if (response.ok) {
-                alert('Room deleted successfully');
+                Swal.fire({ icon: 'success', title: 'Deleted!', text: 'Room has been removed from the system.' });
                 document.getElementById(`room-row-${id}`).remove();
             } else {
                 const result = await response.json();
-                alert(result.message || 'Delete failed');
+                Swal.fire({ icon: 'error', title: 'Delete Failed', text: result.message || 'The room could not be deleted.' });
             }
         } catch (error) {
-            alert('An error occurred');
+            Swal.fire({ icon: 'error', title: 'System Error', text: 'An unexpected error occurred.' });
         }
     }
 </script>

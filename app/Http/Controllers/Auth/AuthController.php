@@ -33,7 +33,12 @@ class AuthController extends Controller
         Auth::login($user);
 
         if ($request->expectsJson()) {
-            return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
+            $token = $user->createToken('auth-token')->plainTextToken;
+            return response()->json([
+                'message' => 'Registration successful', 
+                'user' => $user,
+                'token' => $token
+            ], 201);
         }
 
         return redirect()->route('dashboard');
@@ -59,17 +64,23 @@ class AuthController extends Controller
 
             if ($request->expectsJson()) {
                 $token = $user->createToken('auth-token')->plainTextToken;
+                
+                $redirect = url('/');
+                if ($user->isAdmin()) $redirect = route('admin.dashboard');
+                elseif ($user->isManager()) $redirect = route('manager.dashboard');
+
                 return response()->json([
                     'message' => 'Login successful',
                     'user' => $user,
                     'token' => $token,
+                    'redirect' => $redirect
                 ]);
             }
 
             // Role-based redirection
             if ($user->isAdmin()) return redirect()->intended(route('admin.dashboard'));
             if ($user->isManager()) return redirect()->intended(route('manager.dashboard'));
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended('/');
         }
 
         if ($request->expectsJson()) {
@@ -100,5 +111,16 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+
+    public function getApiToken(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        $token = $user->createToken('auth-token')->plainTextToken;
+        return response()->json(['token' => $token]);
     }
 }

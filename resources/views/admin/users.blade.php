@@ -151,7 +151,7 @@
             
             userModal.style.display = 'flex';
         } catch (error) {
-            alert('Failed to fetch user data');
+            Swal.fire({ icon: 'error', title: 'Fetch Error', text: 'Failed to retrieve user information.' });
         }
     }
 
@@ -190,18 +190,29 @@
             
             const result = await response.json();
             if (response.ok) {
-                alert(result.message);
-                location.reload();
+                Swal.fire({ icon: 'success', title: 'Success', text: result.message }).then(() => {
+                    location.reload();
+                });
             } else {
-                alert(result.message || 'Action failed');
+                Swal.fire({ icon: 'error', title: 'Action Failed', text: result.message || 'Operation failed' });
             }
         } catch (error) {
-            alert('An error occurred');
+            Swal.fire({ icon: 'error', title: 'System Error', text: 'An unexpected error occurred.' });
         }
     });
 
     async function deleteUser(id, name) {
-        if (!confirm(`Are you sure you want to delete user "${name}"?`)) return;
+        const confirmDelete = await Swal.fire({
+            title: `Remove User?`,
+            text: `Are you sure you want to delete account for "${name}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete!'
+        });
+
+        if (!confirmDelete.isConfirmed) return;
         
         try {
             const response = await fetch(`/api/admin/users/${id}`, {
@@ -214,14 +225,14 @@
             });
             
             if (response.ok) {
-                alert('User deleted successfully');
+                Swal.fire({ icon: 'success', title: 'Deleted!', text: 'User account has been removed.' });
                 document.getElementById(`user-row-${id}`).remove();
             } else {
                 const result = await response.json();
-                alert(result.message || 'Delete failed');
+                Swal.fire({ icon: 'error', title: 'Delete Failed', text: result.message || 'Delete failed' });
             }
         } catch (error) {
-            alert('An error occurred');
+            Swal.fire({ icon: 'error', title: 'System Error', text: 'An unexpected error occurred.' });
         }
     }
 </script>

@@ -90,49 +90,91 @@ class ChatController extends Controller
         $user = Auth::user();
 
         if ($user->isManager() || $user->isAdmin()) {
+            // Staff sees all customers who have sent messages or exist
             $users = User::where('role', 'customer')->get();
+            
+            return $users->map(function ($customer) use ($user) {
+                $lastMessage = Message::where(function ($q) use ($user, $customer) {
+                    $q->where('sender_id', $customer->id)
+                      ->orWhere('receiver_id', $customer->id);
+                })->latest('created_at')->first();
+
+                $unread = Message::where('sender_id', $customer->id)
+                    ->where('receiver_id', $user->id)
+                    ->where('is_read', false)
+                    ->count();
+
+                return [
+                    'user_id' => $customer->id,
+                    'user_name' => $customer->name,
+                    'last_message' => $lastMessage?->message,
+                    'unread' => $unread,
+                    'last_message_time' => $lastMessage?->created_at->diffForHumans(),
+                ];
+            });
         } else {
-            $users = User::whereIn('role', ['manager', 'admin'])->get();
-        }
+            // Customer sees only ONE unified 'Concierge' conversation
+            $lastMessage = Message::where('sender_id', $user->id)
+                ->orWhere('receiver_id', $user->id)
+                ->latest('created_at')
+                ->first();
 
-        $conversations = $users->map(function ($conversationUser) use ($user) {
-            $lastMessage = Message::where(function ($query) use ($user, $conversationUser) {
-                $query->where('sender_id', $user->id)->where('receiver_id', $conversationUser->id);
-            })->orWhere(function ($query) use ($user, $conversationUser) {
-                $query->where('sender_id', $conversationUser->id)->where('receiver_id', $user->id);
-            })->latest('created_at')->first();
-
-            $unread = Message::where('sender_id', $conversationUser->id)
-                ->where('receiver_id', $user->id)
+            $unread = Message::where('receiver_id', $user->id)
                 ->where('is_read', false)
                 ->count();
 
-            return [
-                'user_id' => $conversationUser->id,
-                'user_name' => $conversationUser->name,
+            return [[
+                'user_id' => 'support',
+                'user_name' => 'Hotel Concierge',
                 'last_message' => $lastMessage?->message,
                 'unread' => $unread,
-            ];
-        });
-
-        return response()->json($conversations);
+                'last_message_time' => $lastMessage?->created_at?->diffForHumans(),
+            ]];
+        }
     }
 
     public function messagesByUserId(Request $request, $userId)
     {
         $user = Auth::user();
+        
+        if ($userId === 'support' && $user->role === 'customer') {
+            // Customer fetching unified thread with all staff
+            $messages = Message::where(function ($query) use ($user) {
+                $query->where('sender_id', $user->id)
+                      ->orWhere('receiver_id', $user->id);
+            })->orderBy('created_at', 'asc')->get();
+
+            Message::where('receiver_id', $user->id)
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+
+            return response()->json($messages);
+        }
+
         $otherUser = User::findOrFail($userId);
 
+        // If staff is viewing a customer conversation, show ALL messages for that customer
+        if (($user->isAdmin() || $user->isManager()) && $otherUser->role === 'customer') {
+            $messages = Message::where(function ($query) use ($otherUser) {
+                $query->where('sender_id', $otherUser->id)
+                      ->orWhere('receiver_id', $otherUser->id);
+            })->orderBy('created_at', 'asc')->get();
+
+            // Mark these messages as read for the current staff member's view
+            Message::where('sender_id', $otherUser->id)
+                ->where('receiver_id', $user->id) // Actually, we should probably mark all incoming for this customer as read for the system
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+
+            return response()->json($messages);
+        }
+
+        // Default private messaging logic
         $messages = Message::where(function ($query) use ($user, $otherUser) {
             $query->where('sender_id', $user->id)->where('receiver_id', $otherUser->id);
         })->orWhere(function ($query) use ($user, $otherUser) {
             $query->where('sender_id', $otherUser->id)->where('receiver_id', $user->id);
         })->orderBy('created_at', 'asc')->get();
-
-        Message::where('sender_id', $otherUser->id)
-            ->where('receiver_id', $user->id)
-            ->where('is_read', false)
-            ->update(['is_read' => true]);
 
         return response()->json($messages);
     }
@@ -140,16 +182,22 @@ class ChatController extends Controller
     public function sendMessageDirect(Request $request)
     {
         $request->validate([
-            'receiver_id' => 'required|exists:users,id',
+            'receiver_id' => 'required',
             'message' => 'required|string|max:1000',
         ]);
 
         $sender = Auth::user();
-        $receiver = User::findOrFail($request->receiver_id);
+        $receiverId = $request->receiver_id;
+
+        if ($receiverId === 'support') {
+            // Find the first available manager/admin to receive the message (for DB integrity)
+            $admin = User::whereIn('role', ['admin', 'manager'])->first();
+            $receiverId = $admin->id;
+        }
 
         $message = Message::create([
             'sender_id' => $sender->id,
-            'receiver_id' => $receiver->id,
+            'receiver_id' => $receiverId,
             'message' => $request->message,
             'is_read' => false,
         ]);

@@ -115,7 +115,17 @@
     }
 
     async function subscribePremium(tier) {
-        if (!confirm(`Do you want to subscribe to the ${tier.toUpperCase()} plan?`)) return;
+        const result = await Swal.fire({
+            title: `Enroll in ${tier.toUpperCase()}?`,
+            text: `Do you want to subscribe to the ${tier.toUpperCase()} membership tier?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#1E3A5F',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Enroll Now!'
+        });
+
+        if (!result.isConfirmed) return;
         
         try {
             const response = await fetch('/api/premium/subscribe', {
@@ -125,13 +135,26 @@
             });
             const data = await response.json();
             if (response.ok) {
-                alert('Congratulations! Your premium subscription is now active.');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Welcome to Elite Status!',
+                    text: 'Your premium subscription has been activated successfully.',
+                    confirmButtonColor: '#1E3A5F'
+                });
                 loadStatus();
             } else {
-                alert(data.message || 'Subscription failed. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Subscription Failed',
+                    text: data.message || 'Something went wrong while processing your request.'
+                });
             }
         } catch (error) {
-            alert('Something went wrong. Please check your connection.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Connection Error',
+                text: 'Please check your internet connection and try again.'
+            });
         }
     }
 </script>

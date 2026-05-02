@@ -89,7 +89,17 @@
 @section('scripts')
 <script>
     async function updateBookingStatus(id, status) {
-        if (!confirm(`Are you sure you want to set this booking as ${status}?`)) return;
+        const confirmUpdate = await Swal.fire({
+            title: `Update Booking Status?`,
+            text: `Are you sure you want to mark this booking as ${status.toUpperCase()}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: status === 'rejected' ? '#d33' : '#3085d6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: `Yes, ${status}`
+        });
+
+        if (!confirmUpdate.isConfirmed) return;
         
         try {
             const response = await fetch(`/api/bookings/${id}`, {
@@ -105,14 +115,21 @@
             
             const result = await response.json();
             if (response.ok) {
-                alert(result.message);
-                location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Status Updated',
+                    text: result.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-                alert(result.message || 'Update failed');
+                Swal.fire({ icon: 'error', title: 'Update Failed', text: result.message || 'The booking status could not be updated.' });
             }
         } catch (error) {
             console.error('Update Error:', error);
-            alert('An error occurred while updating the booking.');
+            Swal.fire({ icon: 'error', title: 'System Error', text: 'An error occurred while communicating with the server.' });
         }
     }
 </script>
