@@ -13,6 +13,10 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        if ($request->isMethod('get')) {
+            return view('auth.register');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -28,40 +32,69 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
+        }
+
+        return redirect()->route('dashboard');
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        if ($request->isMethod('get')) {
+            return view('auth.login');
+        }
+
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        if (Auth::attempt($credentials)) {
+            if ($request->hasSession()) {
+                $request->session()->regenerate();
+            }
+            
+            $user = Auth::user();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            if ($request->expectsJson()) {
+                $token = $user->createToken('auth-token')->plainTextToken;
+                return response()->json([
+                    'message' => 'Login successful',
+                    'user' => $user,
+                    'token' => $token,
+                ]);
+            }
+
+            // Role-based redirection
+            if ($user->isAdmin()) return redirect()->intended(route('admin.dashboard'));
+            if ($user->isManager()) return redirect()->intended(route('manager.dashboard'));
+            return redirect()->intended(route('dashboard'));
         }
 
-        Auth::login($user);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
 
-        $token = $user->createToken('auth-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'token' => $token,
-        ]);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::logout();
+        
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
-        return response()->json(['message' => 'Logged out successfully']);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Logged out successfully']);
+        }
+
+        return redirect('/');
     }
 
     public function user(Request $request)

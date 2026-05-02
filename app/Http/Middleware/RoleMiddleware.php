@@ -11,11 +11,14 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+        if (!Auth::check()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Unauthenticated'], 401);
+            }
+            return redirect()->route('login');
         }
+
+        $user = Auth::user();
 
         foreach ($roles as $role) {
             if ($user->role === $role) {
@@ -23,6 +26,10 @@ class RoleMiddleware
             }
         }
 
-        return response()->json(['message' => 'Unauthorized - Insufficient permissions'], 403);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Unauthorized - Insufficient permissions'], 403);
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }

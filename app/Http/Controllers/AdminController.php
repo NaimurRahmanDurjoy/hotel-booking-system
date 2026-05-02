@@ -28,13 +28,15 @@ class AdminController extends Controller
             'premium_users' => User::where('is_premium', true)->count(),
         ];
 
-        return response()->json($stats);
+        $recentBookings = Booking::with(['user', 'room'])->latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentBookings'));
     }
 
     public function users()
     {
-        $users = User::all();
-        return response()->json($users);
+        $users = User::paginate(15);
+        return view('admin.users', compact('users'));
     }
 
     public function user(User $user)
@@ -97,8 +99,8 @@ class AdminController extends Controller
 
     public function bookings()
     {
-        $bookings = Booking::with(['user', 'room', 'services'])->get();
-        return response()->json($bookings);
+        $bookings = Booking::with(['user', 'room', 'services'])->latest()->paginate(15);
+        return view('admin.bookings', compact('bookings'));
     }
 
     public function services()
