@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $rooms = Room::where('status', 'available')->get();
-        return response()->json($rooms);
+        if ($request->wantsJson()) {
+            $rooms = Room::where('status', 'available')->get();
+            return response()->json($rooms);
+        }
+        
+        $rooms = Room::paginate(15);
+        return view('manager.rooms', compact('rooms'));
     }
 
     public function store(Request $request)
@@ -22,11 +27,17 @@ class RoomController extends Controller
             'price_per_night' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
             'amenities' => 'nullable|array',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'in:available,occupied,maintenance',
         ]);
 
-        $room = Room::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('rooms', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $room = Room::create($data);
 
         return response()->json(['message' => 'Room created successfully', 'room' => $room], 201);
     }
@@ -45,11 +56,23 @@ class RoomController extends Controller
             'price_per_night' => 'sometimes|numeric|min:0',
             'capacity' => 'sometimes|integer|min:1',
             'amenities' => 'nullable|array',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'in:available,occupied,maintenance',
         ]);
 
-        $room->update($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($room->image && str_contains($room->image, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $room->image);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            
+            $path = $request->file('image')->store('rooms', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $room->update($data);
 
         return response()->json(['message' => 'Room updated successfully', 'room' => $room]);
     }

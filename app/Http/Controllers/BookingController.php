@@ -52,16 +52,12 @@ class BookingController extends Controller
         $checkOut = \Carbon\Carbon::parse($request->check_out_date);
         $nights = $checkIn->diffInDays($checkOut);
         
-        // Check for overlapping bookings
+        // Check for overlapping bookings (Standard overlap logic: start1 < end2 AND end1 > start2)
         $overlapping = Booking::where('room_id', $request->room_id)
             ->whereIn('status', ['pending', 'confirmed'])
             ->where(function ($query) use ($checkIn, $checkOut) {
-                $query->whereBetween('check_in_date', [$checkIn, $checkOut])
-                    ->orWhereBetween('check_out_date', [$checkIn, $checkOut])
-                    ->orWhere(function ($query) use ($checkIn, $checkOut) {
-                        $query->where('check_in_date', '<=', $checkIn)
-                            ->where('check_out_date', '>=', $checkOut);
-                    });
+                $query->where('check_in_date', '<', $checkOut)
+                      ->where('check_out_date', '>', $checkIn);
             })->exists();
 
         if ($overlapping) {

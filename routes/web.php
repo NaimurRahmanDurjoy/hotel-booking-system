@@ -25,7 +25,7 @@ Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('mana
 });
 
 // Customer Routes (Protected)
-Route::middleware(['auth', 'role:customer,manager,admin'])->group(function () {
+Route::middleware(['auth', 'role:customer,manager,admin'])->prefix('customer')->name('customer.')->group(function () {
     Route::get('/dashboard', function () {
         return view('customer.dashboard');
     })->name('dashboard');

@@ -27,11 +27,11 @@
 
     <div class="stat-card">
         <div class="stat-icon icon-green">
-            <i class="fas fa-dollar-sign"></i>
+            <i class="fas fa-money-bill-wave"></i>
         </div>
         <div class="stat-info">
             <h3>Total Revenue</h3>
-            <p>${{ number_format($stats['total_revenue'], 2) }}</p>
+            <p>TK {{ number_format($stats['total_revenue'], 2) }}</p>
         </div>
     </div>
 

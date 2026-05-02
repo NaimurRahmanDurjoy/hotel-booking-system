@@ -83,7 +83,7 @@
                         <div class="small fw-bold">${booking.check_in_date}</div>
                         <div class="small text-muted">to ${booking.check_out_date}</div>
                     </td>
-                    <td><span class="fw-bold">$${booking.total_price}</span></td>
+                    <td><span class="fw-bold">TK ${booking.total_price}</span></td>
                     <td><span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} px-3 py-2">${booking.status.toUpperCase()}</span></td>
                     <td class="text-end pe-4">
                         <button onclick="viewBooking(${booking.id})" class="btn btn-outline-primary btn-sm">Details</button>

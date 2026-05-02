@@ -55,9 +55,9 @@
                         @elseif(Auth::user()->isManager())
                             <li><a class="dropdown-item" href="{{ route('manager.dashboard') }}">Manager Panel</a></li>
                         @endif
-                        <li><a class="dropdown-item" href="{{ route('bookings.index') }}">My Bookings</a></li>
-                        <li><a class="dropdown-item" href="{{ route('chat') }}">Messages</a></li>
-                        <li><a class="dropdown-item" href="{{ route('premium') }}">Premium Membership</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.bookings.index') }}">My Bookings</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.chat') }}">Messages</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.premium') }}">Premium Membership</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">

@@ -52,11 +52,17 @@ class AdminController extends Controller
             'role' => 'sometimes|in:customer,manager,admin',
             'phone' => 'nullable|string',
             'address' => 'nullable|string',
+            'password' => 'nullable|string|min:8',
             'is_premium' => 'sometimes|boolean',
             'premium_tier' => 'nullable|in:silver,gold',
         ]);
 
-        $user->update($request->all());
+        $data = $request->except(['password']);
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
 
         return response()->json(['message' => 'User updated successfully', 'user' => $user]);
     }
@@ -72,12 +78,13 @@ class AdminController extends Controller
         return response()->json(['message' => 'User deleted successfully']);
     }
 
-    public function createManager(Request $request)
+    public function storeUser(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'required|in:customer,manager,admin',
             'phone' => 'nullable|string',
             'address' => 'nullable|string',
         ]);
@@ -86,13 +93,13 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => 'manager',
+            'role' => $request->role,
             'phone' => $request->phone,
             'address' => $request->address,
         ]);
 
         return response()->json([
-            'message' => 'Manager created successfully',
+            'message' => 'User created successfully',
             'user' => $user,
         ], 201);
     }

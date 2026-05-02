@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::where('is_available', true)->get();
-        return response()->json($services);
+        if ($request->wantsJson()) {
+            $services = Service::where('is_available', true)->get();
+            return response()->json($services);
+        }
+
+        $services = Service::paginate(15);
+        return view('manager.services', compact('services'));
     }
 
     public function store(Request $request)
@@ -19,11 +24,17 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_available' => 'boolean',
         ]);
 
-        $service = Service::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('services', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $service = Service::create($data);
 
         return response()->json(['message' => 'Service created successfully', 'service' => $service], 201);
     }
@@ -39,11 +50,23 @@ class ServiceController extends Controller
             'name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
             'price' => 'sometimes|numeric|min:0',
-            'image' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_available' => 'boolean',
         ]);
 
-        $service->update($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($service->image && str_contains($service->image, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $service->image);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+            
+            $path = $request->file('image')->store('services', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $service->update($data);
 
         return response()->json(['message' => 'Service updated successfully', 'service' => $service]);
     }
