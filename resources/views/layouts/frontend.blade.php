@@ -177,7 +177,7 @@
                         @endif
                         <li><hr class="dropdown-divider opacity-50"></li>
                         <li>
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form id="logout-form" method="POST" action="{{ route('logout') }}" onsubmit="localStorage.removeItem('auth_token');">
                                 @csrf
                                 <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
                             </form>
@@ -401,21 +401,14 @@
         });
         @endguest
 
-        @auth
-        document.addEventListener('DOMContentLoaded', async function() {
-            if (!localStorage.getItem('auth_token')) {
-                try {
-                    const response = await fetch('/get-token');
-                    if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem('auth_token', data.token);
-                        console.log('Chat Widget: Token restored from session.');
-                        if (typeof checkUnread === 'function') checkUnread();
-                    }
-                } catch (e) { console.error('Token recovery failed:', e); }
+        @guest
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('auth_token')) {
+                localStorage.removeItem('auth_token');
+                console.log('Guest detected: Stale auth token cleared.');
             }
         });
-        @endauth
+        @endguest
 
         @auth
         @if(Auth::user()->role === 'customer')

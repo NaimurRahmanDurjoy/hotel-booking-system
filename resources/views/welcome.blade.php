@@ -492,7 +492,8 @@
 
 @section('scripts')
 <script>
-    let authToken = localStorage.getItem('auth_token');
+    let getAuthToken = () => localStorage.getItem('auth_token');
+    let isGuest = @guest true @else false @endguest;
     let bookingModal;
     let roomDetailsModal;
 
@@ -506,9 +507,10 @@
                 const plans = await plansRes.json();
                 
                 let userStatus = { completed_bookings: 0, premium: false };
-                if (authToken) {
+                const token = getAuthToken();
+                if (token && !isGuest) {
                     const statusRes = await fetch('/api/premium/status', {
-                        headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
+                        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
                     });
                     if (statusRes.ok) userStatus = await statusRes.json();
                 }
@@ -634,12 +636,15 @@
             if (checkOut) url += `check_out=${checkOut}&`;
             if (guests) url += `guests=${guests}`;
 
-            const [roomsRes, statusRes] = await Promise.all([
-                fetch(url, { headers: { 'Accept': 'application/json' } }),
-                authToken ? fetch('/api/premium/status', {
-                    headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
-                }) : Promise.resolve({ ok: false })
-            ]);
+                const token = getAuthToken();
+                const statusFetch = (token && !isGuest) ? fetch('/api/premium/status', {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                }) : Promise.resolve({ ok: false });
+
+                const [roomsRes, statusRes] = await Promise.all([
+                    fetch(url, { headers: { 'Accept': 'application/json' } }),
+                    statusFetch
+                ]);
 
             const rooms = await roomsRes.json();
             let userStatus = { premium: false, discount: 0 };
@@ -822,7 +827,7 @@
         try {
             const response = await fetch('/api/bookings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getAuthToken()}`, 'Accept': 'application/json' },
                 body: JSON.stringify({ room_id: roomId, check_in_date, check_out_date, notes })
             });
             
@@ -869,7 +874,7 @@
 
         const response = await fetch('/api/premium/subscribe', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getAuthToken()}`, 'Accept': 'application/json' },
             body: JSON.stringify({ tier: tier, duration_months: 1 })
         });
 
@@ -906,7 +911,7 @@
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json', 
-                    'Authorization': `Bearer ${authToken}`,
+                    'Authorization': `Bearer ${getAuthToken()}`,
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
