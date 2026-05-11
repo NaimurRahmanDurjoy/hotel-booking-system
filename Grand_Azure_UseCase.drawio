@@ -1,0 +1,169 @@
+<mxfile>
+  <diagram name="Use Case Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Box -->
+        <mxCell id="box" value="Grand Azure - Hotel Booking System" style="swimlane;whiteSpace=wrap;html=1;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="250" y="50" width="500" height="850" as="geometry" />
+        </mxCell>
+        
+        <!-- Actors -->
+        <!-- Customer on Left Top -->
+        <mxCell id="Customer" value="Customer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="200" width="30" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Manager on Left Bottom -->
+        <mxCell id="Manager" value="Manager" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="550" width="30" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Admin on Right Center -->
+        <mxCell id="Admin" value="Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="850" y="400" width="30" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Base Use Cases (Left Column inside box) -->
+        <mxCell id="Register" value="Register" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="80" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ViewHistory" value="View Booking History" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="160" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BookRoom" value="Book Room" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="240" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="BrowseRooms" value="Browse Rooms" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="InitiateChat" value="Live Chat" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ManageRooms" value="Manage Rooms" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ManageServices" value="Manage Services" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ManageBookings" value="Manage Bookings" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ViewStats" value="View System Statistics" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="30" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Dependent/Admin Use Cases (Right Column inside box) -->
+        <mxCell id="SubscribePremium" value="Subscribe to Premium" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="80" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CancelBooking" value="Cancel Booking" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="160" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Login" value="Login" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="240" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SendEmail" value="Send Email Notification" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ManageUsers" value="Manage Users" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ManageSettings" value="Manage Settings" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="box">
+          <mxGeometry x="280" y="780" width="160" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EDGES (ACTORS) ================= -->
+        <!-- Customer Edges -->
+        <mxCell id="e_c_1" edge="1" parent="1" source="Customer" target="Register" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_2" edge="1" parent="1" source="Customer" target="ViewHistory" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_3" edge="1" parent="1" source="Customer" target="BookRoom" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_4" edge="1" parent="1" source="Customer" target="BrowseRooms" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_5" edge="1" parent="1" source="Customer" target="InitiateChat" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Manager Edges -->
+        <mxCell id="e_m_1" edge="1" parent="1" source="Manager" target="InitiateChat" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_m_2" edge="1" parent="1" source="Manager" target="ManageRooms" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_m_3" edge="1" parent="1" source="Manager" target="ManageServices" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_m_4" edge="1" parent="1" source="Manager" target="ManageBookings" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Admin Edges (Full Access) -->
+        <mxCell id="e_a_1" edge="1" parent="1" source="Admin" target="Register" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_2" edge="1" parent="1" source="Admin" target="ViewHistory" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_3" edge="1" parent="1" source="Admin" target="BookRoom" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_4" edge="1" parent="1" source="Admin" target="BrowseRooms" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_5" edge="1" parent="1" source="Admin" target="InitiateChat" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_6" edge="1" parent="1" source="Admin" target="ManageRooms" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_7" edge="1" parent="1" source="Admin" target="ManageServices" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_8" edge="1" parent="1" source="Admin" target="ManageBookings" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_9" edge="1" parent="1" source="Admin" target="ViewStats" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_10" edge="1" parent="1" source="Admin" target="ManageUsers" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_a_11" edge="1" parent="1" source="Admin" target="ManageSettings" style="endArrow=none;html=1;rounded=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ================= INCLUDE / EXTEND EDGES ================= -->
+        <!-- 1. Include: Book Room -includes-> Login (Arrow points TO Login) -->
+        <mxCell id="inc1" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;labelBackgroundColor=none;" edge="1" parent="1" source="BookRoom" target="Login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 2. Extend: Subscribe to Premium -extends-> Register (Arrow points TO Register) -->
+        <mxCell id="ext1" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;labelBackgroundColor=none;" edge="1" parent="1" source="SubscribePremium" target="Register">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 3. Extend: Cancel Booking -extends-> View Booking History (Arrow points TO View Booking History) -->
+        <mxCell id="ext2" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;labelBackgroundColor=none;" edge="1" parent="1" source="CancelBooking" target="ViewHistory">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 4. Extend: Send Email Notification -extends-> Manage Bookings (Arrow points TO Manage Bookings) -->
+        <mxCell id="ext3" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;labelBackgroundColor=none;" edge="1" parent="1" source="SendEmail" target="ManageBookings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,129 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DFD Level 1" id="0">
+    <mxGraphModel dx="1256" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="D1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="User Database" vertex="1">
+          <mxGeometry height="80" width="80" x="400" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="D2" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Subscription Database" vertex="1">
+          <mxGeometry height="80" width="80" x="400" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="P4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="4. Premium Management" vertex="1">
+          <mxGeometry height="60" width="140" x="350" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="Customer" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Customer" vertex="1">
+          <mxGeometry height="50" width="100" x="100" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="P1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="1. User Registration &amp; Login" vertex="1">
+          <mxGeometry height="60" width="140" x="300" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="P3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="3. Chat &amp; Notifications Management" vertex="1">
+          <mxGeometry height="60" width="140" x="550" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="D3" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Message Database" vertex="1">
+          <mxGeometry height="80" width="80" x="580" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Admin" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Admin" vertex="1">
+          <mxGeometry height="50" width="100" x="570" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="P2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="2. Booking Management" vertex="1">
+          <mxGeometry height="60" width="140" x="800" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="D4" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Booking Database" vertex="1">
+          <mxGeometry height="80" width="80" x="1000" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="Manager" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Manager" vertex="1">
+          <mxGeometry height="50" width="100" x="820" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="e_p1_p2" edge="1" parent="1" source="P1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.25;entryX=0;entryY=0.75;" target="P2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="565" />
+              <mxPoint x="700" y="495" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l_p1_p2" connectable="0" parent="e_p1_p2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="User Profile" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p1_p3" edge="1" parent="1" source="P1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=0;entryX=0;entryY=0.5;" target="P3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_p1_p3" connectable="0" parent="e_p1_p3" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Login Alerts" vertex="1">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <mxPoint x="10" y="20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p4_p2" edge="1" parent="1" source="P4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" target="P2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_p4_p2" connectable="0" parent="e_p4_p2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Discount Info" vertex="1">
+          <mxGeometry relative="1" x="-0.3" as="geometry">
+            <mxPoint x="20" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p4_p3" edge="1" parent="1" source="P4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=1;exitY=0.75;entryX=0.5;entryY=0;" target="P3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_p4_p3" connectable="0" parent="e_p4_p3" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Subscription Alerts" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_c_p1" edge="1" parent="1" source="Customer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="P1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_c_p1" connectable="0" parent="e_c_p1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Reg Data" vertex="1">
+          <mxGeometry relative="1" x="-0.5" as="geometry">
+            <mxPoint x="-19" y="-5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_c_p3" edge="1" parent="1" source="Customer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0.5;exitY=0;entryX=0;entryY=0.5;" target="P3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="475" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l_c_p3" connectable="0" parent="e_c_p3" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Chat Msgs" vertex="1">
+          <mxGeometry relative="1" x="0.1" as="geometry">
+            <mxPoint x="-42" y="-5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_m_p2" edge="1" parent="1" source="Manager" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="P2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_m_p2" connectable="0" parent="e_m_p2" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Room Updates" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p1_d1" edge="1" parent="1" source="P1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;exitX=0;exitY=0.25;entryX=0;entryY=0.5;" target="D1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="565" />
+              <mxPoint x="250" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l_p1_d1" connectable="0" parent="e_p1_d1" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="User Records" vertex="1">
+          <mxGeometry relative="1" x="0.8" as="geometry">
+            <mxPoint x="40" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p2_d4" edge="1" parent="1" source="P2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="D4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_p2_d4" connectable="0" parent="e_p2_d4" style="edgeLabel;html=1;align=center;verticalAlign=bottom;resizable=0;points=[];" value="Booking Data" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

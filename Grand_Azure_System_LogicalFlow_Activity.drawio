@@ -1,0 +1,92 @@
+<mxfile>
+  <diagram name="System Logical Flow">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="Title" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px&quot;&gt;Activity Diagram - System Logical Flow&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="213.5" y="10" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Start Node -->
+        <mxCell id="Start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="385" y="60" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Login Check Action -->
+        <mxCell id="LoginCheck" value="Login Check" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="120" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Authenticated -->
+        <mxCell id="DecAuth" value="Is Authenticated?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="220" width="130" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Not Authenticated Path -->
+        <mxCell id="LoginAction" value="Login Page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="235" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Authenticated Path -->
+        <mxCell id="FetchData" value="Fetch Data from DB" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="360" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ShowProfile" value="Show User Profile" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="460" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Action Selection -->
+        <mxCell id="ActionNode" value="User Action" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="560" width="120" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Edit Profile Path -->
+        <mxCell id="EditProfile" value="Edit Profile Details" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="580" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Logout Path -->
+        <mxCell id="LogoutAction" value="Logout" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="700" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Exit Path -->
+        <mxCell id="ExitAction" value="Exit System" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="580" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- End Node -->
+        <mxCell id="End" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=4;" vertex="1" parent="1">
+          <mxGeometry x="385" y="820" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" edge="1" parent="1" source="Start" target="LoginCheck" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="LoginCheck" target="DecAuth" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <!-- Not Auth Loop -->
+        <mxCell id="e3" value="No" edge="1" parent="1" source="DecAuth" target="LoginAction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" value="Perform Login" edge="1" parent="1" source="LoginAction" target="LoginCheck" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="210" y="150" /></Array></mxGeometry></mxCell>
+        
+        <!-- Auth Path -->
+        <mxCell id="e5" value="Yes" edge="1" parent="1" source="DecAuth" target="FetchData" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="FetchData" target="ShowProfile" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="ShowProfile" target="ActionNode" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- Actions -->
+        <mxCell id="e8" value="Click Edit" edge="1" parent="1" source="ActionNode" target="EditProfile" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" value="Update Success" edge="1" parent="1" source="EditProfile" target="FetchData" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="100" y="610" /><mxPoint x="100" y="390" /></Array></mxGeometry></mxCell>
+        
+        <mxCell id="e10" value="Click Logout" edge="1" parent="1" source="ActionNode" target="LogoutAction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="LogoutAction" target="End" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e12" value="Click Exit" edge="1" parent="1" source="ActionNode" target="ExitAction" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="ExitAction" target="End" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="585" y="835" /></Array></mxGeometry></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

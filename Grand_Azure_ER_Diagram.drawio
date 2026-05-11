@@ -1,0 +1,76 @@
+<mxfile>
+  <diagram name="ER Diagram">
+    <mxGraphModel dx="1500" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Entities (Rectangles) -->
+        <mxCell id="User" value="User" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="250" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Hotel" value="Hotel" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="250" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Room" value="Room" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="450" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Booking" value="Booking" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="450" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Service" value="Service" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="250" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Travel" value="Travel_Package" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="650" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Car" value="Car" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Message" value="Message" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships (Diamonds) -->
+        <mxCell id="R_Manage" value="Manages" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="245" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Own" value="Owns" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="350" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Offer" value="Offers" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="245" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Book" value="Books" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="445" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Travel" value="Provides" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="450" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="R_Car" value="Includes" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="645" width="80" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" edge="1" parent="1" source="User" target="R_Manage"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="R_Manage" target="Hotel"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e3" edge="1" parent="1" source="Hotel" target="R_Own"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="R_Own" target="Room"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e5" edge="1" parent="1" source="Hotel" target="R_Offer"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="R_Offer" target="Service"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e7" edge="1" parent="1" source="Room" target="R_Book"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="R_Book" target="Booking"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e9" edge="1" parent="1" source="User" target="R_Travel"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="R_Travel" target="Travel"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e11" edge="1" parent="1" source="Travel" target="R_Car"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="R_Car" target="Car"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

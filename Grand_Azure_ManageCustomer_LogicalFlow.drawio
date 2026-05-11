@@ -1,0 +1,81 @@
+<mxfile>
+  <diagram name="Manage Customer Logical Flow">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="Title" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px&quot;&gt;Activity Diagram - Customer Management Flow&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="213.5" y="10" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Start Node -->
+        <mxCell id="Start" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="60" width="80" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Sequential Actions -->
+        <mxCell id="A1" value="Login as Manager" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="130" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A2" value="Open Customer List" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="220" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A3" value="Search/Filter Customers" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="310" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Select Action -->
+        <mxCell id="Dec1" value="Select Action" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="420" width="140" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Branches -->
+        <mxCell id="B1" value="Upgrade to Premium" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="560" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="B2" value="Suspend User" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="560" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="B3" value="Manually Verify" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="560" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Update Database (Cylinder) -->
+        <mxCell id="DB" value="Update Database" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="340" y="680" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="A4" value="Refresh List" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="800" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- End Node -->
+        <mxCell id="End" value="End Task" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="890" width="80" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" edge="1" parent="1" source="Start" target="A1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="A1" target="A2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="A2" target="A3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="A3" target="Dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <!-- Action Labels -->
+        <mxCell id="e5" value="Premium" edge="1" parent="1" source="Dec1" target="B1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="Ban" edge="1" parent="1" source="Dec1" target="B2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="Verify" edge="1" parent="1" source="Dec1" target="B3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <!-- Flow to DB -->
+        <mxCell id="e8" edge="1" parent="1" source="B1" target="DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="B2" target="DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="B3" target="DB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e11" edge="1" parent="1" source="DB" target="A4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="A4" target="End" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

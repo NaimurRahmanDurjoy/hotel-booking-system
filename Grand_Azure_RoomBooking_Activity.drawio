@@ -1,0 +1,90 @@
+<mxfile>
+  <diagram name="Room Booking Activity Diagram">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="Title" value="&lt;b&gt;&lt;font style=&quot;font-size: 18px&quot;&gt;Activity Diagram - Room Booking System&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="213.5" y="10" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Start Node -->
+        <mxCell id="Start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="385" y="60" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Sequential Actions -->
+        <mxCell id="A1" value="Search for Available Rooms" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="120" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A2" value="Select Room &amp; Date" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="210" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Premium -->
+        <mxCell id="Dec1" value="Is Premium User?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="300" width="130" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="S1" value="Apply Premium Discount" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="420" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Merge 1 -->
+        <mxCell id="Merge1" value="" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="500" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="A3" value="Initiate Payment" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="325" y="570" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision: Payment -->
+        <mxCell id="Dec2" value="Payment Success?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="660" width="140" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="S2" value="Confirm Booking &amp;&lt;br&gt;Send Receipt" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="800" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="F1" value="Show Payment Error&lt;br&gt;&amp; Retry" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="800" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Merge 2 -->
+        <mxCell id="Merge2" value="" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="900" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- End Node -->
+        <mxCell id="End" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=4;" vertex="1" parent="1">
+          <mxGeometry x="385" y="980" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" edge="1" parent="1" source="Start" target="A1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="A1" target="A2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="A2" target="Dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e4" value="Yes" edge="1" parent="1" source="Dec1" target="S1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="S1" target="Merge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e6" value="No" edge="1" parent="1" source="Dec1" target="Merge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e7" edge="1" parent="1" source="Merge1" target="A3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="A3" target="Dec2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e9" value="Yes" edge="1" parent="1" source="Dec2" target="S2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" value="No" edge="1" parent="1" source="Dec2" target="F1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        
+        <mxCell id="e11" edge="1" parent="1" source="S2" target="Merge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="F1" target="Merge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="Merge2" target="End" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
