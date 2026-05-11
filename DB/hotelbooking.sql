@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 02, 2026 at 03:18 PM
+-- Generation Time: May 04, 2026 at 10:12 AM
 -- Server version: 8.0.30
--- PHP Version: 8.2.26
+-- PHP Version: 8.2.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -193,9 +193,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2024_01_01_000008_create_premium_subscriptions_table', 1),
 (10, '2024_05_02_000009_create_personal_access_tokens_table', 2),
 (11, '2026_05_02_134325_create_contact_messages_table', 3),
-(12, '2026_05_02_134728_create_premium_plans_table', 4),
-(13, '2026_05_02_135539_add_min_bookings_to_premium_plans_table', 5),
-(14, '2026_05_02_142439_add_completed_bookings_count_to_users_table', 6);
+(12, '2026_05_02_134728_create_premium_plans_table', 3),
+(13, '2026_05_02_135539_add_min_bookings_to_premium_plans_table', 3),
+(14, '2026_05_02_142439_add_completed_bookings_count_to_users_table', 3);
 
 -- --------------------------------------------------------
 
@@ -238,14 +238,11 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (3, 'App\\Models\\User', 1, 'auth-token', '6df58d4119a18366e1cfec3944f0854e5c5ed9c66125cb083e5c81265013c19c', '[\"*\"]', NULL, NULL, '2026-05-01 22:30:52', '2026-05-01 22:30:52'),
 (4, 'App\\Models\\User', 3, 'auth-token', 'aa89935d7127151a1cffeff7c1c4e38a8737e9ba53552d561281d75eb7bf5473', '[\"*\"]', '2026-05-01 23:29:05', NULL, '2026-05-01 22:31:44', '2026-05-01 23:29:05'),
 (5, 'App\\Models\\User', 1, 'auth-token', '61179df8ba8aa398b788fef49e820f2a37c96d9477dfba2373972a5377bfb819', '[\"*\"]', NULL, NULL, '2026-05-01 22:43:10', '2026-05-01 22:43:10'),
-(6, 'App\\Models\\User', 1, 'auth-token', '9ec73141eab9f2b8b234adbbc4928a98f366fd6e2f5d0c1b970f9c743ae87b1c', '[\"*\"]', '2026-05-02 09:06:00', NULL, '2026-05-02 07:19:19', '2026-05-02 09:06:00'),
-(7, 'App\\Models\\User', 3, 'auth-token', '70f1fd20b22c6342e49937a8e1a7f4eaf00e918034c889901dab6569d6bb5f04', '[\"*\"]', '2026-05-02 09:08:10', NULL, '2026-05-02 07:20:59', '2026-05-02 09:08:10'),
-(8, 'App\\Models\\User', 2, 'auth-token', 'c072072b211bffaf995a1d71152c77bed37cab868edde70cdf460d23f1084c2a', '[\"*\"]', '2026-05-02 09:07:58', NULL, '2026-05-02 09:06:32', '2026-05-02 09:07:58'),
-(9, 'App\\Models\\User', 1, 'auth-token', '972d4e0881b08a9910fc1ede5083c2f841475a45a65dea6b98456248c2e22d99', '[\"*\"]', '2026-05-02 09:12:34', NULL, '2026-05-02 09:08:02', '2026-05-02 09:12:34'),
-(10, 'App\\Models\\User', 2, 'auth-token', '4ffc13cb84ec103bf0c0e02f3abc42c5b65fdfa5ba0af3765aa60b62610f521d', '[\"*\"]', '2026-05-02 09:12:58', NULL, '2026-05-02 09:08:18', '2026-05-02 09:12:58'),
-(11, 'App\\Models\\User', 1, 'auth-token', 'dfe20bf972557d84b8e0b9884e5c1f29dde7f911d17ec9e39f2521e79e6abfc6', '[\"*\"]', '2026-05-02 09:15:45', NULL, '2026-05-02 09:12:52', '2026-05-02 09:15:45'),
-(12, 'App\\Models\\User', 1, 'auth-token', '6ea60f06228896ab09a8a0cdad7c0e002fccd98159127f2806ffa8648d8de46b', '[\"*\"]', '2026-05-02 09:17:01', NULL, '2026-05-02 09:15:57', '2026-05-02 09:17:01'),
-(13, 'App\\Models\\User', 1, 'auth-token', '9e71b8071b8b618a9c062193238c61c14d17444960eb70ffb0a4c47cf29a2f02', '[\"*\"]', '2026-05-02 09:17:54', NULL, '2026-05-02 09:17:43', '2026-05-02 09:17:54');
+(6, 'App\\Models\\User', 1, 'auth-token', '55eafc9dc56be775ef45d5bb7a174927eb12ff85d7708433ff94cab3488216c2', '[\"*\"]', '2026-05-03 23:26:55', NULL, '2026-05-03 23:21:30', '2026-05-03 23:26:55'),
+(7, 'App\\Models\\User', 3, 'auth-token', '31441909baf84f35782f0377f6f0a6768949afe66f78478f48c5066ff37279c6', '[\"*\"]', '2026-05-03 23:27:15', NULL, '2026-05-03 23:27:04', '2026-05-03 23:27:15'),
+(8, 'App\\Models\\User', 1, 'auth-token', 'b615b49d799821e6ffb574877d116ea860b93ab676a26f4ee3a70c72b860ec4e', '[\"*\"]', '2026-05-03 23:27:39', NULL, '2026-05-03 23:27:34', '2026-05-03 23:27:39'),
+(9, 'App\\Models\\User', 3, 'auth-token', '692531cb4d258cd6a1076db177d4bcce73876176cf19d02152851318212bf8ea', '[\"*\"]', '2026-05-04 02:35:46', NULL, '2026-05-03 23:28:15', '2026-05-04 02:35:46'),
+(10, 'App\\Models\\User', 1, 'auth-token', '0bf439325bd3108f8f2f26c07596247767d33cc72423295c038891d9d364d6c8', '[\"*\"]', '2026-05-04 03:25:42', NULL, '2026-05-04 02:35:55', '2026-05-04 03:25:42');
 
 -- --------------------------------------------------------
 
@@ -271,8 +268,8 @@ CREATE TABLE `premium_plans` (
 --
 
 INSERT INTO `premium_plans` (`id`, `name`, `tier_key`, `min_bookings`, `discount_percentage`, `price`, `benefits`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Silver Member', 'silver', 3, 5, '0.00', '[\"5% off all bookings\", \"Priority support\"]', 1, '2026-05-02 07:48:18', '2026-05-02 07:56:15'),
-(2, 'Gold Member', 'gold', 10, 10, '0.00', '[\"10% off all bookings\", \"Free upgrades\", \"Late check-out\"]', 1, '2026-05-02 07:48:18', '2026-05-02 07:56:15');
+(1, 'Silver Member', 'silver', 3, 5, '0.00', '[\"5% off all bookings\", \"Priority support\"]', 1, '2026-05-03 23:24:58', '2026-05-03 23:24:58'),
+(2, 'Gold Member', 'gold', 10, 10, '0.00', '[\"10% off all bookings\", \"Free upgrades\", \"Late check-out\"]', 1, '2026-05-03 23:24:58', '2026-05-03 23:24:58');
 
 -- --------------------------------------------------------
 
@@ -290,13 +287,6 @@ CREATE TABLE `premium_subscriptions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `premium_subscriptions`
---
-
-INSERT INTO `premium_subscriptions` (`id`, `user_id`, `tier`, `start_date`, `end_date`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 1, 'gold', '2026-05-02', '2026-06-02', 1, '2026-05-02 08:26:29', '2026-05-02 08:26:29');
 
 -- --------------------------------------------------------
 
@@ -379,8 +369,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('65fRXC2AKAZfoTc8FdJGkTp3CbPvDNJRnJV76wJX', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQzFjdlBoTjRFZG1vNW9saFY3aHplY0VSYVg1RUFIWkMxYkFLOTdlQSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO319', 1777735074),
-('CNYRcCnNXcheFBW51hS2F6UUeYEi0MPyZ829UuOf', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicHdoeFI2NlFaZGFheXJvNUV1OWpNbWZwVDFUYXNCamFDb2k1VDV2VCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NTA6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0L21hbmFnZXIvZGFzaGJvYXJkIjtzOjU6InJvdXRlIjtzOjE3OiJtYW5hZ2VyLmRhc2hib2FyZCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1777734781);
+('8aU8fjXZhTy12QW94IE4ycLcg1wfahjSn5MrIXOX', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiejh1emZMcTJ4N2tENDRrQlRRcVZLd1NhOE9UdzdnVGxmYzU0Vmt4biI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1777700143),
+('i6farF0mbbkAg5oGmp97Se1oEq3V4sVqKxZm7qj6', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiT0FvRGFpSFNnZTZ4S0o1WnpPMjhSaTFBWEZlQW85bDVENGNsWWdQNiI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1777782869),
+('kqVzCyERovZIx1r1BEZxqKiV0e7NeDgq3S74EbaG', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQnhiRDNhcGdMS1JmaG9FYmVzeDZjellRT3E2UWIxblE1dUFlekFCNCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1777886831);
 
 -- --------------------------------------------------------
 
@@ -410,9 +401,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `completed_bookings_count`, `phone`, `address`, `is_premium`, `premium_tier`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin User', 'admin@hotel.com', NULL, '$2y$12$4CvEIxJktkDyVnehYnQqQeWSVFYFs4cfdjabM1fUH6wUjcwH91UWO', 'admin', 10, '1234567890', 'Admin Address', 1, 'gold', NULL, '2026-05-01 22:01:13', '2026-05-02 08:26:29'),
+(1, 'Admin User', 'admin@hotel.com', NULL, '$2y$12$4CvEIxJktkDyVnehYnQqQeWSVFYFs4cfdjabM1fUH6wUjcwH91UWO', 'admin', 0, '1234567890', 'Admin Address', 0, NULL, NULL, '2026-05-01 22:01:13', '2026-05-01 22:01:13'),
 (2, 'Manager User', 'manager@hotel.com', NULL, '$2y$12$xn7F0JvcRxb6dM40JwS4SeW.08pMXGPNxoDSfPHQjH3eC2PaaLFM6', 'manager', 0, '1234567891', 'Manager Address', 0, NULL, NULL, '2026-05-01 22:01:14', '2026-05-01 22:01:14'),
-(3, 'John Doe', 'john@example.com', NULL, '$2y$12$WDFg.MbcEcdlA4PF8.jyKewFk8SOxvSS.GkPlc0fElWezqsReNl4K', 'customer', 0, '1234567892', 'Customer Address', 0, NULL, NULL, '2026-05-01 22:01:14', '2026-05-01 22:01:14');
+(3, 'Samia', 'samia@gmail.com', NULL, '$2y$12$WDFg.MbcEcdlA4PF8.jyKewFk8SOxvSS.GkPlc0fElWezqsReNl4K', 'customer', 0, '1234567892', 'Customer Address', 0, NULL, NULL, '2026-05-01 22:01:14', '2026-05-01 22:01:14');
 
 --
 -- Indexes for dumped tables
@@ -596,7 +587,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `premium_plans`
@@ -608,7 +599,7 @@ ALTER TABLE `premium_plans`
 -- AUTO_INCREMENT for table `premium_subscriptions`
 --
 ALTER TABLE `premium_subscriptions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `rooms`

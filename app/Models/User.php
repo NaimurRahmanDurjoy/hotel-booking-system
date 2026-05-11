@@ -57,6 +57,21 @@ class User extends Authenticatable
         return $this->hasOne(PremiumSubscription::class)->where('is_active', true);
     }
 
+    public function hotels()
+    {
+        return $this->hasMany(Hotel::class, 'manager_id');
+    }
+
+    public function travelPackages()
+    {
+        return $this->hasMany(TravelPackage::class, 'vendor_id');
+    }
+
+    public function travelBookings()
+    {
+        return $this->hasMany(TravelBooking::class);
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';

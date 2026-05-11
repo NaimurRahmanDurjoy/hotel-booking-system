@@ -10,6 +10,7 @@ class Room extends Model
     use HasFactory;
 
     protected $fillable = [
+        'hotel_id',
         'room_number',
         'room_type',
         'description',
@@ -24,6 +25,11 @@ class Room extends Model
         'amenities' => 'array',
         'price_per_night' => 'decimal:2',
     ];
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 
     public function bookings()
     {

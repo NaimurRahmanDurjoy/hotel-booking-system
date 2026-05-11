@@ -9,8 +9,25 @@ class RoomController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->wantsJson()) {
+        $user = auth()->user();
+
+        if ($request->ajax() || $request->wantsJson() || $request->has('hotel_id') || $request->has('city')) {
             $query = Room::query()->where('status', 'available');
+
+            // Filter by hotel if provided
+            if ($request->has('hotel_id')) {
+                $query->where('hotel_id', $request->hotel_id);
+            }
+
+            // Filter by city, hotel name, or address
+            if ($request->has('city')) {
+                $search = $request->city;
+                $query->whereHas('hotel', function ($q) use ($search) {
+                    $q->where('city', 'like', '%' . $search . '%')
+                      ->orWhere('name', 'like', '%' . $search . '%')
+                      ->orWhere('address', 'like', '%' . $search . '%');
+                });
+            }
 
             // Filter by capacity if provided
             if ($request->has('guests')) {
@@ -31,18 +48,30 @@ class RoomController extends Controller
                 });
             }
 
-            $rooms = $query->get();
+            $rooms = $query->with('hotel')->paginate(9);
             return response()->json($rooms);
         }
         
-        $rooms = Room::paginate(15);
+        if ($user && $user->isAdmin()) {
+            $rooms = Room::with('hotel')->paginate(15);
+        } elseif ($user && $user->isManager()) {
+            // Manager: only rooms in their hotels
+            $rooms = Room::whereHas('hotel', function ($q) use ($user) {
+                $q->where('manager_id', $user->id);
+            })->with('hotel')->paginate(15);
+        } else {
+            // Guest or Customer: return view or empty paginated collection if needed
+            $rooms = Room::with('hotel')->paginate(15);
+        }
+
         return view('manager.rooms', compact('rooms'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'room_number' => 'required|string|unique:rooms',
+            'hotel_id' => 'required|exists:hotels,id',
+            'room_number' => 'required|string|unique:rooms,room_number,NULL,id,hotel_id,' . $request->hotel_id,
             'room_type' => 'required|in:standard,deluxe,suite,presidential',
             'description' => 'required|string',
             'price_per_night' => 'required|numeric|min:0',
@@ -51,6 +80,12 @@ class RoomController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'in:available,occupied,maintenance',
         ]);
+
+        // Ensure user owns the hotel
+        $hotel = \App\Models\Hotel::findOrFail($request->hotel_id);
+        if ($hotel->manager_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         $data = $request->all();
         if ($request->hasFile('image')) {
@@ -70,8 +105,13 @@ class RoomController extends Controller
 
     public function update(Request $request, Room $room)
     {
+        // Ensure user owns the hotel or is admin
+        if ($room->hotel->manager_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $request->validate([
-            'room_number' => 'sometimes|string|unique:rooms,room_number,' . $room->id,
+            'room_number' => 'sometimes|string|unique:rooms,room_number,' . $room->id . ',id,hotel_id,' . $room->hotel_id,
             'room_type' => 'sometimes|in:standard,deluxe,suite,presidential',
             'description' => 'sometimes|string',
             'price_per_night' => 'sometimes|numeric|min:0',
@@ -100,6 +140,11 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
+        // Ensure user owns the hotel or is admin
+        if ($room->hotel->manager_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $room->delete();
 
         return response()->json(['message' => 'Room deleted successfully']);

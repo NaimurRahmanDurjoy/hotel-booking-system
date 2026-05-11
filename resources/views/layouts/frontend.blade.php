@@ -427,7 +427,7 @@
         async function loadWidgetMessages() {
             const token = localStorage.getItem('auth_token');
             if (!token) {
-                console.warn('Chat Widget: No auth token found.');
+                document.getElementById('widgetMessages').innerHTML = '<div class="text-center py-5 opacity-50"><i class="fas fa-lock mb-2 d-block"></i><p class="small">Please login to start chatting with us.</p></div>';
                 return;
             }
             try {

@@ -10,6 +10,7 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
+        'hotel_id',
         'user_id',
         'room_id',
         'check_in_date',
@@ -26,6 +27,11 @@ class Booking extends Model
         'total_price' => 'decimal:2',
         'discount_applied' => 'decimal:2',
     ];
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 
     public function user()
     {

@@ -20,10 +20,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('premium_plans');
 });
 
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\TravelPackageController;
+use App\Http\Controllers\TravelBookingController;
+
 // Manager Routes
 Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('manager.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard'); // Shared for now or specific
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('hotels', HotelController::class);
+    Route::resource('travel-packages', TravelPackageController::class);
+    Route::get('/travel-bookings', [TravelBookingController::class, 'index'])->name('travel_bookings.index');
+    Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update'])->name('travel_bookings.update');
     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+    Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
     Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
     Route::get('/chat', function () {
@@ -36,6 +47,9 @@ Route::middleware(['auth', 'role:customer,manager,admin'])->prefix('customer')->
     Route::get('/bookings', function () {
         return view('customer.bookings');
     })->name('bookings.index');
+    Route::get('/travel-bookings', function () {
+        return view('customer.travel_bookings');
+    })->name('travel_bookings.index');
 });
 
 require __DIR__ . '/auth.php';

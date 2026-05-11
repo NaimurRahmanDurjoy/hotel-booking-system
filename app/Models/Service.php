@@ -10,6 +10,7 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
+        'hotel_id',
         'name',
         'description',
         'price',
@@ -21,6 +22,11 @@ class Service extends Model
         'price' => 'decimal:2',
         'is_available' => 'boolean',
     ];
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 
     public function bookings()
     {

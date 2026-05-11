@@ -13,6 +13,7 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'booking_id',
+        'hotel_id',
         'message',
         'is_read',
     ];
@@ -20,6 +21,11 @@ class Message extends Model
     protected $casts = [
         'is_read' => 'boolean',
     ];
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 
     public function sender()
     {

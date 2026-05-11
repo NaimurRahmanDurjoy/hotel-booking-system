@@ -13,24 +13,47 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $stats = [
-            'total_users' => User::count(),
-            'total_customers' => User::where('role', 'customer')->count(),
-            'total_managers' => User::where('role', 'manager')->count(),
-            'total_admins' => User::where('role', 'admin')->count(),
-            'total_rooms' => Room::count(),
-            'available_rooms' => Room::where('status', 'available')->count(),
-            'total_bookings' => Booking::count(),
-            'pending_bookings' => Booking::where('status', 'pending')->count(),
-            'confirmed_bookings' => Booking::where('status', 'confirmed')->count(),
-            'completed_bookings' => Booking::where('status', 'completed')->count(),
-            'total_revenue' => Booking::whereIn('status', ['confirmed', 'completed'])->sum('total_price'),
-            'premium_users' => User::where('is_premium', true)->count(),
-        ];
+        $user = Auth::user();
 
-        $recentBookings = Booking::with(['user', 'room'])->latest()->take(5)->get();
+        if ($user->isAdmin()) {
+            $stats = [
+                'total_users' => User::count(),
+                'total_customers' => User::where('role', 'customer')->count(),
+                'total_managers' => User::where('role', 'manager')->count(),
+                'total_admins' => User::where('role', 'admin')->count(),
+                'total_rooms' => Room::count(),
+                'available_rooms' => Room::where('status', 'available')->count(),
+                'total_bookings' => Booking::count(),
+                'pending_bookings' => Booking::where('status', 'pending')->count(),
+                'confirmed_bookings' => Booking::where('status', 'confirmed')->count(),
+                'completed_bookings' => Booking::where('status', 'completed')->count(),
+                'total_revenue' => Booking::whereIn('status', ['confirmed', 'completed'])->sum('total_price'),
+                'premium_users' => User::where('is_premium', true)->count(),
+                'total_hotels' => \App\Models\Hotel::count(),
+            ];
 
-        return view('admin.dashboard', compact('stats', 'recentBookings'));
+            $recentBookings = Booking::with(['user', 'room', 'hotel'])->latest()->take(5)->get();
+            return view('admin.dashboard', compact('stats', 'recentBookings'));
+        } else {
+            // Manager Stats
+            $stats = [
+                'total_hotels' => $user->hotels()->count(),
+                'total_rooms' => Room::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->count(),
+                'available_rooms' => Room::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->where('status', 'available')->count(),
+                'total_bookings' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->count(),
+                'pending_bookings' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->where('status', 'pending')->count(),
+                'total_revenue' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->whereIn('status', ['confirmed', 'completed'])->sum('total_price'),
+                'total_travel_packages' => $user->travelPackages()->count(),
+            ];
+
+            $recentBookings = Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))
+                ->with(['user', 'room', 'hotel'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            return view('manager.dashboard', compact('stats', 'recentBookings'));
+        }
     }
 
     public function users()

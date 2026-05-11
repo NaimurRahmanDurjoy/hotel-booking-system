@@ -13,10 +13,14 @@ class BookingController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->isManager() || $user->isAdmin()) {
-            $bookings = Booking::with(['user', 'room', 'services'])->get();
+        if ($user->isAdmin()) {
+            $bookings = Booking::with(['user', 'room', 'services', 'hotel'])->get();
+        } elseif ($user->isManager()) {
+            $bookings = Booking::whereHas('hotel', function($q) use ($user) {
+                $q->where('manager_id', $user->id);
+            })->with(['user', 'room', 'services', 'hotel'])->get();
         } else {
-            $bookings = Booking::with(['room', 'services'])
+            $bookings = Booking::with(['room', 'services', 'hotel'])
                 ->where('user_id', $user->id)
                 ->get();
         }
@@ -27,7 +31,7 @@ class BookingController extends Controller
     public function myBookings()
     {
         $user = Auth::user();
-        $bookings = Booking::with(['room', 'services'])
+        $bookings = Booking::with(['room', 'services', 'hotel'])
             ->where('user_id', $user->id)
             ->get();
 
@@ -45,14 +49,14 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $room = Room::findOrFail($request->room_id);
+        $room = Room::with('hotel')->findOrFail($request->room_id);
         
         // Check room availability
         $checkIn = \Carbon\Carbon::parse($request->check_in_date);
         $checkOut = \Carbon\Carbon::parse($request->check_out_date);
         $nights = $checkIn->diffInDays($checkOut);
         
-        // Check for overlapping bookings (Standard overlap logic: start1 < end2 AND end1 > start2)
+        // Check for overlapping bookings
         $overlapping = Booking::where('room_id', $request->room_id)
             ->whereIn('status', ['pending', 'confirmed'])
             ->where(function ($query) use ($checkIn, $checkOut) {
@@ -67,10 +71,15 @@ class BookingController extends Controller
         $user = Auth::user();
         $subtotal = $room->price_per_night * $nights;
         
-        // Apply premium discount
+        // Apply premium discount (if model has getDiscountPercentage)
         $discount = 0;
         if ($user->is_premium) {
-            $discountPercentage = $user->getDiscountPercentage();
+            $discountPercentage = 0;
+            $subscription = \App\Models\PremiumSubscription::where('user_id', $user->id)->where('is_active', true)->first();
+            if ($subscription) {
+                $plan = \App\Models\PremiumPlan::where('tier_key', $subscription->tier)->first();
+                $discountPercentage = $plan ? $plan->discount_percentage : 0;
+            }
             $discount = $subtotal * ($discountPercentage / 100);
         }
 
@@ -79,6 +88,7 @@ class BookingController extends Controller
         $booking = Booking::create([
             'user_id' => $user->id,
             'room_id' => $request->room_id,
+            'hotel_id' => $room->hotel_id,
             'check_in_date' => $checkIn,
             'check_out_date' => $checkOut,
             'total_price' => $totalPrice,

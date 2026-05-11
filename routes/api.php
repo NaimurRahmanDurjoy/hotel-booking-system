@@ -14,10 +14,20 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+use App\Http\Controllers\TravelPackageController;
+use App\Http\Controllers\TravelBookingController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\CarController;
+
 // Public data
 Route::get('/rooms', [RoomController::class, 'index']);
 Route::get('/rooms/{room}', [RoomController::class, 'show']);
+Route::get('/cars', [CarController::class, 'index']);
+Route::get('/cars/{car}', [CarController::class, 'show']);
+Route::get('/hotels/{hotel}', [HotelController::class, 'show']);
 Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/travel-packages', [TravelPackageController::class, 'index']);
+Route::get('/travel-packages/{travelPackage}', [TravelPackageController::class, 'show']);
 Route::get('/premium-plans', [PremiumController::class, 'plans']);
 Route::post('/contact', [ContactController::class, 'store']);
 
@@ -62,6 +72,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/premium/cancel', [PremiumController::class, 'cancel']);
     Route::post('/premium/extend', [PremiumController::class, 'extend']);
     
+    // Travel Packages
+    Route::post('/travel-packages', [TravelPackageController::class, 'store']);
+    Route::put('/travel-packages/{travelPackage}', [TravelPackageController::class, 'update']);
+    Route::delete('/travel-packages/{travelPackage}', [TravelPackageController::class, 'destroy']);
+
+    // Travel Bookings
+    Route::get('/travel-bookings', [TravelBookingController::class, 'index']);
+    Route::post('/travel-bookings', [TravelBookingController::class, 'store']);
+    Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update']);
+    Route::post('/car-bookings', [CarController::class, 'storeBooking']);
+
     // Admin
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     Route::get('/admin/users', [AdminController::class, 'users']);
