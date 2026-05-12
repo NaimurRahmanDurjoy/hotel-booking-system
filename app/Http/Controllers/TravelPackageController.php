@@ -44,23 +44,24 @@ class TravelPackageController extends Controller
             'price' => 'required|numeric|min:0',
             'duration_days' => 'required|integer|min:1',
             'images' => 'nullable|array',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['title', 'description', 'destination', 'price', 'duration_days']);
         $data['vendor_id'] = Auth::id();
 
-        if ($request->hasFile('images')) {
-            $images = [];
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('travel', 'public');
-                $images[] = '/storage/' . $path;
-            }
-            $data['images'] = $images;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('packages', 'public');
+            $data['images'] = ['/storage/' . $path];
         }
 
         $package = TravelPackage::create($data);
 
-        return response()->json(['message' => 'Travel package created successfully', 'package' => $package], 201);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Travel package created successfully', 'package' => $package], 201);
+        }
+
+        return redirect()->back()->with('success', 'Travel package created successfully');
     }
 
     /**
@@ -86,11 +87,23 @@ class TravelPackageController extends Controller
             'destination' => 'sometimes|string',
             'price' => 'sometimes|numeric|min:0',
             'duration_days' => 'sometimes|integer|min:1',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $travelPackage->update($request->all());
+        $data = $request->only(['title', 'description', 'destination', 'price', 'duration_days']);
 
-        return response()->json(['message' => 'Travel package updated successfully', 'package' => $travelPackage]);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('packages', 'public');
+            $data['images'] = ['/storage/' . $path];
+        }
+
+        $travelPackage->update($data);
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Travel package updated successfully', 'package' => $travelPackage]);
+        }
+
+        return redirect()->back()->with('success', 'Travel package updated successfully');
     }
 
     /**

@@ -14,6 +14,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>Hotel</th>
                     <th>Service Name</th>
                     <th>Description</th>
                     <th>Availability</th>
@@ -23,6 +24,10 @@
             <tbody>
                 @foreach($services as $service)
                 <tr id="service-row-{{ $service->id }}">
+                    <td>
+                        <div class="fw-bold">{{ $service->hotel->name }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $service->hotel->city }}</div>
+                    </td>
                     <td class="fw-bold text-primary">{{ $service->name }}</td>
                     <td style="max-width: 300px;"><div class="text-truncate" title="{{ $service->description }}">{{ $service->description }}</div></td>
                     <td>
@@ -60,6 +65,15 @@
         </div>
         <form id="serviceForm">
             <input type="hidden" id="serviceId">
+            <div class="form-group">
+                <label><i class="fas fa-hotel me-1"></i> Select Hotel</label>
+                <select id="hotelId" class="form-control" required>
+                    <option value="">-- Select Hotel --</option>
+                    @foreach($hotels as $hotel)
+                    <option value="{{ $hotel->id }}">{{ $hotel->name }} ({{ $hotel->city }})</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group">
                 <label><i class="fas fa-tag me-1"></i> Service Name</label>
                 <input type="text" id="serviceName" class="form-control" required placeholder="e.g. Airport Transfer">
@@ -121,6 +135,7 @@
             });
             const service = await response.json();
             
+            document.getElementById('hotelId').value = service.hotel_id;
             document.getElementById('serviceName').value = service.name;
             document.getElementById('serviceDescription').value = service.description;
             document.getElementById('serviceStatus').value = service.is_available ? "1" : "0";
@@ -162,6 +177,7 @@
         const url = isEditing ? `/api/services/${id}` : '/api/services';
         
         const formData = new FormData();
+        formData.append('hotel_id', document.getElementById('hotelId').value);
         formData.append('name', document.getElementById('serviceName').value);
         formData.append('description', document.getElementById('serviceDescription').value);
         formData.append('price', 0);

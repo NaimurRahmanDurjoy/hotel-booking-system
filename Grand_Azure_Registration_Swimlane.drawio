@@ -1,76 +1,52 @@
 <mxfile>
-  <diagram name="User Registration Swimlane">
+  <diagram name="Registration Swimlane">
     <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Pool -->
-        <mxCell id="Pool" value="User Registration Process" style="swimlane;html=1;childLayout=stackLayout;startSize=20;horizontal=0;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-          <mxGeometry x="50" y="50" width="700" height="900" as="geometry" />
+        <mxCell id="pool" value="Registration Process" style="swimlane;html=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1"><mxGeometry x="50" y="50" width="600" height="800" as="geometry" /></mxCell>
+        <mxCell id="lane_u" value="User" style="swimlane;html=1;startSize=30;" vertex="1" parent="pool"><mxGeometry x="0" y="0" width="300" height="800" as="geometry" /></mxCell>
+        <mxCell id="lane_s" value="System" style="swimlane;html=1;startSize=30;" vertex="1" parent="pool"><mxGeometry x="300" y="0" width="300" height="800" as="geometry" /></mxCell>
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=none;" vertex="1" parent="lane_u"><mxGeometry x="135" y="40" width="30" height="30" as="geometry" /></mxCell>
+        <mxCell id="u1" value="clicks on purchase" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_u"><mxGeometry x="50" y="120" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="s1" value="Redirect to login/reg" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_s"><mxGeometry x="50" y="120" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="d1" value="register?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="lane_s"><mxGeometry x="100" y="220" width="100" height="80" as="geometry" /></mxCell>
+        <mxCell id="u2" value="fills out registration form" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_u"><mxGeometry x="50" y="320" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="s2" value="login page" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_s"><mxGeometry x="150" y="320" width="100" height="60" as="geometry" /></mxCell>
+        <mxCell id="u3" value="provides mobile &amp; NID" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_u"><mxGeometry x="50" y="420" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="s3" value="Submit form" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_s"><mxGeometry x="50" y="520" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="u4" value="Successfully registered" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" vertex="1" parent="lane_u"><mxGeometry x="50" y="620" width="200" height="60" as="geometry" /></mxCell>
+        <mxCell id="end" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="lane_s"><mxGeometry x="135" y="700" width="30" height="30" as="geometry" /></mxCell>
+        <mxCell id="e1" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="lane_u" source="start" target="u1">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-
-        <!-- Lane 1: Guest -->
-        <mxCell id="GuestLane" value="Guest / Customer" style="swimlane;html=1;startSize=20;" vertex="1" parent="Pool">
-          <mxGeometry x="20" y="0" width="220" height="900" as="geometry" />
+        <mxCell id="e2" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="pool" source="u1" target="s1">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="Start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="GuestLane">
-          <mxGeometry x="95" y="40" width="30" height="30" as="geometry" />
+        <mxCell id="e3" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="lane_s" source="s1" target="d1">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="G1" value="Submit Registration&lt;br&gt;Details" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="GuestLane">
-          <mxGeometry x="50" y="100" width="120" height="60" as="geometry" />
+        <mxCell id="e4" value="No" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" edge="1" parent="lane_s" source="d1" target="s2">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x='230' y='260'/></Array></mxGeometry>
         </mxCell>
-        <mxCell id="G2" value="Correct Form Errors" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="GuestLane">
-          <mxGeometry x="50" y="240" width="120" height="60" as="geometry" />
+        <mxCell id="e5" value="Yes" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="pool" source="d1" target="u2">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="G3" value="Registration Success&lt;br&gt;&amp; Login" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="GuestLane">
-          <mxGeometry x="50" y="600" width="120" height="60" as="geometry" />
+        <mxCell id="e6" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="lane_u" source="u2" target="u3">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="End" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=4;" vertex="1" parent="GuestLane">
-          <mxGeometry x="95" y="720" width="30" height="30" as="geometry" />
+        <mxCell id="e7" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="pool" source="u3" target="s3">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-
-        <!-- Lane 2: System -->
-        <mxCell id="SystemLane" value="Grand Azure System" style="swimlane;html=1;startSize=20;" vertex="1" parent="Pool">
-          <mxGeometry x="240" y="0" width="240" height="900" as="geometry" />
+        <mxCell id="e8" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="pool" source="s3" target="u4">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="Dec1" value="Valid Input?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="SystemLane">
-          <mxGeometry x="70" y="240" width="100" height="100" as="geometry" />
+        <mxCell id="e9" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="lane_s" source="s2" target="end">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
         </mxCell>
-        <mxCell id="S1" value="Encrypt Password &amp;&lt;br&gt;Request Create" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="SystemLane">
-          <mxGeometry x="60" y="420" width="120" height="60" as="geometry" />
+        <mxCell id="e10" value="" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="pool" source="u4" target="end">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x='280' y='770'/><mxPoint x='350' y='770'/></Array></mxGeometry>
         </mxCell>
-        <mxCell id="S2" value="Confirm Success &amp;&lt;br&gt;Send Email" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="SystemLane">
-          <mxGeometry x="60" y="600" width="120" height="60" as="geometry" />
-        </mxCell>
-
-        <!-- Lane 3: Database -->
-        <mxCell id="DBLane" value="Database" style="swimlane;html=1;startSize=20;" vertex="1" parent="Pool">
-          <mxGeometry x="480" y="0" width="200" height="900" as="geometry" />
-        </mxCell>
-        <mxCell id="D1" value="Check for Duplicate&lt;br&gt;Records" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="DBLane">
-          <mxGeometry x="40" y="420" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="D2" value="Insert New User" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="DBLane">
-          <mxGeometry x="40" y="520" width="120" height="60" as="geometry" />
-        </mxCell>
-
-        <!-- Connections -->
-        <mxCell id="e1" edge="1" parent="1" source="Start" target="G1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e2" edge="1" parent="1" source="G1" target="Dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        
-        <mxCell id="e3" value="No" edge="1" parent="1" source="Dec1" target="G2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;">
-          <mxGeometry relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
-        </mxCell>
-        <mxCell id="e4" value="Yes" edge="1" parent="1" source="Dec1" target="S1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;">
-          <mxGeometry relative="1" as="geometry"><mxPoint x="10" y="0" as="offset" /></mxGeometry>
-        </mxCell>
-        
-        <mxCell id="e5" edge="1" parent="1" source="S1" target="D1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e6" edge="1" parent="1" source="D1" target="D2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e7" edge="1" parent="1" source="D2" target="S2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="S2" target="G3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
-        <mxCell id="e9" edge="1" parent="1" source="G3" target="End" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;"><mxGeometry relative="1" as="geometry" /></mxCell>
 
       </root>
     </mxGraphModel>

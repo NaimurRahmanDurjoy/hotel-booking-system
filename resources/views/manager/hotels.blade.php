@@ -124,9 +124,23 @@
         }
     }
 
-    function editHotel(id) {
-        // Fetch hotel data and fill form
-        // Simplified for this task
+    async function editHotel(id) {
+        try {
+            const response = await fetch(`/api/hotels/${id}`);
+            const hotel = await response.json();
+            
+            document.getElementById('hotel_id').value = hotel.id;
+            document.getElementById('name').value = hotel.name;
+            document.getElementById('city').value = hotel.city;
+            document.getElementById('address').value = hotel.address;
+            document.getElementById('description').value = hotel.description;
+            
+            document.getElementById('modalTitle').innerText = 'Edit Hotel';
+            document.getElementById('hotelModal').style.display = 'block';
+        } catch (error) {
+            console.error(error);
+            alert('Error fetching hotel data');
+        }
     }
 
     async function deleteHotel(id) {

@@ -24,13 +24,15 @@ class ServiceController extends Controller
 
         if ($user->isAdmin()) {
             $services = Service::with('hotel')->paginate(15);
+            $hotels = \App\Models\Hotel::all();
         } else {
             $services = Service::whereHas('hotel', function ($q) use ($user) {
                 $q->where('manager_id', $user->id);
             })->with('hotel')->paginate(15);
+            $hotels = \App\Models\Hotel::where('manager_id', $user->id)->get();
         }
 
-        return view('manager.services', compact('services'));
+        return view('manager.services', compact('services', 'hotels'));
     }
 
     public function store(Request $request)

@@ -24,6 +24,9 @@ class AdminController extends Controller
                 'total_rooms' => Room::count(),
                 'available_rooms' => Room::where('status', 'available')->count(),
                 'total_bookings' => Booking::count(),
+                'total_travel_packages' => \App\Models\TravelPackage::count(),
+                'total_travel_bookings' => \App\Models\TravelBooking::count(),
+                'total_cars' => \App\Models\Car::count(),
                 'pending_bookings' => Booking::where('status', 'pending')->count(),
                 'confirmed_bookings' => Booking::where('status', 'confirmed')->count(),
                 'completed_bookings' => Booking::where('status', 'completed')->count(),
@@ -44,6 +47,7 @@ class AdminController extends Controller
                 'pending_bookings' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->where('status', 'pending')->count(),
                 'total_revenue' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->whereIn('status', ['confirmed', 'completed'])->sum('total_price'),
                 'total_travel_packages' => $user->travelPackages()->count(),
+                'total_travel_bookings' => \App\Models\TravelBooking::whereHas('travelPackage', fn($q) => $q->where('vendor_id', $user->id))->count(),
             ];
 
             $recentBookings = Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))

@@ -54,17 +54,20 @@ class RoomController extends Controller
         
         if ($user && $user->isAdmin()) {
             $rooms = Room::with('hotel')->paginate(15);
+            $hotels = \App\Models\Hotel::all();
         } elseif ($user && $user->isManager()) {
             // Manager: only rooms in their hotels
             $rooms = Room::whereHas('hotel', function ($q) use ($user) {
                 $q->where('manager_id', $user->id);
             })->with('hotel')->paginate(15);
+            $hotels = \App\Models\Hotel::where('manager_id', $user->id)->get();
         } else {
-            // Guest or Customer: return view or empty paginated collection if needed
+            // Guest or Customer
             $rooms = Room::with('hotel')->paginate(15);
+            $hotels = collect();
         }
 
-        return view('manager.rooms', compact('rooms'));
+        return view('manager.rooms', compact('rooms', 'hotels'));
     }
 
     public function store(Request $request)

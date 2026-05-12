@@ -1,78 +1,55 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Manage Customer Swimlane" id="0">
-    <mxGraphModel dx="1570" dy="929" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1414" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Pool" parent="1" style="swimlane;html=1;childLayout=stackLayout;startSize=20;horizontal=0;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" value="Manage Customer &amp; Interaction Process" vertex="1">
-          <mxGeometry height="750" width="1000" x="50" y="50" as="geometry" />
+        <mxCell id="pool" parent="1" style="swimlane;html=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=1;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" value="Manage Profile" vertex="1">
+          <mxGeometry height="700" width="600" x="50" y="50" as="geometry" />
         </mxCell>
-        <mxCell id="AdminLane" parent="Pool" style="swimlane;html=1;startSize=20;" value="Admin" vertex="1">
-          <mxGeometry height="750" width="220" x="20" as="geometry" />
+        <mxCell id="lane_u" parent="pool" style="swimlane;html=1;startSize=30;" value="User" vertex="1">
+          <mxGeometry height="670" width="300" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="Start" parent="AdminLane" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
-          <mxGeometry height="30" width="30" x="95" y="40" as="geometry" />
+        <mxCell id="start" parent="lane_u" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=none;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="135" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="A1" parent="AdminLane" style="rounded=1;whiteSpace=wrap;html=1;" value="Update Account Role&lt;br&gt;or Status" vertex="1">
-          <mxGeometry height="60" width="120" x="50" y="100" as="geometry" />
+        <mxCell id="u1" parent="lane_u" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" value="Click on profile" vertex="1">
+          <mxGeometry height="60" width="200" x="50" y="100" as="geometry" />
         </mxCell>
-        <mxCell id="ManagerLane" parent="Pool" style="swimlane;html=1;startSize=20;" value="Manager" vertex="1">
-          <mxGeometry height="750" width="220" x="240" as="geometry" />
+        <mxCell id="u2" parent="lane_u" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" value="Update profile details" vertex="1">
+          <mxGeometry height="60" width="200" x="50" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="M1" parent="ManagerLane" style="rounded=1;whiteSpace=wrap;html=1;" value="Approve Booking &amp;&lt;br&gt;Respond to Chat" vertex="1">
-          <mxGeometry height="60" width="120" x="50" y="250" as="geometry" />
-        </mxCell>
-        <mxCell id="SystemLane" parent="Pool" style="swimlane;html=1;startSize=20;" value="Grand Azure System" vertex="1">
-          <mxGeometry height="750" width="240" x="460" as="geometry" />
-        </mxCell>
-        <mxCell id="S1" parent="SystemLane" style="rounded=1;whiteSpace=wrap;html=1;" value="Validate Input" vertex="1">
-          <mxGeometry height="60" width="120" x="60" y="100" as="geometry" />
-        </mxCell>
-        <mxCell id="Dec1" parent="SystemLane" style="rhombus;whiteSpace=wrap;html=1;" value="Valid?" vertex="1">
-          <mxGeometry height="80" width="80" x="80" y="240" as="geometry" />
-        </mxCell>
-        <mxCell id="S2" parent="SystemLane" style="rounded=1;whiteSpace=wrap;html=1;" value="Save Changes &amp;&lt;br&gt;Notify Customer" vertex="1">
-          <mxGeometry height="60" width="120" x="60" y="450" as="geometry" />
-        </mxCell>
-        <mxCell id="CustomerLane" parent="Pool" style="swimlane;html=1;startSize=20;" value="Customer" vertex="1">
-          <mxGeometry height="750" width="280" x="700" as="geometry" />
-        </mxCell>
-        <mxCell id="C1" parent="CustomerLane" style="rounded=1;whiteSpace=wrap;html=1;" value="Receive Updates &amp;&lt;br&gt;Interaction Response" vertex="1">
-          <mxGeometry height="60" width="120" x="80" y="450" as="geometry" />
-        </mxCell>
-        <mxCell id="End" parent="CustomerLane" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=4;" value="" vertex="1">
-          <mxGeometry height="30" width="30" x="125" y="600" as="geometry" />
-        </mxCell>
-        <mxCell id="e1" edge="1" parent="1" source="Start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="A1">
+        <mxCell id="e1" edge="1" parent="lane_u" source="start" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="u1" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e2" edge="1" parent="1" source="A1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="S1">
+        <mxCell id="lane_s" parent="pool" style="swimlane;html=1;startSize=30;" value="System" vertex="1">
+          <mxGeometry height="670" width="300" x="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" parent="lane_s" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" value="Fetch user data from DB" vertex="1">
+          <mxGeometry height="60" width="200" x="50" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" parent="lane_s" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=middle;" value="Save updated info" vertex="1">
+          <mxGeometry height="60" width="200" x="50" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="lane_s" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="135" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="lane_s" source="s2" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="end" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e3" edge="1" parent="1" source="S1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Dec1">
+        <mxCell id="e2" edge="1" parent="pool" source="u1" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="s1" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e4" edge="1" parent="1" source="Dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="A1" value="No">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint y="-10" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="e5" edge="1" parent="1" source="Dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="M1" value="Yes">
-          <mxGeometry relative="1" x="-0.2308" y="10" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="e6" edge="1" parent="1" source="M1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="S2">
+        <mxCell id="e3" edge="1" parent="pool" source="s1" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="u2" value="">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="610" y="330" />
+              <mxPoint x="450" y="210" />
+              <mxPoint x="300" y="210" />
+              <mxPoint x="150" y="210" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e7" edge="1" parent="1" source="S2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="C1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="e8" edge="1" parent="1" source="C1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="End">
+        <mxCell id="e4" edge="1" parent="pool" source="u2" style="endArrow=classic;html=1;strokeColor=#000000;strokeWidth=1;rounded=0;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="s2" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

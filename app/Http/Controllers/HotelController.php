@@ -78,9 +78,17 @@ class HotelController extends Controller
             'address' => 'sometimes|string',
             'city' => 'sometimes|string',
             'status' => 'sometimes|in:active,inactive',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $hotel->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('hotels', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $hotel->update($data);
 
         return response()->json(['message' => 'Hotel updated successfully', 'hotel' => $hotel]);
     }

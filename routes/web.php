@@ -23,12 +23,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\TravelBookingController;
+use App\Http\Controllers\CarController;
 
 // Manager Routes
 Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('manager.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::resource('hotels', HotelController::class);
     Route::resource('travel-packages', TravelPackageController::class);
+    Route::resource('cars', CarController::class);
+    Route::get('/car-bookings', [CarController::class, 'bookingsIndex'])->name('car_bookings.index');
+    Route::put('/car-bookings/{carBooking}', [CarController::class, 'updateBooking'])->name('car_bookings.update');
     Route::get('/travel-bookings', [TravelBookingController::class, 'index'])->name('travel_bookings.index');
     Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update'])->name('travel_bookings.update');
     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');

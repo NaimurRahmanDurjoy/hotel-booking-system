@@ -1,0 +1,32 @@
+<mxfile>
+  <diagram name="Level 2 DFD">
+    <mxGraphModel dx="1200" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="E1" value="Customer" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="50" y="150" width="120" height="60" as="geometry" /></mxCell>
+        <mxCell id="P3_1" value="3.1&lt;br&gt;Validate&lt;br&gt;Availability" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;strokeWidth=2;fillColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="250" y="130" width="120" height="120" as="geometry" /></mxCell>
+        <mxCell id="P3_2" value="3.2&lt;br&gt;Calculate Discount&lt;br&gt;(Premium)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;strokeWidth=2;fillColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="450" y="350" width="120" height="120" as="geometry" /></mxCell>
+        <mxCell id="P3_3" value="3.3&lt;br&gt;Process&lt;br&gt;Payment" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;strokeWidth=2;fillColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="650" y="350" width="120" height="120" as="geometry" /></mxCell>
+        <mxCell id="P3_4" value="3.4&lt;br&gt;Create Hotel&lt;br&gt;Booking" style="rounded=1;whiteSpace=wrap;html=1;arcSize=40;strokeWidth=2;fillColor=#ffffff;" vertex="1" parent="1"><mxGeometry x="850" y="130" width="120" height="120" as="geometry" /></mxCell>
+        <mxCell id="D1" value="D1 Hotels &amp; Rooms" style="shape=partialRectangle;right=0;left=0;whiteSpace=wrap;html=1;strokeWidth=2;strokeColor=#0000FF;fillColor=none;" vertex="1" parent="1"><mxGeometry x="450" y="170" width="150" height="40" as="geometry" /></mxCell>
+        <mxCell id="f1" value="Req" style="endArrow=classic;html=1;strokeColor=#FF0000;strokeWidth=2;rounded=0;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="E1" target="P3_1">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="f2" value="Check" style="endArrow=classic;html=1;strokeColor=#FF0000;strokeWidth=2;rounded=0;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="P3_1" target="D1">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="f3" value="Valid" style="endArrow=classic;html=1;strokeColor=#FF0000;strokeWidth=2;rounded=0;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="P3_1" target="P3_2">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x='310' y='410'/></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="f4" value="Pay" style="endArrow=classic;html=1;strokeColor=#FF0000;strokeWidth=2;rounded=0;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="P3_2" target="P3_3">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="f5" value="Finalize" style="endArrow=classic;html=1;strokeColor=#FF0000;strokeWidth=2;rounded=0;labelBackgroundColor=#ffffff;edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="P3_3" target="P3_4">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x='710' y='250'/><mxPoint x='910' y='250'/></Array></mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

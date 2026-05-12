@@ -14,6 +14,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>Hotel</th>
                     <th>Room Number</th>
                     <th>Type</th>
                     <th>Capacity</th>
@@ -25,6 +26,10 @@
             <tbody>
                 @foreach($rooms as $room)
                 <tr id="room-row-{{ $room->id }}">
+                    <td>
+                        <div class="fw-bold">{{ $room->hotel->name }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $room->hotel->city }}</div>
+                    </td>
                     <td class="fw-bold text-primary">#{{ $room->room_number }}</td>
                     <td style="text-transform: capitalize;">{{ $room->room_type }}</td>
                     <td>{{ $room->capacity }} Guests</td>
@@ -64,6 +69,15 @@
         </div>
         <form id="roomForm">
             <input type="hidden" id="roomId">
+            <div class="form-group">
+                <label><i class="fas fa-hotel me-1"></i> Select Hotel</label>
+                <select id="hotelId" class="form-control" required>
+                    <option value="">-- Select Hotel --</option>
+                    @foreach($hotels as $hotel)
+                    <option value="{{ $hotel->id }}">{{ $hotel->name }} ({{ $hotel->city }})</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label><i class="fas fa-hashtag me-1"></i> Room Number</label>
@@ -152,6 +166,7 @@
             });
             const room = await response.json();
             
+            document.getElementById('hotelId').value = room.hotel_id;
             document.getElementById('roomNumber').value = room.room_number;
             document.getElementById('roomType').value = room.room_type;
             document.getElementById('description').value = room.description;
@@ -197,6 +212,7 @@
         const url = isEditing ? `/api/rooms/${id}` : '/api/rooms';
         
         const formData = new FormData();
+        formData.append('hotel_id', document.getElementById('hotelId').value);
         formData.append('room_number', document.getElementById('roomNumber').value);
         formData.append('room_type', document.getElementById('roomType').value);
         formData.append('description', document.getElementById('description').value);

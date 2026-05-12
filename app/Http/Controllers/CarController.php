@@ -10,23 +10,96 @@ class CarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Car::query()->where('status', 'available');
-
-        if ($request->has('type')) {
-            $query->where('type', $request->type);
-        }
-
-        if ($request->has('capacity')) {
-            $query->where('capacity', '>=', $request->capacity);
-        }
-
-        $cars = $query->paginate(9);
-
+        $user = auth()->user();
+        
         if ($request->wantsJson() || $request->ajax()) {
-            return response()->json($cars);
+            $query = Car::query();
+            if ($request->has('type')) {
+                $query->where('type', $request->type);
+            }
+            if ($request->has('capacity')) {
+                $query->where('capacity', '>=', $request->capacity);
+            }
+            if ($request->has('status')) {
+                $query->where('status', $request->status);
+            } else {
+                $query->where('status', 'available');
+            }
+            return response()->json($query->get());
+        }
+
+        if ($user && $user->isAdmin()) {
+            $cars = Car::paginate(10);
+        } else {
+            $cars = Car::where('manager_id', $user->id)->paginate(10);
         }
 
         return view('manager.cars.index', compact('cars'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'brand' => 'required|string',
+            'model_year' => 'required|string',
+            'type' => 'required|string',
+            'transmission' => 'required|string',
+            'fuel_type' => 'required|string',
+            'price_per_day' => 'required|numeric|min:0',
+            'capacity' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->all();
+        $data['manager_id'] = auth()->id();
+        $data['status'] = 'available';
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('cars', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $car = Car::create($data);
+
+        return redirect()->back()->with('success', 'Car added successfully');
+    }
+
+    public function update(Request $request, Car $car)
+    {
+        if (auth()->id() !== $car->manager_id && !auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'brand' => 'sometimes|string',
+            'price_per_day' => 'sometimes|numeric|min:0',
+            'status' => 'sometimes|in:available,booked,maintenance',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('cars', 'public');
+            $data['image'] = '/storage/' . $path;
+        }
+
+        $car->update($data);
+
+        return redirect()->back()->with('success', 'Car updated successfully');
+    }
+
+    public function destroy(Car $car)
+    {
+        if (auth()->id() !== $car->manager_id && !auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $car->delete();
+        return response()->json(['message' => 'Car deleted successfully']);
     }
 
     public function show(Car $car)
@@ -34,8 +107,30 @@ class CarController extends Controller
         return response()->json($car);
     }
 
+    public function bookingsIndex()
+    {
+        $user = auth()->user();
+        if ($user->isAdmin()) {
+            $bookings = CarBooking::with(['user', 'car'])->latest()->paginate(15);
+        } else {
+            $bookings = CarBooking::whereHas('car', fn($q) => $q->where('manager_id', $user->id))
+                ->with(['user', 'car'])
+                ->latest()
+                ->paginate(15);
+        }
+        return view('manager.cars.bookings', compact('bookings'));
+    }
+
+    public function updateBooking(Request $request, CarBooking $carBooking)
+    {
+        $request->validate(['status' => 'required|in:pending,confirmed,completed,cancelled']);
+        $carBooking->update(['status' => $request->status]);
+        return redirect()->back()->with('success', 'Car booking status updated');
+    }
+
     public function storeBooking(Request $request)
     {
+        // (existing storeBooking logic...)
         $request->validate([
             'car_id' => 'required|exists:cars,id',
             'pickup_date' => 'required|date|after_or_equal:today',
@@ -48,7 +143,6 @@ class CarController extends Controller
 
         $car = Car::findOrFail($request->car_id);
         
-        // Calculate days
         $pickup = new \DateTime($request->pickup_date);
         $return = new \DateTime($request->return_date);
         $days = $pickup->diff($return)->days;
@@ -56,7 +150,6 @@ class CarController extends Controller
 
         $base_total = $days * $car->price_per_day;
         
-        // Inter-city surcharge (example: 2000 TK if cities are different)
         $surcharge = 0;
         if ($request->pickup_city !== $request->dropoff_city) {
             $surcharge = 2000;

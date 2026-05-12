@@ -101,7 +101,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'AC Launch & Boat',
                 'accommodation' => 'Forest Lodge & Boat Cabin',
                 'meals' => 'Breakfast, Lunch, Dinner (Traditional)',
-                'vendor_id' => $managers[0]->id
+                'vendor_id' => $managers[0]->id,
+                'images' => ['/storage/packages/sundarbans.png']
             ],
             [
                 'title' => 'Sajek Valley Cloud Tour',
@@ -112,7 +113,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'Chander Gari (Jeep)',
                 'accommodation' => 'Hillview Resort (Eco-Cottage)',
                 'meals' => 'Breakfast & Dinner',
-                'vendor_id' => $managers[1]->id
+                'vendor_id' => $managers[1]->id,
+                'images' => ['/storage/packages/sajek.png']
             ],
             [
                 'title' => 'Cox\'s Bazar Beach Relaxation',
@@ -123,7 +125,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'AC Bus (Green Line)',
                 'accommodation' => '5-Star Beach Resort',
                 'meals' => 'Buffet Breakfast & Seafood Dinner',
-                'vendor_id' => $managers[2]->id
+                'vendor_id' => $managers[2]->id,
+                'images' => ['/storage/packages/coxs_bazar.png']
             ],
             [
                 'title' => 'Sylhet Tea Garden Retreat',
@@ -134,7 +137,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'Private Car',
                 'accommodation' => 'Boutique Tea Resort',
                 'meals' => 'Breakfast & Traditional Sylheti Lunch',
-                'vendor_id' => $managers[3]->id
+                'vendor_id' => $managers[3]->id,
+                'images' => ['/storage/packages/sylhet.png']
             ],
             [
                 'title' => 'Saint Martin Island Escape',
@@ -145,7 +149,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'Ship (Keari Sindbad)',
                 'accommodation' => 'Ocean View Cottage',
                 'meals' => 'Full Board Meals (All inclusive)',
-                'vendor_id' => $managers[4]->id
+                'vendor_id' => $managers[4]->id,
+                'images' => ['/storage/packages/saint_martin.png']
             ],
             [
                 'title' => 'Rangamati Kaptai Lake Tour',
@@ -156,7 +161,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'AC Bus & Boat',
                 'accommodation' => 'Lakeside Resort',
                 'meals' => 'Breakfast & Bamboo Chicken Lunch',
-                'vendor_id' => $managers[0]->id
+                'vendor_id' => $managers[0]->id,
+                'images' => ['/storage/packages/rangamati.png']
             ],
             [
                 'title' => 'Bandarban Nilgiri Expedition',
@@ -167,7 +173,8 @@ class MultiVendorSeeder extends Seeder
                 'transport' => 'Jeep (Land Cruiser)',
                 'accommodation' => 'Nilgiri Hill Resort',
                 'meals' => 'Breakfast & Tribal Special Dinner',
-                'vendor_id' => $managers[1]->id
+                'vendor_id' => $managers[1]->id,
+                'images' => ['/storage/packages/bandarban.png']
             ]
         ];
 

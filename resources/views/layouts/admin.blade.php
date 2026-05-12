@@ -39,8 +39,38 @@
             @endif
 
             <li class="sidebar-item">
+                <a href="{{ route('manager.hotels.index') }}" class="sidebar-link {{ request()->routeIs('*.hotels.*') ? 'active' : '' }}">
+                    <i class="fas fa-hotel"></i> My Hotels
+                </a>
+            </li>
+
+            <li class="sidebar-item">
                 <a href="{{ Auth::user()->isAdmin() ? route('admin.bookings') : route('manager.bookings') }}" class="sidebar-link {{ request()->routeIs('*.bookings') ? 'active' : '' }}">
                     <i class="fas fa-calendar-check"></i> Bookings
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('manager.travel-packages.index') }}" class="sidebar-link {{ request()->routeIs('*.travel-packages.*') ? 'active' : '' }}">
+                    <i class="fas fa-map-marked-alt"></i> Travel Packages
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('manager.cars.index') }}" class="sidebar-link {{ request()->routeIs('*.cars.*') ? 'active' : '' }}">
+                    <i class="fas fa-car"></i> Car Rentals
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('manager.car_bookings.index') }}" class="sidebar-link {{ request()->routeIs('*.car_bookings.*') ? 'active' : '' }}">
+                    <i class="fas fa-key"></i> Car Bookings
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('manager.travel_bookings.index') }}" class="sidebar-link {{ request()->routeIs('*.travel_bookings.*') ? 'active' : '' }}">
+                    <i class="fas fa-route"></i> Tour Bookings
                 </a>
             </li>
 

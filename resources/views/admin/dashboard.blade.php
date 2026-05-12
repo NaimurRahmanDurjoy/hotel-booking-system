@@ -44,6 +44,36 @@
             <p>{{ $stats['available_rooms'] }} / {{ $stats['total_rooms'] }}</p>
         </div>
     </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-blue">
+            <i class="fas fa-map-marked-alt"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Travel Packages</h3>
+            <p>{{ $stats['total_travel_packages'] }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-gold">
+            <i class="fas fa-route"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Tour Bookings</h3>
+            <p>{{ $stats['total_travel_bookings'] }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon icon-green">
+            <i class="fas fa-car"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Car Fleet</h3>
+            <p>{{ $stats['total_cars'] }}</p>
+        </div>
+    </div>
 </div>
 
 <div class="data-card">

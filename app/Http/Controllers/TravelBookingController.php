@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TravelBookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         if ($user->isAdmin()) {
@@ -22,7 +22,17 @@ class TravelBookingController extends Controller
             $bookings = TravelBooking::where('user_id', $user->id)->with('package')->latest()->paginate(15);
         }
 
-        return response()->json($bookings);
+        if ($request->wantsJson()) {
+            return response()->json($bookings);
+        }
+
+        // Return manager/admin view
+        if ($user->isAdmin() || $user->role === 'manager') {
+            return view('manager.travel.bookings', compact('bookings'));
+        }
+
+        // Return customer view
+        return view('customer.travel_bookings', compact('bookings'));
     }
 
     public function store(Request $request)
@@ -45,7 +55,11 @@ class TravelBookingController extends Controller
             'status' => 'pending',
         ]);
 
-        return response()->json(['message' => 'Travel package booked successfully', 'booking' => $booking], 201);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Travel package booked successfully', 'booking' => $booking], 201);
+        }
+
+        return redirect()->back()->with('success', 'Travel package booked successfully');
     }
 
     public function update(Request $request, TravelBooking $travelBooking)
@@ -58,9 +72,18 @@ class TravelBookingController extends Controller
                 'status' => 'required|in:pending,confirmed,cancelled,completed',
             ]);
             $travelBooking->update(['status' => $request->status]);
-            return response()->json(['message' => 'Booking status updated', 'booking' => $travelBooking]);
+
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Booking status updated', 'booking' => $travelBooking]);
+            }
+
+            return redirect()->back()->with('success', 'Booking status updated');
         }
 
-        return response()->json(['message' => 'Unauthorized'], 403);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        return redirect()->back()->with('error', 'Unauthorized');
     }
 }
