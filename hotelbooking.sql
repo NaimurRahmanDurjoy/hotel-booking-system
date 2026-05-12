@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 11, 2026 at 11:48 AM
+-- Generation Time: May 12, 2026 at 11:35 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.29
 
@@ -345,7 +345,9 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (9, 'App\\Models\\User', 3, 'auth-token', '692531cb4d258cd6a1076db177d4bcce73876176cf19d02152851318212bf8ea', '[\"*\"]', '2026-05-04 02:35:46', NULL, '2026-05-03 23:28:15', '2026-05-04 02:35:46'),
 (10, 'App\\Models\\User', 1, 'auth-token', '0bf439325bd3108f8f2f26c07596247767d33cc72423295c038891d9d364d6c8', '[\"*\"]', '2026-05-04 03:25:42', NULL, '2026-05-04 02:35:55', '2026-05-04 03:25:42'),
 (11, 'App\\Models\\User', 1, 'auth-token', '068e0a4b809fce3114ade003f2f8008fb9af7b1d1684bc5fa18628f016edfb87', '[\"*\"]', '2026-05-11 02:48:47', NULL, '2026-05-11 01:43:28', '2026-05-11 02:48:47'),
-(12, 'App\\Models\\User', 7, 'auth-token', '5bb9e98e2bcb88d5f0bae1afd8bd17a082ea53df27a5becc9147d6a31ad96457', '[\"*\"]', NULL, NULL, '2026-05-11 04:04:02', '2026-05-11 04:04:02');
+(12, 'App\\Models\\User', 7, 'auth-token', '5bb9e98e2bcb88d5f0bae1afd8bd17a082ea53df27a5becc9147d6a31ad96457', '[\"*\"]', NULL, NULL, '2026-05-11 04:04:02', '2026-05-11 04:04:02'),
+(13, 'App\\Models\\User', 3, 'auth-token', '90b36851b8f6e8aa170b7f39b4e34d1a5a823645fea85bb54974cadcc6408f32', '[\"*\"]', '2026-05-12 00:12:35', NULL, '2026-05-11 23:55:18', '2026-05-12 00:12:35'),
+(14, 'App\\Models\\User', 1, 'auth-token', 'be60bcb2ca334cde5eaeb28c624e426ff84d5fcd04d85d88a83d174936ab5f1b', '[\"*\"]', NULL, NULL, '2026-05-12 00:12:54', '2026-05-12 00:12:54');
 
 -- --------------------------------------------------------
 
@@ -488,7 +490,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('ATPzxgEYvydE2FXKS8VgElf8pzrRx50TrLiUQCqX', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiazRzVHd0RG5XWGo4MGp2b2hYcXlSdnpDd0RJdGpPb0VFU1FDNkViNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1778499233);
+('ATPzxgEYvydE2FXKS8VgElf8pzrRx50TrLiUQCqX', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiazRzVHd0RG5XWGo4MGp2b2hYcXlSdnpDd0RJdGpPb0VFU1FDNkViNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0IjtzOjU6InJvdXRlIjtOO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1778499233),
+('AxyX2zjWOmAqKGa3nqZnvoWONQmwlbXxGo0BuNF6', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoibTJxTFlEYmRnbmdWSmxtWGxZODQ5T3hoblhSZkQ1VEtqeVkxcmZZdSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo0NjoiaHR0cDovL2hvdGVsLWJvb2tpbmctc3lzdGVtLnRlc3QvbWFuYWdlci9yb29tcyI7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjM4OiJodHRwOi8vaG90ZWwtYm9va2luZy1zeXN0ZW0udGVzdC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1778585406),
+('j74UzYXdyVNvbje8Q1Yxj0POsRSJlXmVzKy0QPrP', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieDRJWFBvNWZwSEhFRGVMNDliODVBakM5b09NTzFYOVRYUVJmUVNHbCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDg6Imh0dHA6Ly9ob3RlbC1ib29raW5nLXN5c3RlbS50ZXN0L2FkbWluL2Rhc2hib2FyZCI7czo1OiJyb3V0ZSI7czoxNToiYWRtaW4uZGFzaGJvYXJkIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1778566374),
+('Sy8pwMPVbE1MSHnk1DCw4HMZGnJeevhYiV58vOu8', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiYWRGTHpMSVlWTEJWTWpJT1BVM3FNc25VN3JQZ1NvMFY2cWY2dGlMSCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjU2OiJodHRwOi8vaG90ZWwtYm9va2luZy1zeXN0ZW0udGVzdC9tYW5hZ2VyL3RyYXZlbC1ib29raW5ncyI7czo1OiJyb3V0ZSI7czoyOToibWFuYWdlci50cmF2ZWxfYm9va2luZ3MuaW5kZXgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1778567458);
 
 -- --------------------------------------------------------
 
@@ -535,13 +540,13 @@ CREATE TABLE `travel_packages` (
 --
 
 INSERT INTO `travel_packages` (`id`, `title`, `description`, `destination`, `price`, `duration_days`, `images`, `vendor_id`, `created_at`, `updated_at`, `transport`, `accommodation`, `meals`) VALUES
-(1, 'Sundarbans Forest Expedition', 'Deep jungle safari, boat stay, and tiger tracking experience.', 'Sundarbans', '12500.00', 4, NULL, 4, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'AC Launch & Boat', 'Forest Lodge & Boat Cabin', 'Breakfast, Lunch, Dinner (Traditional)'),
-(2, 'Sajek Valley Cloud Tour', 'Stay above the clouds, visit Kanglak Hill and enjoy the sunrise.', 'Sajek', '6500.00', 2, NULL, 5, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'Chander Gari (Jeep)', 'Hillview Resort (Eco-Cottage)', 'Breakfast & Dinner'),
-(3, 'Cox\'s Bazar Beach Relaxation', 'Luxury stay at Inani beach, sunset dinner, and water sports.', 'Cox\'s Bazar', '9000.00', 3, NULL, 8, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'AC Bus (Green Line)', '5-Star Beach Resort', 'Buffet Breakfast & Seafood Dinner'),
-(4, 'Sylhet Tea Garden Retreat', 'Visit Ratargul Swamp Forest, Jaflong, and lush tea gardens.', 'Sylhet', '7500.00', 3, NULL, 9, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'Private Car', 'Boutique Tea Resort', 'Breakfast & Traditional Sylheti Lunch'),
-(5, 'Saint Martin Island Escape', 'Crystal clear water, coral beach, and fresh seafood experience.', 'Saint Martin', '11000.00', 3, NULL, 10, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'Ship (Keari Sindbad)', 'Ocean View Cottage', 'Full Board Meals (All inclusive)'),
-(6, 'Rangamati Kaptai Lake Tour', 'Boat cruise in Kaptai Lake, visit hanging bridge and waterfalls.', 'Rangamati', '5500.00', 2, NULL, 4, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'AC Bus & Boat', 'Lakeside Resort', 'Breakfast & Bamboo Chicken Lunch'),
-(7, 'Bandarban Nilgiri Expedition', 'Visit Nilgiri, Nilachal, and explore the tribal culture and hills.', 'Bandarban', '8500.00', 3, NULL, 5, '2026-05-11 05:21:28', '2026-05-11 05:21:28', 'Jeep (Land Cruiser)', 'Nilgiri Hill Resort', 'Breakfast & Tribal Special Dinner');
+(1, 'Sundarbans Forest Expedition', 'Deep jungle safari, boat stay, and tiger tracking experience.', 'Sundarbans', '12500.00', 4, '[\"/storage/packages/sundarbans.png\"]', 4, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'AC Launch & Boat', 'Forest Lodge & Boat Cabin', 'Breakfast, Lunch, Dinner (Traditional)'),
+(2, 'Sajek Valley Cloud Tour', 'Stay above the clouds, visit Kanglak Hill and enjoy the sunrise.', 'Sajek', '6500.00', 2, '[\"/storage/packages/sajek.png\"]', 5, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'Chander Gari (Jeep)', 'Hillview Resort (Eco-Cottage)', 'Breakfast & Dinner'),
+(3, 'Cox\'s Bazar Beach Relaxation', 'Luxury stay at Inani beach, sunset dinner, and water sports.', 'Cox\'s Bazar', '9000.00', 3, '[\"/storage/packages/coxs_bazar.png\"]', 8, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'AC Bus (Green Line)', '5-Star Beach Resort', 'Buffet Breakfast & Seafood Dinner'),
+(4, 'Sylhet Tea Garden Retreat', 'Visit Ratargul Swamp Forest, Jaflong, and lush tea gardens.', 'Sylhet', '7500.00', 3, '[\"/storage/packages/sylhet.png\"]', 9, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'Private Car', 'Boutique Tea Resort', 'Breakfast & Traditional Sylheti Lunch'),
+(5, 'Saint Martin Island Escape', 'Crystal clear water, coral beach, and fresh seafood experience.', 'Saint Martin', '11000.00', 3, '[\"/storage/packages/saint_martin.png\"]', 10, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'Ship (Keari Sindbad)', 'Ocean View Cottage', 'Full Board Meals (All inclusive)'),
+(6, 'Rangamati Kaptai Lake Tour', 'Boat cruise in Kaptai Lake, visit hanging bridge and waterfalls.', 'Rangamati', '5500.00', 2, '[\"/storage/packages/rangamati.png\"]', 4, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'AC Bus & Boat', 'Lakeside Resort', 'Breakfast & Bamboo Chicken Lunch'),
+(7, 'Bandarban Nilgiri Expedition', 'Visit Nilgiri, Nilachal, and explore the tribal culture and hills.', 'Bandarban', '8500.00', 3, '[\"/storage/packages/bandarban.png\"]', 5, '2026-05-11 05:21:28', '2026-05-11 23:58:47', 'Jeep (Land Cruiser)', 'Nilgiri Hill Resort', 'Breakfast & Tribal Special Dinner');
 
 -- --------------------------------------------------------
 
@@ -822,7 +827,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `premium_plans`
