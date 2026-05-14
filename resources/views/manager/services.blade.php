@@ -25,8 +25,8 @@
                 @foreach($services as $service)
                 <tr id="service-row-{{ $service->id }}">
                     <td>
-                        <div class="fw-bold">{{ $service->hotel->name }}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $service->hotel->city }}</div>
+                        <div class="fw-bold">{{ $service->hotel?->name ?? 'Global Service' }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $service->hotel?->city ?? 'N/A' }}</div>
                     </td>
                     <td class="fw-bold text-primary">{{ $service->name }}</td>
                     <td style="max-width: 300px;"><div class="text-truncate" title="{{ $service->description }}">{{ $service->description }}</div></td>
