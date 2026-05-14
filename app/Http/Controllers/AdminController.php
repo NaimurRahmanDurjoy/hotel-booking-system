@@ -131,9 +131,15 @@ class AdminController extends Controller
         ], 201);
     }
 
-    public function bookings()
+    public function bookings(Request $request)
     {
-        $bookings = Booking::with(['user', 'room', 'services'])->latest()->paginate(15);
+        $query = Booking::with(['user', 'room', 'services']);
+        
+        if ($request->has('status') && $request->status !== 'All Statuses') {
+            $query->where('status', strtolower($request->status));
+        }
+
+        $bookings = $query->latest()->paginate(15);
         return view('admin.bookings', compact('bookings'));
     }
 

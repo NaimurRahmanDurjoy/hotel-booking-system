@@ -33,7 +33,7 @@
                     <td class="fw-bold text-primary">#{{ $room->room_number }}</td>
                     <td style="text-transform: capitalize;">{{ $room->room_type }}</td>
                     <td>{{ $room->capacity }} Guests</td>
-                    <td>TK {{ $room->price_per_night }}</td>
+                    <td>TK {{ number_format($room->price_per_night, 2) }}</td>
                     <td>
                         <span class="badge {{ $room->status === 'available' ? 'badge-confirmed' : ($room->status === 'occupied' ? 'badge-pending' : 'badge-danger') }}" style="text-transform: capitalize;">
                             {{ $room->status }}
@@ -53,8 +53,13 @@
         </table>
     </div>
 
-    <div style="margin-top: 20px;">
-        {{ $rooms->links() }}
+    <div class="pagination-container">
+        <div class="pagination-info">
+            Showing {{ $rooms->firstItem() }} to {{ $rooms->lastItem() }} of {{ $rooms->total() }} rooms
+        </div>
+        <div>
+            {{ $rooms->links() }}
+        </div>
     </div>
 </div>
 

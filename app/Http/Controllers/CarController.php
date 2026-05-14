@@ -130,7 +130,7 @@ class CarController extends Controller
 
     public function storeBooking(Request $request)
     {
-        // (existing storeBooking logic...)
+        // ... (existing logic)
         $request->validate([
             'car_id' => 'required|exists:cars,id',
             'pickup_date' => 'required|date|after_or_equal:today',
@@ -177,5 +177,15 @@ class CarController extends Controller
             'surcharge' => $surcharge,
             'total' => $total_price
         ], 201);
+    }
+
+    public function myBookings()
+    {
+        $bookings = CarBooking::where('user_id', auth()->id())
+            ->with('car')
+            ->latest()
+            ->get();
+        
+        return response()->json($bookings);
     }
 }

@@ -81,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/travel-bookings', [TravelBookingController::class, 'index']);
     Route::post('/travel-bookings', [TravelBookingController::class, 'store']);
     Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update']);
+    Route::get('/car-bookings/my', [CarController::class, 'myBookings']);
     Route::post('/car-bookings', [CarController::class, 'storeBooking']);
 
     // Admin

@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Hotel;
 
 class ChatController extends Controller
 {
@@ -196,5 +197,17 @@ class ChatController extends Controller
             'message' => 'Message sent successfully',
             'data' => $message->load(['sender', 'receiver']),
         ], 201);
+    }
+
+    public function unreadCount()
+    {
+        $user = Auth::user();
+        if (!$user) return response()->json(['count' => 0]);
+
+        $count = Message::where('receiver_id', $user->id)
+            ->where('is_read', false)
+            ->count();
+
+        return response()->json(['unread_count' => $count]);
     }
 }

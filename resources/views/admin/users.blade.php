@@ -61,8 +61,13 @@
         </table>
     </div>
 
-    <div style="margin-top: 20px;">
-        {{ $users->links() }}
+    <div class="pagination-container">
+        <div class="pagination-info">
+            Showing {{ $users->firstItem() }} to {{ $users->lastItem() }} of {{ $users->total() }} users
+        </div>
+        <div>
+            {{ $users->links() }}
+        </div>
     </div>
 </div>
 

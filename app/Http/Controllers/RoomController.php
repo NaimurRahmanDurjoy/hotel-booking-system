@@ -11,7 +11,7 @@ class RoomController extends Controller
     {
         $user = auth()->user();
 
-        if ($request->ajax() || $request->wantsJson() || $request->has('hotel_id') || $request->has('city')) {
+        if ($request->ajax() || $request->wantsJson() || $request->is('api/*') || $request->has('hotel_id') || $request->has('city')) {
             $query = Room::query()->where('status', 'available');
 
             // Filter by hotel if provided
