@@ -174,7 +174,7 @@ class MultiVendorSeeder extends Seeder
                 'accommodation' => 'Nilgiri Hill Resort',
                 'meals' => 'Breakfast & Tribal Special Dinner',
                 'vendor_id' => $managers[1]->id,
-                'images' => ['https://images.unsplash.com/photo-1623517228321-72990d164506?auto=format&fit=crop&w=800&q=80']
+                'images' => ['https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80']
             ]
         ];
 

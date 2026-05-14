@@ -20,7 +20,7 @@ class HotelController extends Controller
             $hotels = Hotel::where('manager_id', $user->id)->paginate(15);
         }
 
-        return view('manager.hotels.index', compact('hotels'));
+        return view('manager.hotels', compact('hotels'));
     }
 
     /**
