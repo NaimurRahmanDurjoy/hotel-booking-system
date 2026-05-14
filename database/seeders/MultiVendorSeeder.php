@@ -150,7 +150,7 @@ class MultiVendorSeeder extends Seeder
                 'accommodation' => 'Ocean View Cottage',
                 'meals' => 'Full Board Meals (All inclusive)',
                 'vendor_id' => $managers[4]->id,
-                'images' => ['/storage/packages/saint_martin.png']
+                'images' => ['https://images.unsplash.com/photo-1544945582-3b466d874eac?auto=format&fit=crop&w=800&q=80']
             ],
             [
                 'title' => 'Rangamati Kaptai Lake Tour',
@@ -162,7 +162,7 @@ class MultiVendorSeeder extends Seeder
                 'accommodation' => 'Lakeside Resort',
                 'meals' => 'Breakfast & Bamboo Chicken Lunch',
                 'vendor_id' => $managers[0]->id,
-                'images' => ['/storage/packages/rangamati.png']
+                'images' => ['https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?auto=format&fit=crop&w=800&q=80']
             ],
             [
                 'title' => 'Bandarban Nilgiri Expedition',
@@ -174,7 +174,7 @@ class MultiVendorSeeder extends Seeder
                 'accommodation' => 'Nilgiri Hill Resort',
                 'meals' => 'Breakfast & Tribal Special Dinner',
                 'vendor_id' => $managers[1]->id,
-                'images' => ['/storage/packages/bandarban.png']
+                'images' => ['https://images.unsplash.com/photo-1623517228321-72990d164506?auto=format&fit=crop&w=800&q=80']
             ]
         ];
 
