@@ -25,7 +25,7 @@
                 @forelse($hotels as $hotel)
                 <tr>
                     <td>
-                        <img src="{{ $hotel->image ?? 'https://via.placeholder.com/100' }}" alt="{{ $hotel->name }}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <img src="{{ $hotel->images[0] ?? 'https://via.placeholder.com/100' }}" alt="{{ $hotel->name }}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
                     </td>
                     <td>
                         <div style="font-weight: 600;">{{ $hotel->name }}</div>

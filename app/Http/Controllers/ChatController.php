@@ -12,7 +12,7 @@ class ChatController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        
+
         if ($user->isManager() || $user->isAdmin()) {
             // Get all conversations for manager/admin
             // Managers should only see conversations related to their hotels or general support
@@ -31,7 +31,7 @@ class ChatController extends Controller
                     $query->where('receiver_id', $user->id)->orWhere('sender_id', $user->id);
                 }])
                 ->get();
-            
+
             return response()->json($conversations);
         } else {
             // Customers see managers they've talked to
@@ -53,7 +53,7 @@ class ChatController extends Controller
                     })->orWhereHas('messagesReceived', function($sq) use ($user) {
                         $sq->where('sender_id', $user->id);
                     });
-                    
+
                     if ($user->role === 'manager') {
                         $hotelIds = $user->hotels()->pluck('id');
                         $q->orWhereHas('messagesSent', function($sq) use ($hotelIds) {
@@ -61,7 +61,7 @@ class ChatController extends Controller
                         });
                     }
                 })->get();
-            
+
             return $customers->map(function ($customer) use ($user) {
                 $lastMessage = Message::where(function ($q) use ($user, $customer) {
                     $q->where(function($sq) use ($user, $customer) {
@@ -90,13 +90,13 @@ class ChatController extends Controller
                 ->orWhere('receiver_id', $user->id)
                 ->with('hotel')
                 ->get();
-            
+
             $conversations = [];
-            
+
             // General support (no hotel_id)
             $supportLast = $messages->where('hotel_id', null)->sortByDesc('created_at')->first();
             $supportUnread = $messages->where('hotel_id', null)->where('receiver_id', $user->id)->where('is_read', false)->count();
-            
+
             $conversations[] = [
                 'user_id' => 'support',
                 'user_name' => 'Platform Support',
@@ -129,14 +129,14 @@ class ChatController extends Controller
     public function messagesByUserId(Request $request, $userId)
     {
         $user = Auth::user();
-        
+
         if (str_starts_with($userId, 'hotel_')) {
             $hotelId = str_replace('hotel_', '', $userId);
             $messages = Message::where('hotel_id', $hotelId)
                 ->where(function($q) use ($user) {
                     $q->where('sender_id', $user->id)->orWhere('receiver_id', $user->id);
                 })->orderBy('created_at', 'asc')->get();
-            
+
             Message::where('hotel_id', $hotelId)->where('receiver_id', $user->id)->update(['is_read' => true]);
             return response()->json($messages);
         }
@@ -146,7 +146,7 @@ class ChatController extends Controller
                 ->where(function($q) use ($user) {
                     $q->where('sender_id', $user->id)->orWhere('receiver_id', $user->id);
                 })->orderBy('created_at', 'asc')->get();
-            
+
             Message::where('hotel_id', null)->where('receiver_id', $user->id)->update(['is_read' => true]);
             return response()->json($messages);
         }
@@ -177,7 +177,7 @@ class ChatController extends Controller
 
         if (str_starts_with($receiverId, 'hotel_')) {
             $hotelId = str_replace('hotel_', '', $receiverId);
-            $hotel = \App\Models\Hotel::findOrFail($hotelId);
+            $hotel = Hotel::findOrFail($hotelId);
             $receiverId = $hotel->manager_id;
         } elseif ($receiverId === 'support') {
             $admin = User::where('role', 'admin')->first();
