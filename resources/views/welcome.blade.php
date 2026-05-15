@@ -754,7 +754,7 @@
                     text: 'Your travel package booking is confirmed.',
                     confirmButtonColor: '#1E3A5F'
                 }).then(() => {
-                    window.location.href = '/customer/travel-bookings';
+                    window.location.href = '/customer/bookings?tab=travel';
                 });
             } else {
                 Swal.fire({ icon: 'error', title: 'Booking Failed', text: result.message || 'Error' });
@@ -966,8 +966,8 @@
                                 }).join('') : ''}
                             </div>
                             <div class="d-flex gap-2 mt-auto">
-                                <button onclick="showRoomDetails(${room.id})" class="btn btn-outline-navy flex-grow-1 rounded-pill fw-bold btn-sm py-3 transition-all">DETAILS</button>
-                                <button onclick="openBookingModal(${room.id})" class="btn btn-navy flex-grow-1 rounded-pill fw-bold btn-sm py-3 shadow-lg transition-all">BOOK NOW</button>
+                                <button onclick="showRoomDetails(${room.id})" class="btn btn-outline-primary flex-grow-1 rounded-pill fw-bold btn-sm py-3 transition-all">DETAILS</button>
+                                <button onclick="openBookingModal(${room.id})" class="btn btn-primary flex-grow-1 rounded-pill fw-bold btn-sm py-3 shadow-lg transition-all">BOOK NOW</button>
                             </div>
                         </div>
                     </div>
@@ -1034,8 +1034,8 @@
                                 ${pkg.description}
                             </p>
                             <div class="d-flex gap-2">
-                                <button onclick="showTravelDetails(${pkg.id})" class="btn btn-outline-navy flex-grow-1 rounded-pill fw-bold btn-sm py-2">DETAILS</button>
-                                <button onclick="openTravelBookingModal(${pkg.id}, '${pkg.title}', ${pkg.price})" class="btn btn-navy flex-grow-1 rounded-pill fw-bold btn-sm py-2">BOOK TOUR</button>
+                                <button onclick="showTravelDetails(${pkg.id})" class="btn btn-outline-primary flex-grow-1 rounded-pill fw-bold btn-sm py-2">DETAILS</button>
+                                <button onclick="openTravelBookingModal(${pkg.id}, '${pkg.title}', ${pkg.price})" class="btn btn-primary flex-grow-1 rounded-pill fw-bold btn-sm py-2">BOOK TOUR</button>
                             </div>
                         </div>
                     </div>
@@ -1099,7 +1099,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button onclick="openCarBookingModal(${car.id}, '${car.name}')" class="btn btn-navy w-100 rounded-pill fw-bold py-2 shadow-sm transition-all">RENT NOW</button>
+                            <button onclick="openCarBookingModal(${car.id}, '${car.name}')" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm transition-all">RENT NOW</button>
                         </div>
                     </div>
                 </div>
@@ -1156,6 +1156,8 @@
                         <p class="mt-4 small">Our manager will contact you shortly to confirm.</p>
                     `,
                     confirmButtonColor: '#1E3A5F'
+                }).then(() => {
+                    window.location.href = '/customer/bookings?tab=cars';
                 });
                 carBookingModal.hide();
                 this.reset();

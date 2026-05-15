@@ -40,7 +40,7 @@
             transition: color 0.3s ease;
         }
         .navbar.scrolled .navbar-brand { color: var(--primary-navy) !important; }
-        .nav-link {
+        .navbar-nav .nav-link {
             font-weight: 500;
             color: #fff !important;
             margin: 0 12px;
@@ -49,8 +49,8 @@
             transition: all 0.3s ease;
             opacity: 0.9;
         }
-        .navbar.scrolled .nav-link { color: #333 !important; }
-        .nav-link::after {
+        .navbar.scrolled .navbar-nav .nav-link { color: #333 !important; }
+        .navbar-nav .nav-link::after {
             content: '';
             position: absolute;
             bottom: -5px;
@@ -61,8 +61,8 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        .nav-link:hover { opacity: 1; transform: translateY(-1px); }
-        .nav-link:hover::after { width: 20px; }
+        .navbar-nav .nav-link:hover { opacity: 1; transform: translateY(-1px); }
+        .navbar-nav .nav-link:hover::after { width: 20px; }
         
         .user-dropdown-btn {
             background: rgba(255,255,255,0.1);
@@ -133,6 +133,60 @@
         .chat-window-header { background: var(--primary-navy); color: #fff; padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; }
         .chat-window-messages { flex: 1; overflow-y: auto; padding: 20px; background: #f8f9fa; }
         .chat-window-input { padding: 15px 20px; background: #fff; border-top: 1px solid #eee; }
+
+        /* Button Visibility & Premium Styles */
+        .btn-primary {
+            background-color: var(--primary-navy) !important;
+            border-color: var(--primary-navy) !important;
+            color: #fff !important;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #162a45 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 95, 0.2);
+        }
+        .btn-outline-primary {
+            border: 2px solid var(--primary-navy) !important;
+            color: var(--primary-navy) !important;
+            background: transparent !important;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-navy) !important;
+            color: #fff !important;
+            transform: translateY(-2px);
+        }
+        .btn-navy {
+            background-color: var(--primary-navy);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .btn-navy:hover {
+            background-color: #162a45;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 58, 95, 0.2);
+        }
+        .btn-warning {
+            background-color: var(--accent-gold) !important;
+            border-color: var(--accent-gold) !important;
+            color: #fff !important;
+            font-weight: 700;
+        }
+        .btn-warning:hover {
+            background-color: #e69516 !important;
+            transform: translateY(-2px);
+        }
+
         @yield('styles')
     </style>
 </head>

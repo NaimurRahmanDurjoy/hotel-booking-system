@@ -47,7 +47,7 @@ class AdminController extends Controller
                 'pending_bookings' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->where('status', 'pending')->count(),
                 'total_revenue' => Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))->whereIn('status', ['confirmed', 'completed'])->sum('total_price'),
                 'total_travel_packages' => $user->travelPackages()->count(),
-                'total_travel_bookings' => \App\Models\TravelBooking::whereHas('travelPackage', fn($q) => $q->where('vendor_id', $user->id))->count(),
+                'total_travel_bookings' => \App\Models\TravelBooking::whereHas('package', fn($q) => $q->where('vendor_id', $user->id))->count(),
             ];
 
             $recentBookings = Booking::whereHas('hotel', fn($q) => $q->where('manager_id', $user->id))

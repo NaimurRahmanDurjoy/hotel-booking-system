@@ -51,9 +51,6 @@ Route::middleware(['auth', 'role:customer,manager,admin'])->prefix('customer')->
     Route::get('/bookings', function () {
         return view('customer.bookings');
     })->name('bookings.index');
-    Route::get('/travel-bookings', function () {
-        return view('customer.travel_bookings');
-    })->name('travel_bookings.index');
 });
 
 require __DIR__ . '/auth.php';

@@ -187,6 +187,17 @@
         loadTravelBookings();
         loadCarBookings();
         loadMemberStatus();
+
+        // Handle tab query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab === 'travel') {
+            const travelTab = document.getElementById('travel-tab');
+            if (travelTab) travelTab.click();
+        } else if (tab === 'cars') {
+            const carsTab = document.getElementById('cars-tab');
+            if (carsTab) carsTab.click();
+        }
     });
     
     function formatDate(dateString) {
