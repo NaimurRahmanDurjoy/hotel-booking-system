@@ -71,11 +71,11 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Price (TK)</label>
-                    <input type="number" name="price" id="price" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" required>
+                    <input type="number" name="price" id="price" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" min="0" required>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Duration (Days)</label>
-                    <input type="number" name="duration_days" id="duration_days" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" required>
+                    <input type="number" name="duration_days" id="duration_days" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" min="1" required>
                 </div>
             </div>
             <div style="margin-bottom: 15px;">
@@ -109,6 +109,19 @@
 
     document.getElementById('travelForm').onsubmit = async function(e) {
         e.preventDefault();
+        
+        const price = parseFloat(document.getElementById('price').value);
+        const duration = parseInt(document.getElementById('duration_days').value);
+
+        if (price < 0) {
+            Swal.fire('Error', 'Price cannot be negative', 'error');
+            return;
+        }
+        if (duration < 1) {
+            Swal.fire('Error', 'Duration must be at least 1 day', 'error');
+            return;
+        }
+
         const formData = new FormData(this);
         const id = document.getElementById('package_id').value;
         const url = id ? `/manager/travel-packages/${id}` : '/manager/travel-packages';
@@ -191,6 +204,15 @@
             }
         }
     }
+
+    // Real-time negative inputs restriction
+    document.getElementById('price').addEventListener('input', function(e) {
+        if (this.value < 0) this.value = 0;
+    });
+
+    document.getElementById('duration_days').addEventListener('input', function(e) {
+        if (this.value < 1) this.value = 1;
+    });
 </script>
 @endsection
 @endsection

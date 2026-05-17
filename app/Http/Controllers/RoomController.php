@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RoomController extends Controller
 {
@@ -74,7 +75,13 @@ class RoomController extends Controller
     {
         $request->validate([
             'hotel_id' => 'required|exists:hotels,id',
-            'room_number' => 'required|string|unique:rooms,room_number,NULL,id,hotel_id,' . $request->hotel_id,
+            'room_number' => [
+                'required',
+                'string',
+                Rule::unique('rooms')->where(function ($query) use ($request) {
+                    return $query->where('hotel_id', $request->hotel_id);
+                })
+            ],
             'room_type' => 'required|in:standard,deluxe,suite,presidential',
             'description' => 'required|string',
             'price_per_night' => 'required|numeric|min:0',
@@ -114,7 +121,13 @@ class RoomController extends Controller
         }
 
         $request->validate([
-            'room_number' => 'sometimes|string|unique:rooms,room_number,' . $room->id . ',id,hotel_id,' . $room->hotel_id,
+            'room_number' => [
+                'sometimes',
+                'string',
+                Rule::unique('rooms')->ignore($room->id)->where(function ($query) use ($room) {
+                    return $query->where('hotel_id', $room->hotel_id);
+                })
+            ],
             'room_type' => 'sometimes|in:standard,deluxe,suite,presidential',
             'description' => 'sometimes|string',
             'price_per_night' => 'sometimes|numeric|min:0',

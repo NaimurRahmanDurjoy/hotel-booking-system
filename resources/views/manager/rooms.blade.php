@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 @foreach($rooms as $room)
-                <tr id="room-row-{{ $room->id }}">
+                <tr id="room-row-{{ $room->id }}" data-hotel-id="{{ $room->hotel_id }}" data-room-number="{{ $room->room_number }}" data-room-id="{{ $room->id }}">
                     <td>
                         <div class="fw-bold">{{ $room->hotel->name }}</div>
                         <div style="font-size: 0.75rem; color: var(--text-muted);">{{ $room->hotel->city }}</div>
@@ -114,11 +114,11 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label><i class="fas fa-money-bill-wave me-1"></i> Price Per Night (TK)</label>
-                    <input type="number" id="pricePerNight" class="form-control" step="0.01" required placeholder="0.00">
+                    <input type="number" id="pricePerNight" class="form-control" step="0.01" min="0" required placeholder="0.00">
                 </div>
                 <div class="col-md-6 form-group">
                     <label><i class="fas fa-users me-1"></i> Capacity (Guests)</label>
-                    <input type="number" id="capacity" class="form-control" required placeholder="Max guests">
+                    <input type="number" id="capacity" class="form-control" min="1" required placeholder="Max guests">
                 </div>
             </div>
             <div class="form-group">
@@ -207,6 +207,15 @@
         }
     });
 
+    // Real-time negative inputs restriction
+    document.getElementById('pricePerNight').addEventListener('input', function(e) {
+        if (this.value < 0) this.value = 0;
+    });
+
+    document.getElementById('capacity').addEventListener('input', function(e) {
+        if (this.value < 1) this.value = 1;
+    });
+
     function closeModal() {
         roomModal.style.display = 'none';
     }
@@ -216,13 +225,51 @@
         const id = document.getElementById('roomId').value;
         const url = isEditing ? `/api/rooms/${id}` : '/api/rooms';
         
+        const hotelId = document.getElementById('hotelId').value;
+        const roomNumber = document.getElementById('roomNumber').value.trim();
+        const pricePerNight = parseFloat(document.getElementById('pricePerNight').value);
+        const capacity = parseInt(document.getElementById('capacity').value);
+
+        // Frontend check for negative inputs
+        if (pricePerNight < 0) {
+            Swal.fire({ icon: 'error', title: 'Invalid Price', text: 'Price per night cannot be negative!' });
+            return;
+        }
+        if (capacity < 1) {
+            Swal.fire({ icon: 'error', title: 'Invalid Capacity', text: 'Capacity must be at least 1 guest!' });
+            return;
+        }
+
+        // Frontend check for duplicate room numbers in the same hotel
+        let isDuplicate = false;
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const rowHotelId = row.getAttribute('data-hotel-id');
+            const rowRoomNumber = row.getAttribute('data-room-number');
+            const rowRoomId = row.getAttribute('data-room-id');
+
+            if (rowHotelId === hotelId && rowRoomNumber && rowRoomNumber.toLowerCase() === roomNumber.toLowerCase()) {
+                if (!isEditing || rowRoomId !== id) {
+                    isDuplicate = true;
+                }
+            }
+        });
+
+        if (isDuplicate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Duplicate Room Number',
+                text: `Room number "${roomNumber}" already exists in the selected hotel!`
+            });
+            return;
+        }
+        
         const formData = new FormData();
-        formData.append('hotel_id', document.getElementById('hotelId').value);
-        formData.append('room_number', document.getElementById('roomNumber').value);
+        formData.append('hotel_id', hotelId);
+        formData.append('room_number', roomNumber);
         formData.append('room_type', document.getElementById('roomType').value);
         formData.append('description', document.getElementById('description').value);
-        formData.append('price_per_night', document.getElementById('pricePerNight').value);
-        formData.append('capacity', document.getElementById('capacity').value);
+        formData.append('price_per_night', pricePerNight);
+        formData.append('capacity', capacity);
         formData.append('status', document.getElementById('roomStatus').value);
         
         const amenitiesInput = document.getElementById('amenities').value;
@@ -257,7 +304,11 @@
                     location.reload();
                 });
             } else {
-                Swal.fire({ icon: 'error', title: 'Action Failed', text: result.message || 'The operation could not be completed.' });
+                let errorMsg = result.message || 'The operation could not be completed.';
+                if (result.errors) {
+                    errorMsg = Object.values(result.errors).flat().join('\n');
+                }
+                Swal.fire({ icon: 'error', title: 'Action Failed', text: errorMsg });
             }
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'System Error', text: 'An unexpected error occurred.' });

@@ -81,7 +81,7 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Daily Price (TK)</label>
-                    <input type="number" name="price_per_day" id="price_per_day" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" required>
+                    <input type="number" name="price_per_day" id="price_per_day" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" min="0" required>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Type</label>
@@ -94,7 +94,7 @@
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Capacity (Seats)</label>
-                    <input type="number" name="capacity" id="capacity" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" required>
+                    <input type="number" name="capacity" id="capacity" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;" min="1" required>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label>Transmission</label>
@@ -152,6 +152,19 @@
 
     document.getElementById('carForm').onsubmit = async function(e) {
         e.preventDefault();
+        
+        const price = parseFloat(document.getElementById('price_per_day').value);
+        const capacity = parseInt(document.getElementById('capacity').value);
+
+        if (price < 0) {
+            Swal.fire('Error', 'Daily price cannot be negative', 'error');
+            return;
+        }
+        if (capacity < 1) {
+            Swal.fire('Error', 'Capacity must be at least 1 seat', 'error');
+            return;
+        }
+
         const formData = new FormData(this);
         const id = document.getElementById('car_id').value;
         const url = id ? `/manager/cars/${id}` : '/manager/cars';
@@ -225,6 +238,15 @@
             if (response.ok) location.reload();
         }
     }
+
+    // Real-time negative inputs restriction
+    document.getElementById('price_per_day').addEventListener('input', function(e) {
+        if (this.value < 0) this.value = 0;
+    });
+
+    document.getElementById('capacity').addEventListener('input', function(e) {
+        if (this.value < 1) this.value = 1;
+    });
 </script>
 @endsection
 @endsection

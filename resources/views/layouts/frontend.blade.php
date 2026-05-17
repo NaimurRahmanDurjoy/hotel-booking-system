@@ -459,12 +459,36 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('auth_token')) {
                 localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_user_id');
                 console.log('Guest detected: Stale auth token cleared.');
             }
         });
         @endguest
 
         @auth
+        document.addEventListener('DOMContentLoaded', function() {
+            const loggedInUserId = '{{ Auth::id() }}';
+            const storedUserId = localStorage.getItem('auth_user_id');
+            const storedToken = localStorage.getItem('auth_token');
+
+            if (!storedToken || storedUserId !== loggedInUserId) {
+                fetch('{{ route("get-token") }}')
+                    .then(response => {
+                        if (response.ok) return response.json();
+                        throw new Error('Failed to get API token');
+                    })
+                    .then(data => {
+                        if (data.token) {
+                            localStorage.setItem('auth_token', data.token);
+                            localStorage.setItem('auth_user_id', loggedInUserId);
+                            console.log('API Token synchronized successfully.');
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error syncing API token:', error));
+            }
+        });
+
         @if(Auth::user()->role === 'customer')
         let chatPollInterval;
         async function toggleChatWindow() {

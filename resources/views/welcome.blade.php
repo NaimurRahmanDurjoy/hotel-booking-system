@@ -733,11 +733,28 @@
         }
     }
 
+    // Restrict negative guest values on input level
+    document.getElementById('travelGuests')?.addEventListener('input', function() {
+        if (this.value !== '' && parseInt(this.value) < 1) {
+            this.value = 1;
+        }
+    });
+
     document.getElementById('travelBookingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const travel_package_id = document.getElementById('bookingPackageId').value;
         const travel_date = document.getElementById('travelDate').value;
-        const guests = document.getElementById('travelGuests').value;
+        const guests = parseInt(document.getElementById('travelGuests').value);
+
+        if (isNaN(guests) || guests < 1) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Guest Count',
+                text: 'Number of guests must be at least 1.',
+                confirmButtonColor: '#1E3A5F'
+            });
+            return;
+        }
 
         try {
             const response = await fetch('/api/travel-bookings', {
@@ -853,7 +870,47 @@
 
     function setMinDate() {
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('checkIn').min = today;
+        
+        // Set min attributes to today to disable past dates
+        const checkIn = document.getElementById('checkIn');
+        const bookingCheckIn = document.getElementById('bookingCheckIn');
+        const bookingCheckOut = document.getElementById('bookingCheckOut');
+        const carPickupDate = document.getElementById('carPickupDate');
+        const carReturnDate = document.getElementById('carReturnDate');
+        const travelDate = document.getElementById('travelDate');
+
+        if (checkIn) checkIn.min = today;
+        if (bookingCheckIn) bookingCheckIn.min = today;
+        if (bookingCheckOut) bookingCheckOut.min = today;
+        if (carPickupDate) carPickupDate.min = today;
+        if (carReturnDate) carReturnDate.min = today;
+        if (travelDate) travelDate.min = today;
+
+        // Set dynamic min for Check-Out based on Check-In selection
+        if (bookingCheckIn && bookingCheckOut) {
+            bookingCheckIn.addEventListener('change', function() {
+                const checkInVal = this.value;
+                if (checkInVal) {
+                    bookingCheckOut.min = checkInVal;
+                    if (bookingCheckOut.value && bookingCheckOut.value < checkInVal) {
+                        bookingCheckOut.value = checkInVal;
+                    }
+                }
+            });
+        }
+
+        // Set dynamic min for Car Return based on Pick-Up selection
+        if (carPickupDate && carReturnDate) {
+            carPickupDate.addEventListener('change', function() {
+                const pickupVal = this.value;
+                if (pickupVal) {
+                    carReturnDate.min = pickupVal;
+                    if (carReturnDate.value && carReturnDate.value < pickupVal) {
+                        carReturnDate.value = pickupVal;
+                    }
+                }
+            });
+        }
     }
 
     let currentPage = 1;
@@ -1426,6 +1483,17 @@
         const check_in_date = document.getElementById('bookingCheckIn').value;
         const check_out_date = document.getElementById('bookingCheckOut').value;
         const notes = document.getElementById('bookingNotes').value;
+
+        if (new Date(check_out_date) < new Date(check_in_date)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Dates',
+                text: 'Check-out date cannot be before check-in date.',
+                confirmButtonColor: '#1E3A5F'
+            });
+            return;
+        }
+
         try {
             const response = await fetch('/api/bookings', {
                 method: 'POST',

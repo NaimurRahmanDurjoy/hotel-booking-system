@@ -95,9 +95,9 @@
             </li>
 
             <li class="sidebar-item">
-                <form method="POST" action="{{ route('logout') }}">
+                <form id="admin-logout-form" method="POST" action="{{ route('logout') }}" onsubmit="localStorage.removeItem('auth_token');">
                     @csrf
-                    <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="sidebar-link">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();" class="sidebar-link">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </form>
@@ -120,6 +120,32 @@
 
         @yield('content')
     </div>
+
+    <script>
+        // Synchronize API auth_token in localStorage for authenticated web users
+        document.addEventListener('DOMContentLoaded', function() {
+            const loggedInUserId = '{{ Auth::id() }}';
+            const storedUserId = localStorage.getItem('auth_user_id');
+            const storedToken = localStorage.getItem('auth_token');
+
+            if (!storedToken || storedUserId !== loggedInUserId) {
+                fetch('{{ route("get-token") }}')
+                    .then(response => {
+                        if (response.ok) return response.json();
+                        throw new Error('Failed to get API token');
+                    })
+                    .then(data => {
+                        if (data.token) {
+                            localStorage.setItem('auth_token', data.token);
+                            localStorage.setItem('auth_user_id', loggedInUserId);
+                            console.log('API Token synchronized successfully.');
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error syncing API token:', error));
+            }
+        });
+    </script>
 
     @yield('scripts')
 </body>
