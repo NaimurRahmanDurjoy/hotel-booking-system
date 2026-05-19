@@ -215,7 +215,10 @@
                         <label class="form-label text-white fw-bold small mb-2 opacity-75">WHERE ARE YOU GOING?</label>
                         <div class="search-input-group">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input type="text" id="citySearch" class="form-control" placeholder="City or Hotel Name">
+                            <select id="citySearch" class="form-select">
+                                <!-- <option value="">All Cities</option>
+                                <option value="Dhaka">Dhaka</option> -->
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3 text-start">
@@ -712,7 +715,24 @@
         loadCars();
         loadPremiumPlans();
         setMinDate();
+        loadCities();
     });
+
+    async function loadCities() {
+        try {
+            const response = await fetch('/api/cities');
+            const cities = await response.json();
+            const citySelect = document.getElementById('citySearch');
+            
+            let optionsHtml = '<option value="">All Cities</option>';
+            cities.forEach(city => {
+                optionsHtml += `<option value="${city}">${city}</option>`;
+            });
+            citySelect.innerHTML = optionsHtml;
+        } catch (error) {
+            console.error('Error loading cities:', error);
+        }
+    }
 
 
 

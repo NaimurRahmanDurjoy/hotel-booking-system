@@ -25,6 +25,7 @@ Route::get('/rooms/{room}', [RoomController::class, 'show']);
 Route::get('/cars', [CarController::class, 'index']);
 Route::get('/cars/{car}', [CarController::class, 'show']);
 Route::get('/hotels/{hotel}', [HotelController::class, 'show']);
+Route::get('/cities', [HotelController::class, 'getCities']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get('/travel-packages', [TravelPackageController::class, 'index']);
 Route::get('/travel-packages/{travelPackage}', [TravelPackageController::class, 'show']);

@@ -52,6 +52,7 @@
                 </a>
             </li>
 
+            @if(Auth::user()->isAdmin())
             <li class="sidebar-item">
                 <a href="{{ route('manager.travel-packages.index') }}" class="sidebar-link {{ request()->routeIs('*.travel-packages.*') ? 'active' : '' }}">
                     <i class="fas fa-map-marked-alt"></i> Travel Packages
@@ -75,6 +76,7 @@
                     <i class="fas fa-route"></i> Tour Bookings
                 </a>
             </li>
+            @endif
 
             <li class="sidebar-item">
                 <a href="{{ route('manager.rooms.index') }}" class="sidebar-link {{ request()->routeIs('*.rooms.*') ? 'active' : '' }}">

@@ -125,7 +125,7 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        return response()->json($booking->load(['user', 'room', 'services']));
+        return response()->json($booking->load(['user', 'room', 'services', 'hotel']));
     }
 
     public function update(Request $request, Booking $booking)
@@ -171,8 +171,23 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        if (in_array($booking->status, ['confirmed', 'completed'])) {
-            return response()->json(['message' => 'Cannot delete confirmed or completed bookings'], 422);
+        // Customers can cancel within 15 minutes of creation only if status is pending
+        if (!$user->isAdmin()) {
+            if ($booking->status !== 'pending') {
+                return response()->json(['message' => 'Cannot cancel booking as it is already ' . $booking->status], 422);
+            }
+            if ($booking->created_at->diffInMinutes(now()) >= 15) {
+                return response()->json(['message' => 'Cannot cancel booking after 15 minutes.'], 422);
+            }
+        } else {
+            if (in_array($booking->status, ['completed'])) {
+                return response()->json(['message' => 'Cannot delete completed bookings'], 422);
+            }
+        }
+
+        // If booking was confirmed, release room status
+        if ($booking->status === 'confirmed') {
+            $booking->room->update(['status' => 'available']);
         }
 
         $booking->delete();

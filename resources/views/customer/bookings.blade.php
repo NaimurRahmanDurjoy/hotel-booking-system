@@ -232,6 +232,14 @@
             
             tbody.innerHTML = bookings.map(booking => {
                 const statusClass = booking.status === 'confirmed' ? 'success' : (booking.status === 'pending' ? 'warning' : 'danger');
+                
+                // Cancelable check (within 15 minutes and pending)
+                const createdAt = new Date(booking.created_at);
+                const now = new Date();
+                const diffMs = now - createdAt;
+                const diffMins = Math.floor(diffMs / 60000);
+                const isCancelable = booking.status === 'pending' && diffMins < 15;
+
                 return `
                 <tr>
                     <td class="ps-4 fw-bold text-primary">#BK-${booking.id}</td>
@@ -251,7 +259,10 @@
                     <td><span class="fw-bold text-dark">TK ${parseFloat(booking.total_price).toLocaleString()}</span></td>
                     <td><span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} border border-${statusClass} border-opacity-25 px-3 py-2 rounded-pill">${booking.status.toUpperCase()}</span></td>
                     <td class="text-end pe-4">
-                        <button onclick="viewBooking(${booking.id})" class="btn btn-outline-primary btn-sm rounded-pill px-3">Details</button>
+                        <div class="d-flex justify-content-end gap-2">
+                            ${isCancelable ? `<button onclick="cancelBooking(${booking.id})" class="btn btn-danger btn-sm rounded-pill px-3">Cancel</button>` : ''}
+                            <button onclick="viewBooking(${booking.id})" class="btn btn-outline-primary btn-sm rounded-pill px-3">Details</button>
+                        </div>
                     </td>
                 </tr>`;
             }).join('');
@@ -371,6 +382,14 @@
                     </div>
                     <div class="bg-light rounded-4 p-4 mb-4">
                         <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Hotel Name</span>
+                            <span class="fw-bold text-dark">${booking.hotel?.name || 'The Grand Azure'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">City</span>
+                            <span class="fw-bold text-dark">${booking.hotel?.city || 'Dhaka'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Room Type</span>
                             <span class="fw-bold text-dark">${booking.room?.room_type || 'Luxury Suite'}</span>
                         </div>
@@ -390,6 +409,44 @@
                 `;
             }
         } catch (e) { console.error(e); }
+    }
+    async function cancelBooking(id) {
+        const confirmCancel = await Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to cancel this booking?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Cancel it!',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6'
+        });
+
+        if (!confirmCancel.isConfirmed) return;
+
+        try {
+            const response = await fetch(`/api/bookings/${id}`, {
+                method: 'DELETE',
+                headers: { 
+                    'Authorization': `Bearer ${authToken}`, 
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cancelled!',
+                    text: 'Your booking has been cancelled.',
+                    confirmButtonColor: '#1E3A5F'
+                }).then(() => {
+                    loadBookings();
+                });
+            } else {
+                const result = await response.json();
+                Swal.fire({ icon: 'error', title: 'Cancellation Failed', text: result.message || 'Error cancelling booking.' });
+            }
+        } catch (error) { console.error('Cancellation Error:', error); }
     }
 </script>
 @endsection

@@ -146,6 +146,8 @@
                         <p class="mb-3"><strong>Email:</strong> ${booking.user.email}</p>
                         
                         <h5 class="fw-bold mb-2">Room Info</h5>
+                        <p class="mb-1"><strong>Hotel:</strong> ${booking.hotel?.name || 'N/A'}</p>
+                        <p class="mb-1"><strong>City:</strong> ${booking.hotel?.city || 'N/A'}</p>
                         <p class="mb-1"><strong>Number:</strong> Room ${booking.room.room_number}</p>
                         <p class="mb-3"><strong>Type:</strong> ${booking.room.room_type}</p>
                     </div>

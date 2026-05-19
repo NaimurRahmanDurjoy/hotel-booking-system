@@ -63,6 +63,15 @@ class HotelController extends Controller
     }
 
     /**
+     * Get distinct cities.
+     */
+    public function getCities()
+    {
+        $cities = Hotel::select('city')->distinct()->whereNotNull('city')->pluck('city');
+        return response()->json($cities);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Hotel $hotel)

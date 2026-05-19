@@ -29,12 +29,7 @@ use App\Http\Controllers\CarController;
 Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('manager.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::resource('hotels', HotelController::class);
-    Route::resource('travel-packages', TravelPackageController::class);
-    Route::resource('cars', CarController::class);
-    Route::get('/car-bookings', [CarController::class, 'bookingsIndex'])->name('car_bookings.index');
-    Route::put('/car-bookings/{carBooking}', [CarController::class, 'updateBooking'])->name('car_bookings.update');
-    Route::get('/travel-bookings', [TravelBookingController::class, 'index'])->name('travel_bookings.index');
-    Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update'])->name('travel_bookings.update');
+    
     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
@@ -44,6 +39,16 @@ Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('mana
     Route::get('/chat', function () {
         return view('admin.chat');
     })->name('chat');
+
+    // Admin only routes
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('travel-packages', TravelPackageController::class);
+        Route::resource('cars', CarController::class);
+        Route::get('/car-bookings', [CarController::class, 'bookingsIndex'])->name('car_bookings.index');
+        Route::put('/car-bookings/{carBooking}', [CarController::class, 'updateBooking'])->name('car_bookings.update');
+        Route::get('/travel-bookings', [TravelBookingController::class, 'index'])->name('travel_bookings.index');
+        Route::put('/travel-bookings/{travelBooking}', [TravelBookingController::class, 'update'])->name('travel_bookings.update');
+    });
 });
 
 // Customer Routes (Protected)

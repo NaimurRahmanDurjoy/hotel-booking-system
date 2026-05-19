@@ -207,7 +207,7 @@
                 @guest
                 <div class="d-flex ms-3">
                     <button onclick="showLoginModal()" class="btn btn-primary">Login</button>
-                    <button onclick="showRegisterModal()" class="btn btn-outline-primary ms-2">Register</button>
+                    <button onclick="showRegisterModal()" class="btn btn-primary ms-2">Register</button>
                 </div>
                 @endguest
 

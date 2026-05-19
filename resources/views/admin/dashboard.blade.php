@@ -101,7 +101,7 @@
                     </td>
                     <td>{{ $booking->room->room_number }} ({{ ucfirst($booking->room->room_type) }})</td>
                     <td>{{ \Carbon\Carbon::parse($booking->check_in_date)->format('M d') }} - {{ \Carbon\Carbon::parse($booking->check_out_date)->format('M d, Y') }}</td>
-                    <td>${{ number_format($booking->total_price, 2) }}</td>
+                    <td>TK{{ number_format($booking->total_price, 2) }}</td>
                     <td>
                         <span class="badge badge-{{ $booking->status }}">
                             {{ ucfirst($booking->status) }}
