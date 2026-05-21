@@ -304,7 +304,7 @@
                     <td><span class="fw-bold text-dark">TK ${parseFloat(booking.total_price).toLocaleString()}</span></td>
                     <td><span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} border border-${statusClass} border-opacity-25 px-3 py-2 rounded-pill">${booking.status.toUpperCase()}</span></td>
                     <td class="text-end pe-4">
-                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3" disabled>Details</button>
+                        <button onclick="viewTravelBooking(${booking.id})" class="btn btn-outline-primary btn-sm rounded-pill px-3">Details</button>
                     </td>
                 </tr>`;
             }).join('');
@@ -345,7 +345,7 @@
                     <td><span class="fw-bold text-dark">TK ${parseFloat(booking.total_price).toLocaleString()}</span></td>
                     <td><span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} border border-${statusClass} border-opacity-25 px-3 py-2 rounded-pill">${booking.status.toUpperCase()}</span></td>
                     <td class="text-end pe-4">
-                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3" disabled>Details</button>
+                        <button onclick="viewCarBooking(${booking.id})" class="btn btn-outline-primary btn-sm rounded-pill px-3">Details</button>
                     </td>
                 </tr>`;
             }).join('');
@@ -355,6 +355,7 @@
     async function viewBooking(id) {
         const content = document.getElementById('bookingDetailsContent');
         content.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>';
+        document.querySelector('#viewBookingModal .modal-title').textContent = 'Room Reservation Details';
         viewModal.show();
         
         try {
@@ -409,6 +410,149 @@
                 `;
             }
         } catch (e) { console.error(e); }
+    }
+
+    async function viewTravelBooking(id) {
+        const content = document.getElementById('bookingDetailsContent');
+        content.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>';
+        document.querySelector('#viewBookingModal .modal-title').textContent = 'Travel Package Details';
+        viewModal.show();
+        
+        try {
+            const response = await fetch('/api/travel-bookings', {
+                headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
+            });
+            const data = await response.json();
+            const bookings = data.data || data;
+            const booking = bookings.find(b => b.id == id);
+            
+            if (booking) {
+                content.innerHTML = `
+                    <div class="booking-detail-item mb-4 text-center">
+                        <div class="display-6 fw-bold text-primary mb-1">TK ${parseFloat(booking.total_price).toLocaleString()}</div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">${booking.status.toUpperCase()}</div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Travel Date</label>
+                            <div class="fw-bold text-dark"><i class="far fa-calendar-check text-primary me-1"></i> ${formatDate(booking.travel_date)}</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Guests</label>
+                            <div class="fw-bold text-dark"><i class="fas fa-users text-primary me-1"></i> ${booking.guests} Person(s)</div>
+                        </div>
+                    </div>
+                    <div class="bg-light rounded-4 p-4 mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Package Title</span>
+                            <span class="fw-bold text-dark">${booking.package?.title || 'Tour Package'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Destination</span>
+                            <span class="fw-bold text-dark">${booking.package?.destination || 'Destination'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Duration</span>
+                            <span class="fw-bold text-dark">${booking.package?.duration_days || 'N/A'} Days</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Price Per Guest</span>
+                            <span class="fw-bold text-dark">TK ${parseFloat(booking.package?.price || 0).toLocaleString()}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Booking Reference</span>
+                            <span class="fw-bold text-dark">#TR-${booking.id}</span>
+                        </div>
+                    </div>
+                    ${booking.package?.description ? `
+                    <div class="mb-4">
+                        <label class="small text-muted text-uppercase fw-bold mb-2">Description</label>
+                        <div class="text-muted small">${booking.package.description}</div>
+                    </div>
+                    ` : ''}
+                    <div class="text-center">
+                        <p class="small text-muted mb-4"><i class="fas fa-info-circle me-1"></i> Show this reference to the travel coordinator.</p>
+                        <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="window.print()"><i class="fas fa-print me-2"></i>Download Receipt</button>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = '<div class="text-center py-5 text-danger">Booking details not found.</div>';
+            }
+        } catch (e) {
+            console.error(e);
+            content.innerHTML = '<div class="text-center py-5 text-danger">Failed to load booking details.</div>';
+        }
+    }
+
+    async function viewCarBooking(id) {
+        const content = document.getElementById('bookingDetailsContent');
+        content.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>';
+        document.querySelector('#viewBookingModal .modal-title').textContent = 'Car Rental Details';
+        viewModal.show();
+        
+        try {
+            const response = await fetch('/api/car-bookings/my', {
+                headers: { 'Authorization': `Bearer ${authToken}`, 'Accept': 'application/json' }
+            });
+            const bookings = await response.json();
+            const booking = bookings.find(b => b.id == id);
+            
+            if (booking) {
+                content.innerHTML = `
+                    <div class="booking-detail-item mb-4 text-center">
+                        <div class="display-6 fw-bold text-primary mb-1">TK ${parseFloat(booking.total_price).toLocaleString()}</div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">${booking.status.toUpperCase()}</div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Pickup</label>
+                            <div class="fw-bold text-dark"><i class="fas fa-calendar-alt text-primary me-1"></i> ${formatDate(booking.pickup_date)}</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="small text-muted text-uppercase fw-bold">Return</label>
+                            <div class="fw-bold text-dark"><i class="fas fa-calendar-alt text-primary me-1"></i> ${formatDate(booking.return_date)}</div>
+                        </div>
+                    </div>
+                    <div class="bg-light rounded-4 p-4 mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Car Model</span>
+                            <span class="fw-bold text-dark">${booking.car?.name || 'Rental Car'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Brand</span>
+                            <span class="fw-bold text-dark">${booking.car?.brand || 'Premium'}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Pickup Location</span>
+                            <span class="fw-bold text-dark">${booking.pickup_location} (${booking.pickup_city})</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Dropoff Location</span>
+                            <span class="fw-bold text-dark">${booking.return_location} (${booking.dropoff_city})</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Booking Reference</span>
+                            <span class="fw-bold text-dark">#CR-${booking.id}</span>
+                        </div>
+                    </div>
+                    ${booking.notes ? `
+                    <div class="mb-4">
+                        <label class="small text-muted text-uppercase fw-bold mb-2">Notes</label>
+                        <div class="text-muted small">${booking.notes}</div>
+                    </div>
+                    ` : ''}
+                    <div class="text-center">
+                        <p class="small text-muted mb-4"><i class="fas fa-info-circle me-1"></i> Show this reference when picking up the vehicle.</p>
+                        <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm" onclick="window.print()"><i class="fas fa-print me-2"></i>Download Receipt</button>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = '<div class="text-center py-5 text-danger">Booking details not found.</div>';
+            }
+        } catch (e) {
+            console.error(e);
+            content.innerHTML = '<div class="text-center py-5 text-danger">Failed to load booking details.</div>';
+        }
     }
     async function cancelBooking(id) {
         const confirmCancel = await Swal.fire({
